@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Latent clone</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>Latent clone <span class="muted">hallucination catcher</span></h1>
+    <p class="muted">{% if mock_mode %}Mock mode (heuristic judge, no API key){% else %}Live mode (Anthropic judge){% endif %}. Independent learning clone, not affiliated with Latent.</p>
+  </header>
+
+  <section class="stats" aria-label="Stats">
+    <div><b>{{ stats.scored }}</b><span>scored</span></div>
+    <div><b>{{ stats.flagged }}</b><span>flagged</span></div>
+    <div><b>{{ (stats.flag_rate * 100) | round(1) }}%</b><span>flag rate</span></div>
+    <div><b>{{ stats.confirmed }}</b><span>confirmed</span></div>
+    <div><b>{{ "%.0f%%" | format(stats.precision * 100) if stats.precision is not none else "n/a" }}</b><span>precision</span></div>
+    <div><b id="thr">{{ stats.threshold }}</b><span>threshold</span></div>
+  </section>
+
+  <section class="card">
+    <h2>Guarded chat demo</h2>
+    <form id="chat-form">
+      <div class="row">
+        <button type="button" class="ghost" data-preset="grounded">Preset: grounded</button>
+        <button type="button" class="ghost" data-preset="madeup">Preset: made-up</button>
+      </div>
+      <label>Question <input name="question" required></label>
+      <label>Sources (one per line) <textarea name="sources" rows="3"></textarea></label>
+      <label>Answer override (optional, skips the base model) <textarea name="answer_override" rows="2"></textarea></label>
+      <label>Policy
+        <select name="policy">
+          <option value="hold">hold</option>
+          <option value="escalate">escalate</option>
+          <option value="deliver">deliver</option>
+        </select>
+      </label>
+      <button type="submit">Ask</button>
+    </form>
+    <pre id="chat-out" class="out" hidden></pre>
+  </section>
+
+  <section>
+    <h2>Review queue</h2>
+    <nav class="tabs">
+      {% for t in ["pending", "reviewed", "all"] %}
+      <a href="/?tab={{ t }}" class="{{ 'active' if tab == t else '' }}">{{ t | capitalize }}</a>
+      {% endfor %}
+      <button id="recal" class="ghost" type="button">Recalibrate</button>
+    </nav>
+    <p id="recal-out" class="muted" role="status"></p>
+    <p class="muted"><a href="/v1/export.jsonl">Export labeled data (.jsonl)</a> · <a href="/metrics">Metrics</a></p>
+
+    {% for r in rows %}
+    <article class="card item" data-id="{{ r.id }}">
+      <div class="meta">
+        <span class="chip">{{ r.failure_type }}</span>
+        <span class="chip alt">score {{ "%.2f" | format(r.score) }}</span>
+        <span class="chip alt">{{ r.policy }} / {{ r.action }}</span>
+        {% if r.review_status != "pending" %}<span class="chip {{ r.review_status }}">{{ r.review_status }}</span>{% endif %}
+      </div>
+      <p class="label">Prompt</p>
+      <p>{{ r.prompt }}</p>
+      <p class="label">Answer</p>
+      <p>{% for s in r.segments %}{% if s.risky %}<mark>{{ s.text }}</mark>{% else %}{{ s.text }}{% endif %} {% endfor %}</p>
+      {% if r.source_sentence %}<p class="label">Source it relied on</p><p class="source">{{ r.source_sentence }}</p>{% endif %}
+      {% if r.explanation %}<p class="muted">{{ r.explanation }}</p>{% endif %}
+      {% if r.review_status == "pending" %}
+      <div class="row">
+        <button data-decision="confirmed" class="danger">Confirm wrong</button>
+        <button data-decision="cleared" class="ghost">Clear</button>
+      </div>
+      {% endif %}
+    </article>
+    {% else %}
+    <p class="muted">Nothing here yet. Try a preset above.</p>
+    {% endfor %}
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
