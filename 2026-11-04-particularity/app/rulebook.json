@@ -1,0 +1,10 @@
+[
+  {"id": "ftc5_representation", "law": "FTC Act §5 (deception)", "element": "Representation, omission or practice", "description": "A representation, omission or practice was made to consumers (FTC Act §5 deception, element 1)."},
+  {"id": "ftc5_likely_to_mislead", "law": "FTC Act §5 (deception)", "element": "Likely to mislead", "description": "The representation, omission or practice is likely to mislead a consumer acting reasonably (element 2)."},
+  {"id": "ftc5_material", "law": "FTC Act §5 (deception)", "element": "Material", "description": "The representation, omission or practice is material to the consumer's decision (element 3)."},
+  {"id": "rosca_disclosure", "law": "ROSCA (negative option / auto-renewal)", "element": "Clear and conspicuous disclosure", "description": "Material terms of a negative-option/auto-renewal offer must be clearly and conspicuously disclosed before obtaining billing information."},
+  {"id": "rosca_consent", "law": "ROSCA (negative option / auto-renewal)", "element": "Express informed consent", "description": "Express informed consent must be obtained before charging the consumer."},
+  {"id": "rosca_simple_cancel", "law": "ROSCA (negative option / auto-renewal)", "element": "Simple cancellation mechanism", "description": "A simple mechanism to stop recurring charges must be provided."},
+  {"id": "junkfee_total_price", "law": "Junk fees / drip pricing", "element": "Total price shown up front", "description": "Total price including mandatory fees must be shown up front, not added late in checkout (drip-pricing / junk-fee rules, e.g. FTC Rule on Unfair or Deceptive Fees, state analogues)."},
+  {"id": "urgency_false_scarcity", "law": "False urgency / scarcity", "element": "Fabricated urgency or scarcity", "description": "False or fabricated urgency/scarcity claims (timers that reset, static stock counts) are deceptive practices."}
+]

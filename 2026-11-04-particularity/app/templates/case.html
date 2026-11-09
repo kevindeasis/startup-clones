@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Case {{ case.id }} — {{ case.business }}{% endblock %}
+{% block body %}
+<p><a href="/">&larr; All cases</a></p>
+<h1>Case #{{ case.id }}: {{ case.business or 'Unnamed' }}</h1>
+<section class="card"><dl class="kv">
+<dt>Status</dt><dd id="case-status">{{ case.status }}</dd>
+<dt>Priority</dt><dd><span class="pill {{ case.priority }}">{{ case.priority }}</span></dd>
+<dt>Harm estimate</dt><dd>${{ '%.2f' % (case.harm_estimate_cents / 100) }}</dd>
+<dt>Target</dt><dd>{{ case.target_url }}</dd>
+{% if case.checkout_url %}<dt>Checkout</dt><dd>{{ case.checkout_url }}</dd>{% endif %}
+{% if case.cancel_url %}<dt>Cancel / account</dt><dd>{{ case.cancel_url }}</dd>{% endif %}
+<dt>Summary</dt><dd>{{ case.summary }}</dd></dl></section>
+
+<section class="card"><h2>Findings ({{ case.findings|length }})</h2>
+{% for f in case.findings %}
+<article class="finding sev-{{ f.severity }}">
+<h3>{{ f.title }}</h3>
+<p class="muted"><code>{{ f.category }}</code> · severity <strong>{{ f.severity }}</strong> · confidence {{ '%.0f' % (f.confidence * 100) }}%
+{% if f.evidence_id and f.evidence_id in ev_by_id %} · evidence #{{ f.evidence_id }} ({{ ev_by_id[f.evidence_id].kind }}){% endif %}</p>
+<p>{{ f.summary }}</p>
+<blockquote>{{ f.quote }}</blockquote>
+<div class="elements"><strong>Legal elements</strong>
+{% for g in f.groups %}<div class="law">{{ g.law }}<ul class="checklist">
+{% for e in g.elements %}<li><span class="check">&#9745;</span> <strong>{{ e.element }}</strong> <span class="muted">({{ e.id }})</span> — {{ e.description }}</li>{% endfor %}
+</ul></div>{% endfor %}</div>
+</article>
+{% else %}<p class="muted">No findings.</p>{% endfor %}
+<details><summary>Full rulebook coverage</summary><ul class="checklist">
+{% for e in rulebook %}<li><span class="check">{{ '&#9745;'|safe if e.id in cited else '&#9744;'|safe }}</span> {{ e.law }} — {{ e.element }} <span class="muted">({{ e.id }})</span></li>{% endfor %}
+</ul></details></section>
+
+<section class="card"><h2>Evidence timeline</h2>
+<div class="timeline">{% for e in case.evidence %}
+<div class="ev"><a href="{{ e.screenshot_url }}" target="_blank"><img src="{{ e.screenshot_url }}" alt="{{ e.kind }} screenshot" loading="lazy"></a>
+<div><strong>#{{ e.id }} {{ e.kind }}</strong><br><span class="muted">{{ e.url }}</span><br>captured {{ e.captured_at }}<br>
+<small>HTML sha256: <code>{{ e.html_sha256 }}</code></small><br><small>PNG sha256: <code>{{ e.screenshot_sha256 }}</code></small><br>
+<small>meta: timers {{ e.meta.timers }}, stock {{ e.meta.stock }}</small><br><a href="{{ e.html_url }}" target="_blank">raw HTML</a></div></div>
+{% endfor %}</div></section>
+
+<section class="card"><h2>Linked complaints</h2>
+{% for m in case.complaints %}<p><span class="pill {{ m.priority }}">{{ m.priority }}</span> {{ m.summary }}<br><span class="muted">“{{ m.text }}”</span></p>
+{% else %}<p class="muted">None.</p>{% endfor %}</section>
+
+<section class="card"><h2>Decision</h2>
+<form id="decision-form" data-case="{{ case.id }}" class="grid">
+<label>Action<select name="action"><option value="warning_letter">warning_letter</option><option value="escalate">escalate</option>
+<option value="needs_more_evidence">needs_more_evidence</option><option value="dismiss">dismiss</option></select></label>
+<label>Note<input name="note" placeholder="Reason / instructions"></label>
+<div><button type="submit">Record decision</button></div></form>
+<h3>Decision log (append-only)</h3>
+<table><thead><tr><th>When</th><th>Action</th><th>Note</th><th>Actor</th></tr></thead><tbody>
+{% for d in case.decisions %}<tr><td>{{ d.created_at }}</td><td>{{ d.action }}</td><td>{{ d.note }}</td><td>{{ d.actor }}</td></tr>
+{% else %}<tr><td colspan="4" class="muted">No decisions yet.</td></tr>{% endfor %}</tbody></table></section>
+
+<section class="card"><h2>Warning letter</h2>
+<button id="draft-letter" data-case="{{ case.id }}">Draft warning letter</button> <span id="letter-status" class="muted"></span>
+<div id="letter-box" {% if not case.letters %}hidden{% endif %}>
+<p><button id="copy-letter" class="secondary">Copy</button> <span class="muted">Draft for attorney review.</span></p>
+<pre id="letter-body">{% if case.letters %}{{ case.letters[0].body }}{% endif %}</pre></div></section>
+{% endblock %}

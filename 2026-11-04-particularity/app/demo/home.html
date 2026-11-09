@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% block title %}Bright Mattress Co. — Dream Mattress{% endblock %}
+{% block body %}
+<h1>Dream Mattress $499 — no hidden fees</h1>
+<p>Premium comfort, delivered to your door. No early payoff fees, ever.</p>
+<p style="color:#c1121f;font-size:24px">Sale ends in <span id="timer">09:59</span></p>
+<p><strong>Only 3 left in stock!</strong></p>
+<p><a class="btn" href="/demo/checkout">Buy now</a></p>
+<p><a href="/demo/account">Manage my account</a> · <a href="/demo/terms">Terms</a></p>
+<script>
+// Deliberately deceptive demo: the "deadline" resets every 5 seconds.
+var s = 599, el = document.getElementById('timer'), t = 0;
+function fmt(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
+setInterval(function(){ t++; if (t % 5 === 0) { s = 599; } else { s--; } el.textContent = fmt(s); }, 1000);
+</script>
+{% endblock %}

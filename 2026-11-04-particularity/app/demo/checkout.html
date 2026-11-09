@@ -1,0 +1,13 @@
+{% extends "_base.html" %}
+{% block title %}Bright Mattress Co. — Checkout{% endblock %}
+{% block body %}
+<h1>Checkout</h1>
+<div class="row"><span>Dream Mattress</span><span>$499.00</span></div>
+<div class="row"><span>Required service fee</span><span>$89.00</span></div>
+<div class="row"><span>Processing fee</span><span>$14.99</span></div>
+<div class="row"><strong>Total</strong><strong>$602.99</strong></div>
+<h3>Payment</h3>
+<form onsubmit="return false"><p><input placeholder="Card number"> <input placeholder="MM/YY" size="5"> <input placeholder="CVC" size="4"></p>
+<p><button class="btn" type="submit">Place order</button></p></form>
+<div class="fine">Your Sleep+ membership renews at $19.99/month.</div>
+{% endblock %}

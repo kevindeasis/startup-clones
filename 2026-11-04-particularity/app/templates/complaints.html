@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Complaint triage</h1>
+<section class="card"><form id="new-complaint">
+<label>Complaint text<textarea name="text" rows="5" required placeholder="Paste the consumer's complaint…"></textarea></label>
+<button type="submit">Triage</button> <span id="complaint-status" class="muted"></span></form></section>
+<section class="card"><h2>Triaged complaints</h2>
+<table><thead><tr><th>#</th><th>Business</th><th>Category</th><th>Harm</th><th>Priority</th><th>Summary</th><th>Case</th></tr></thead><tbody>
+{% for m in complaints %}<tr><td>{{ m.id }}</td><td>{{ m.business }}</td><td>{{ m.category }}</td>
+<td>${{ '%.2f' % (m.harm_estimate_cents / 100) }}</td><td><span class="pill {{ m.priority }}">{{ m.priority }}</span></td>
+<td>{{ m.summary }}</td><td>{% if m.case_id %}<a href="/cases/{{ m.case_id }}">#{{ m.case_id }}</a>{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">No complaints yet.</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

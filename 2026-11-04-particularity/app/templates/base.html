@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Casework{% endblock %}</title>
+<link rel="stylesheet" href="/static/style.css"></head><body>
+<nav><a class="brand" href="/">Casework</a><a href="/">Cases</a><a href="/complaints">Complaints</a><a href="/demo/">Demo storefront</a>
+<span class="spacer"></span><span class="muted">model: {{ model }}</span></nav>
+{% if mock %}<div class="banner">MOCK MODE — set ANTHROPIC_API_KEY for real analysis</div>{% endif %}
+<main>{% block body %}{% endblock %}</main>
+<footer class="muted">Demo tool. Not legal advice. Letters are drafts for attorney review.</footer>
+<script src="/static/app.js"></script></body></html>
