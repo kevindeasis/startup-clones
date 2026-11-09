@@ -1,0 +1,10 @@
+Name: Alice Nguyen (fictional)
+Senior Software Engineer
+
+Experience
+- Led the shipment-tracking backend at a regional carrier, a Python and Go services platform handling 40M events per day in production.
+- Designed PostgreSQL schemas and tuned slow queries; ran zero-downtime migrations across 2TB tables.
+- Built REST APIs and Kafka event-driven pipelines connecting warehouses and carriers.
+- Shipped the driver mobile backend end to end, from design to deployment, and carried on-call for two years.
+- Operated Docker and Kubernetes workloads on AWS.
+- Mentored five engineers and wrote the team technical documentation and runbooks.

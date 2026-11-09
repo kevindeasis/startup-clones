@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.env
+.env.*
+!.env.example
+data/*.db
+data/*.db-*
+*.tsbuildinfo
+next-env.d.ts
+.venv/
+venv/
+__pycache__/
+npm-debug.log*

@@ -1,0 +1,8 @@
+Name: Bob Okafor (fictional)
+Backend Developer
+
+Experience
+- Built Python services for an e-commerce startup, including REST APIs for orders and inventory.
+- Wrote PostgreSQL queries and some migrations; deployed apps to AWS with Docker.
+- Contributed to a small Kafka consumer for order events.
+- Documented APIs for the internal team.

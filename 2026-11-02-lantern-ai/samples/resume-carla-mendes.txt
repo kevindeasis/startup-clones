@@ -1,0 +1,7 @@
+Name: Carla Mendes (fictional)
+Frontend Designer
+
+Experience
+- Designed marketing websites in Figma and implemented them in React and CSS.
+- Managed brand guidelines and ran usability workshops with customers.
+- Familiar with basic JavaScript tooling and static site hosting.
