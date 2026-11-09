@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Girder - construction document risk board</title>
+<style>
+:root{--bg:#f5f6f8;--panel:#fff;--ink:#1c2230;--mute:#6b7385;--line:#e1e4ea;--acc:#c2540a;--acc2:#8a3a05;
+--hi:#c62828;--med:#d98a00;--lo:#2e7d32;--chip:#eef0f4}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--panel:#1d212a;--ink:#e8eaf0;--mute:#9aa2b4;--line:#2d3340;--chip:#2a303c;--acc:#f08a3c;--acc2:#ffb27a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+header h1{font-size:18px;margin:0;color:var(--acc)} header .tag{color:var(--mute);font-size:12px}
+header .sp{flex:1} #prov{font-size:12px;background:var(--chip);padding:2px 8px;border-radius:10px}
+main{display:grid;grid-template-columns:300px minmax(0,1fr) 340px;gap:12px;padding:12px;align-items:start}
+@media(max-width:1000px){main{grid-template-columns:1fr}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin:0 0 8px}
+input,select,button,textarea{font:inherit;color:inherit}
+input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;max-width:100%}
+button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:6px 12px;cursor:pointer}
+button.sec{background:var(--chip);color:var(--ink)} button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.doc{border:1px solid var(--line);border-radius:6px;padding:6px 8px;margin-bottom:6px;font-size:13px}
+.doc .n{font-weight:600;word-break:break-all}.mute{color:var(--mute);font-size:12px}
+.badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;background:var(--chip);margin-right:4px}
+.badge.high{background:var(--hi);color:#fff}.badge.medium{background:var(--med);color:#fff}.badge.low{background:var(--lo);color:#fff}
+.badge.failed{background:var(--hi);color:#fff}.badge.extracted{background:var(--lo);color:#fff}
+.risk{border:1px solid var(--line);border-left:4px solid var(--mute);border-radius:6px;padding:8px 10px;margin-bottom:8px;cursor:pointer}
+.risk.high{border-left-color:var(--hi)}.risk.medium{border-left-color:var(--med)}.risk.low{border-left-color:var(--lo)}
+.risk:hover,.risk.sel{background:var(--bg)} .risk .t{font-weight:600}
+.cite{border-left:3px solid var(--line);padding:2px 8px;margin:6px 0;font-size:12.5px}.cite q{display:block;color:var(--mute)}
+pre{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+.qa{border-bottom:1px solid var(--line);padding:6px 0;font-size:13px}.qa .q{font-weight:600}
+#detail{margin-top:10px;border-top:2px solid var(--line);padding-top:10px}
+.err{color:var(--hi);font-size:12.5px;margin:4px 0}.hidden{display:none}
+</style>
+</head>
+<body>
+<header><h1>Girder</h1><span class="tag">Sentry for errors in construction documents</span><span class="sp"></span><span id="prov">...</span></header>
+<main>
+<section id="left">
+  <h2>Project</h2>
+  <form id="pform" class="row"><input id="pname" placeholder="New project name" required><button>Create</button></form>
+  <div class="row"><select id="psel"></select></div>
+  <div id="pbody" class="hidden">
+    <h2>Documents</h2>
+    <div class="row"><select id="kind"><option value="">kind: auto</option><option>contract</option><option>spec</option><option>drawing</option><option>schedule</option><option>other</option></select>
+    <input id="files" type="file" multiple accept=".pdf,.txt,.md"></div>
+    <div class="row"><button id="upbtn" class="sec">Upload</button></div>
+    <div id="uperr" class="err"></div>
+    <div id="docs"></div>
+  </div>
+</section>
+<section id="center">
+  <h2>Risk board</h2>
+  <div class="row">
+    <button id="detect" disabled>Detect risks</button>
+    <select id="fcat"><option value="">all categories</option><option>contradiction</option><option>contractual</option><option>technical</option><option>compliance</option></select>
+    <select id="fsev"><option value="">all severities</option><option>high</option><option>medium</option><option>low</option></select>
+    <select id="fstat"><option value="">all statuses</option><option>open</option><option>in_review</option><option>resolved</option><option>dismissed</option></select>
+    <span id="rcount" class="mute"></span>
+  </div>
+  <div id="rerr" class="err"></div>
+  <div id="risks"><div class="mute">Create a project, upload documents, then click Detect risks.</div></div>
+  <div id="detail" class="hidden"></div>
+</section>
+<section id="right">
+  <h2>Ask the documents</h2>
+  <div class="row"><input id="q" placeholder="e.g. What concrete strength is required for footings?" style="flex:1"><button id="askbtn" disabled>Ask</button></div>
+  <div id="aerr" class="err"></div>
+  <div id="qa"></div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let pid=null, selRisk=null;
+async function api(path,opts){
+  const r=await fetch('/api'+path,opts); let j=null;
+  try{j=await r.json()}catch(e){}
+  if(!r.ok) throw new Error((j&&j.detail&&(typeof j.detail==='string'?j.detail:JSON.stringify(j.detail)))||r.statusText);
+  return j;
+}
+const post=(p,b)=>api(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b||{})});
+function save(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+
+async function loadHealth(){const h=await api('/health');$('prov').textContent='LLM: '+h.llm_provider+(h.llm_provider==='anthropic'?' ('+h.model+')':' (no API key)')}
+async function loadProjects(selectId){
+  const ps=await api('/projects'); const s=$('psel');
+  s.innerHTML=ps.map(p=>`<option value="${p.id}">${esc(p.name)} (#${p.id})</option>`).join('');
+  const want=selectId||load('pid');
+  if(ps.length){ pid=ps.some(p=>String(p.id)===String(want))?Number(want):ps[0].id; s.value=pid; await refreshAll(); }
+  else { pid=null; $('pbody').classList.add('hidden'); $('detect').disabled=$('askbtn').disabled=true; }
+}
+async function refreshAll(){
+  save('pid',pid); $('pbody').classList.remove('hidden'); $('detect').disabled=false; $('askbtn').disabled=false;
+  selRisk=null; $('detail').classList.add('hidden');
+  await Promise.all([loadDocs(),loadRisks(),loadQA()]);
+}
+async function loadDocs(){
+  const p=await api('/projects/'+pid);
+  $('docs').innerHTML=p.documents.map(d=>`<div class="doc"><div class="n">${esc(d.filename)}</div>
+   <span class="badge ${esc(d.status)}">${esc(d.status)}</span><span class="badge">${esc(d.kind)}</span>
+   <span class="mute">${d.page_count} page${d.page_count==1?'':'s'} &middot; ${d.char_count} chars</span>
+   ${d.message?`<div class="err">${esc(d.message)}</div>`:''}
+   <button class="sec" style="float:right;padding:0 8px" data-del="${d.id}" title="Delete">x</button></div>`).join('')||'<div class="mute">No documents yet.</div>';
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{await api('/documents/'+b.dataset.del,{method:'DELETE'});await Promise.all([loadDocs(),loadRisks()])});
+}
+async function loadRisks(){
+  const qs=new URLSearchParams({category:$('fcat').value,severity:$('fsev').value,status:$('fstat').value});
+  const rs=await api(`/projects/${pid}/risks?`+qs);
+  $('rcount').textContent=rs.length+' risk'+(rs.length==1?'':'s');
+  $('risks').innerHTML=rs.map(r=>`<div class="risk ${esc(r.severity)} ${r.id===selRisk?'sel':''}" data-id="${r.id}">
+    <div class="t">${esc(r.title)}</div><span class="badge ${esc(r.severity)}">${esc(r.severity)}</span><span class="badge">${esc(r.category)}</span>
+    <span class="badge">${esc(r.status)}</span><span class="mute">${r.owner?'owner: '+esc(r.owner)+' &middot; ':''}${r.citations.length} citation${r.citations.length==1?'':'s'}</span></div>`).join('')
+    ||'<div class="mute">No risks match. Upload documents and click Detect risks.</div>';
+  document.querySelectorAll('.risk').forEach(el=>el.onclick=()=>openRisk(Number(el.dataset.id),rs.find(r=>r.id==el.dataset.id)));
+  if(selRisk){const r=rs.find(x=>x.id===selRisk); if(r) renderDetail(r);}
+}
+function renderDetail(r){
+  const d=$('detail'); d.classList.remove('hidden');
+  d.innerHTML=`<div class="t" style="font-size:16px;font-weight:700">${esc(r.title)}</div>
+   <span class="badge ${esc(r.severity)}">${esc(r.severity)}</span><span class="badge">${esc(r.category)}</span>
+   <p>${esc(r.description)}</p><p><b>Recommended action:</b> ${esc(r.recommendation)}</p>
+   <div>${r.citations.map(c=>`<div class="cite"><b>${esc(c.filename)}</b>, page ${c.page}<q>${esc(c.quote)}</q></div>`).join('')}</div>
+   <div class="row">Status <select id="dstat">${['open','in_review','resolved','dismissed'].map(s=>`<option ${s===r.status?'selected':''}>${s}</option>`).join('')}</select>
+    Owner <input id="down" value="${esc(r.owner||'')}" placeholder="free text"><button id="dsave" class="sec">Save</button>
+    <button id="dnotice">Draft notice</button></div>
+   <div id="derr" class="err"></div><div id="nbox"></div>`;
+  $('dsave').onclick=async()=>{try{await api('/risks/'+r.id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:$('dstat').value,owner:$('down').value})});await loadRisks()}catch(e){$('derr').textContent=e.message}};
+  $('dnotice').onclick=async()=>{$('nbox').innerHTML='<div class="mute">Drafting...</div>';try{const n=await post('/risks/'+r.id+'/notice');
+    $('nbox').innerHTML=`<pre id="ntext">${esc(n.notice)}</pre><button id="ncopy" class="sec">Copy</button>`;
+    $('ncopy').onclick=async()=>{try{await navigator.clipboard.writeText(n.notice);$('ncopy').textContent='Copied'}catch(e){const t=document.createRange();t.selectNodeContents($('ntext'));getSelection().removeAllRanges();getSelection().addRange(t);document.execCommand('copy');$('ncopy').textContent='Copied'}}
+  }catch(e){$('nbox').innerHTML='';$('derr').textContent=e.message}};
+}
+function openRisk(id,r){selRisk=id;document.querySelectorAll('.risk').forEach(e=>e.classList.toggle('sel',e.dataset.id==id));renderDetail(r)}
+async function loadQA(){
+  const qs=await api(`/projects/${pid}/questions`);
+  $('qa').innerHTML=qs.slice().reverse().map(q=>`<div class="qa"><div class="q">${esc(q.question)}</div><div>${esc(q.answer)}</div>
+   ${q.citations.map(c=>`<div class="cite"><b>${esc(c.filename)}</b>, p.${c.page}<q>${esc(c.quote)}</q></div>`).join('')}</div>`).join('')
+   ||'<div class="mute">No questions yet.</div>';
+}
+$('pform').onsubmit=async e=>{e.preventDefault();const p=await post('/projects',{name:$('pname').value});$('pname').value='';await loadProjects(p.id)};
+$('psel').onchange=()=>{pid=Number($('psel').value);refreshAll()};
+$('upbtn').onclick=async()=>{
+  $('uperr').textContent=''; const fs=$('files').files; if(!fs.length){$('uperr').textContent='Choose files first.';return}
+  const fd=new FormData(); for(const f of fs) fd.append('files',f); if($('kind').value) fd.append('kind',$('kind').value);
+  try{await api(`/projects/${pid}/documents`,{method:'POST',body:fd}); $('files').value=''; await loadDocs()}catch(e){$('uperr').textContent=e.message}
+};
+$('detect').onclick=async()=>{
+  $('rerr').textContent=''; $('detect').disabled=true; $('detect').textContent='Detecting...';
+  try{await post(`/projects/${pid}/detect`); selRisk=null; $('detail').classList.add('hidden'); await loadRisks()}catch(e){$('rerr').textContent=e.message}
+  $('detect').disabled=false; $('detect').textContent='Detect risks';
+};
+['fcat','fsev','fstat'].forEach(i=>$(i).onchange=loadRisks);
+async function ask(){
+  const q=$('q').value.trim(); if(!q) return; $('aerr').textContent=''; $('askbtn').disabled=true;
+  try{await post(`/projects/${pid}/ask`,{question:q}); $('q').value=''; await loadQA()}catch(e){$('aerr').textContent=e.message}
+  $('askbtn').disabled=false;
+}
+$('askbtn').onclick=ask; $('q').onkeydown=e=>{if(e.key==='Enter')ask()};
+loadHealth().catch(()=>{$('prov').textContent='API unreachable'}); loadProjects().catch(e=>{$('rerr').textContent=e.message});
+</script>
+</body>
+</html>
