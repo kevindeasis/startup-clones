@@ -1,0 +1,19 @@
+From: Maria Lopez <maria@mariscoselpuerto.example>
+To: orders@distributor.example
+Subject: Pedido para el viernes
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+Buenos días,
+
+Necesito para el viernes:
+
+| Cant | Unidad | Producto |
+| 3 | cajas | camarón 21/25 |
+| 10 | lb | pulpo |
+| 2 | cajas | mejillones PEI |
+| 5 | lb | calamar |
+
+Gracias,
+Maria — Mariscos El Puerto

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Intake{% endblock %}
+{% block content %}
+<h1>New intake</h1>
+<p class="muted">LLM provider: <strong>{{ provider }}</strong>{% if provider == 'mock' %} (deterministic mock; photos return a fixed sample){% endif %}</p>
+<p>
+  <label>Load sample
+    <select onchange="location.href='/intake'+(this.value?'?sample='+encodeURIComponent(this.value):'')">
+      <option value="">-- none --</option>
+      {% for f, m in samples.items() %}
+      <option value="{{ f }}" {{ 'selected' if f == selected_sample else '' }}>{{ m.label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+</p>
+<form method="post" action="/intake" enctype="multipart/form-data" class="card form">
+  <label>Customer (leave blank to infer from sender/signature)
+    <select name="customer_id">
+      <option value="">-- infer --</option>
+      {% for c in customers %}<option value="{{ c.id }}" {{ 'selected' if form.customer_id == c.id|string else '' }}>{{ c.name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Channel
+    <select name="channel">
+      {% for ch in ['email','sms','photo','pdf'] %}<option value="{{ ch }}" {{ 'selected' if form.channel == ch else '' }}>{{ ch }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Sender (email or phone, optional) <input name="sender" value="{{ form.sender }}"></label>
+  <label>Subject (optional) <input name="subject" value="{{ form.subject }}"></label>
+  <label>Message
+    <textarea name="body_text" rows="10" placeholder="Paste the email body or SMS text here">{{ form.body }}</textarea>
+  </label>
+  <label>Attachment (.png/.jpg photo, .pdf, or .eml)
+    <input type="file" name="file" accept=".png,.jpg,.jpeg,.pdf,.eml">
+  </label>
+  {% if form.sample_file %}
+  <input type="hidden" name="sample_file" value="{{ form.sample_file }}">
+  <p class="muted">Sample file <code>{{ form.sample_file }}</code> will be attached automatically.</p>
+  {% endif %}
+  <button type="submit" class="primary">Run pipeline</button>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Review queue{% endblock %}
+{% block content %}
+<h1>Review queue</h1>
+<p class="filters">
+  Filter:
+  <a href="/" class="{{ '' if status else 'on' }}">all</a>
+  {% for s in ['needs_review','auto_approved','pushed','rejected'] %}
+    <a href="/?status={{ s }}" class="{{ 'on' if status == s else '' }}">{{ s.replace('_',' ') }}</a>
+  {% endfor %}
+</p>
+{% if rows %}
+<table>
+  <thead><tr><th>#</th><th>Status</th><th>Customer</th><th>Channel</th><th>Lines</th><th>Flagged</th><th>Received</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td><a href="/orders/{{ r.d.id }}">#{{ r.d.id }}</a></td>
+      <td><span class="badge {{ r.d.status }}">{{ r.d.status.replace('_',' ') }}</span></td>
+      <td>{% if r.cust %}<a href="/customers/{{ r.cust.id }}">{{ r.cust.name }}</a>{% else %}<em>unknown{% if r.d.inferred_customer_name %} ({{ r.d.inferred_customer_name }}){% endif %}</em>{% endif %}</td>
+      <td>{{ r.msg.channel }}</td>
+      <td>{{ r.n }}</td>
+      <td>{% if r.flagged %}<span class="flagcount">{{ r.flagged }}</span>{% else %}0{% endif %}</td>
+      <td>{{ r.d.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No drafts yet. <a href="/intake">Create one from an inbound message.</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ d.id }}{% endblock %}
+{% block content %}
+<h1>Draft order #{{ d.id }} <span class="badge {{ d.status }}">{{ d.status.replace('_',' ') }}</span></h1>
+{% if error %}<div class="callout error">{{ error }}</div>{% endif %}
+{% if d.questions() %}
+<div class="callout warn"><strong>Needs a human:</strong>
+  <ul>{% for q in d.questions() %}<li>{{ q }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+{% if summary %}<div class="callout ok"><strong>Rep summary:</strong> {{ summary.text }}
+  {% if erp_order %}<br><span class="muted">ERP order {{ erp_order.erp_number }} - <a href="/erp/orders">JSON</a> | <a href="/erp/orders.csv">CSV</a></span>{% endif %}</div>{% endif %}
+<div class="cols">
+  <section class="card">
+    <h2>Original message</h2>
+    <p class="muted small">{{ msg.channel }}{% if msg.sender %} from {{ msg.sender }}{% endif %}{% if msg.subject %} - "{{ msg.subject }}"{% endif %} - {{ msg.received_at.strftime('%Y-%m-%d %H:%M') }} UTC</p>
+    {% if msg.attachment_kind == 'image' and att_name %}<img class="upload" src="/uploads/{{ att_name }}" alt="uploaded photo">{% endif %}
+    {% if msg.attachment_kind == 'pdf' and att_name %}<p class="small"><a href="/uploads/{{ att_name }}">Open uploaded PDF</a> (text extracted below)</p>{% endif %}
+    <pre class="msg">{{ msg.body_text or '(no text - see attachment)' }}</pre>
+    <p class="muted small">Provider: {{ d.llm_provider }} / {{ d.llm_model }}{% if d.inferred_customer_name %} - customer hint: "{{ d.inferred_customer_name }}"{% endif %}</p>
+  </section>
+  <section class="card">
+    <h2>Order for
+      {% if cust %}<a href="/customers/{{ cust.id }}">{{ cust.name }}</a>{% else %}<em>unknown customer</em>{% endif %}
+      {% if d.delivery_date %}<span class="muted small"> - delivery {{ d.delivery_date.isoformat() }} ({{ d.delivery_date.strftime('%a') }})</span>{% endif %}
+    </h2>
+    {% if not cust and d.status in ['needs_review','auto_approved'] %}
+    <form method="post" action="/orders/{{ d.id }}/customer" class="inline">
+      <select name="customer_id" required><option value="">Assign customer...</option>
+        {% for c in customers %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+      <button>Assign</button>
+    </form>
+    {% endif %}
+    <table class="lines">
+      <thead><tr><th>As written</th><th>Matched SKU</th><th>Qty</th><th>Unit</th><th>Confidence</th><th>Flag</th></tr></thead>
+      <tbody>
+      {% for l in lines %}{% include "_line_row.html" %}{% else %}<tr><td colspan="6" class="empty">No lines extracted.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+    {% if d.status in ['needs_review','auto_approved'] %}
+    <div class="actions">
+      <form method="post" action="/orders/{{ d.id }}/approve"><button class="primary">Approve &amp; push to ERP</button></form>
+      <form method="post" action="/orders/{{ d.id }}/reject"><button class="danger">Reject</button></form>
+    </div>
+    <p class="muted small">Changing a SKU saves a customer-specific alias so the same shorthand matches at 100% next time. Set qty to 0 to drop a line.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Catalog{% endblock %}
+{% block content %}
+<h1>Catalog <span class="muted small">({{ products|length }} SKUs)</span></h1>
+<table><thead><tr><th>SKU</th><th>Name</th><th>Unit</th><th>Pack</th><th>Category</th><th>Global aliases</th></tr></thead><tbody>
+{% for p in products %}<tr><td><code>{{ p.sku }}</code></td><td>{{ p.name }}</td><td>{{ p.unit }}</td><td>{{ p.pack_size }}</td><td>{{ p.category }}</td><td class="small">{{ p.aliases }}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

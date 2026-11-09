@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ c.name }}{% endblock %}
+{% block content %}
+<h1>{{ c.name }}</h1>
+<p class="muted">{{ c.notes }}<br>{{ c.contact_emails }} {{ c.contact_phones }}</p>
+<h2>Aliases (shorthand matched at 100%)</h2>
+{% if aliases %}
+<table><thead><tr><th>Shorthand</th><th>Maps to</th><th>Learned</th><th></th></tr></thead><tbody>
+{% for a in aliases %}<tr><td><code>{{ a.raw_text_normalized }}</code></td><td>{{ names.get(a.sku, a.sku) }} <span class="muted small">[{{ a.sku }}]</span></td><td class="small">{{ a.created_at.strftime('%Y-%m-%d') }}</td>
+<td><form method="post" action="/customers/{{ c.id }}/aliases/{{ a.id }}/delete"><button class="danger small">Delete</button></form></td></tr>{% endfor %}
+</tbody></table>
+{% else %}<p class="empty">No aliases yet. Correct a SKU on a draft order to teach one.</p>{% endif %}
+<h2>Order history</h2>
+<table><thead><tr><th>ERP #</th><th>Date</th><th>Lines</th></tr></thead><tbody>
+{% for r in orders %}<tr><td>{{ r.o.erp_number }}</td><td>{{ (r.o.delivery_date or r.o.created_at.date()).strftime('%a %Y-%m-%d') }}</td>
+<td>{% for l in r.lines %}{{ l.qty|int if l.qty == l.qty|int else l.qty }} {{ l.unit }} {{ l.description }}{{ ', ' if not loop.last }}{% endfor %}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

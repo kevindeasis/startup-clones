@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Customers{% endblock %}
+{% block content %}
+<h1>Customers</h1>
+<table><thead><tr><th>Name</th><th>Contacts</th><th>Learned aliases</th><th>ERP orders</th></tr></thead><tbody>
+{% for r in rows %}<tr><td><a href="/customers/{{ r.c.id }}">{{ r.c.name }}</a></td><td class="small">{{ r.c.contact_emails }}<br>{{ r.c.contact_phones }}</td><td>{{ r.n_alias }}</td><td>{{ r.n_orders }}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

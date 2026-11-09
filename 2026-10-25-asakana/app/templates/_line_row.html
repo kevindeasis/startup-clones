@@ -1,0 +1,31 @@
+<tr id="line-{{ l.id }}" class="{{ 'flagged' if l.flag else '' }}">
+  <td class="raw">{{ l.raw_text }}<div class="muted small">{{ l.product_text }}{% if l.source == 'history' %} <span class="badge history">history</span>{% endif %}</div></td>
+  <td>
+    {% if d.status in ['pushed','rejected'] %}
+      {{ l.sku or '-' }}
+    {% else %}
+    <select name="sku" hx-post="/orders/{{ d.id }}/lines/{{ l.id }}" hx-trigger="change" hx-include="closest tr" hx-target="#line-{{ l.id }}" hx-swap="outerHTML">
+      <option value="">-- choose --</option>
+      {% set cands = l.candidate_list() %}
+      {% if cands %}<optgroup label="Suggested">
+        {% for c in cands %}<option value="{{ c.sku }}" {{ 'selected' if c.sku == l.sku else '' }}>{{ c.name }} ({{ (c.score * 100)|round|int }}%)</option>{% endfor %}
+      </optgroup>{% endif %}
+      <optgroup label="Full catalog">
+        {% for p in products %}<option value="{{ p.sku }}" {{ 'selected' if p.sku == l.sku else '' }}>{{ p.name }} [{{ p.sku }}]</option>{% endfor %}
+      </optgroup>
+    </select>
+    {% endif %}
+  </td>
+  <td>
+    {% if d.status in ['pushed','rejected'] %}{{ l.qty }}{% else %}
+    <input type="number" step="any" min="0" name="qty" value="{{ '' if l.qty is none else l.qty }}" class="qty" hx-post="/orders/{{ d.id }}/lines/{{ l.id }}" hx-trigger="change" hx-include="closest tr" hx-target="#line-{{ l.id }}" hx-swap="outerHTML">
+    {% endif %}
+  </td>
+  <td>
+    {% if d.status in ['pushed','rejected'] %}{{ l.unit or '' }}{% else %}
+    <input name="unit" value="{{ l.unit or '' }}" class="unit" hx-post="/orders/{{ d.id }}/lines/{{ l.id }}" hx-trigger="change" hx-include="closest tr" hx-target="#line-{{ l.id }}" hx-swap="outerHTML">
+    {% endif %}
+  </td>
+  <td><div class="bar" title="{{ l.confidence|pct }}"><span class="{{ 'ok' if l.confidence >= threshold else 'low' }}" style="width: {{ (l.confidence * 100)|round|int }}%"></span></div><span class="small">{{ l.confidence|pct }}</span></td>
+  <td class="small">{% if l.flag %}<span class="flag">{{ l.flag }}</span>{% endif %}{% if l.note and l.note != 'Confirmed by reviewer' %} {{ l.note }}{% elif l.note %}<span class="ok-text">{{ l.note }}</span>{% endif %}</td>
+</tr>

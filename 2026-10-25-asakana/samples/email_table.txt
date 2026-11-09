@@ -1,0 +1,15 @@
+From: Dana Ruiz <dana@bluefinbistro.example>
+Subject: Order for Tuesday
+
+Hi team,
+
+Please send the following for Tuesday:
+
+Qty  Unit  Product
+2    cs    Kampachi fillt
+3    lb    Ahi tuna saku
+1    cs    Dungenes crab
+12   dz    Kumamoto oysters
+
+Thanks,
+Dana, Blue Fin Bistro

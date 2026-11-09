@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OrderDesk{% endblock %} - OrderDesk</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/htmx.min.js"></script>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">OrderDesk</a>
+  <nav>
+    <a href="/">Queue</a>
+    <a href="/intake">New intake</a>
+    <a href="/customers">Customers</a>
+    <a href="/catalog">Catalog</a>
+    <a href="/summaries">Summaries</a>
+    <a href="/erp/orders.csv">ERP CSV</a>
+  </nav>
+</header>
+<main>{% block content %}{% endblock %}</main>
+<footer>Independent educational clone - not affiliated with Asakana.</footer>
+</body>
+</html>
