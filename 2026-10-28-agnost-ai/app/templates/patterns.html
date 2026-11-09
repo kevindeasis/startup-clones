@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Patterns{% endblock %}
+{% block content %}
+<h1>Patterns</h1>
+<p><a role="button" href="/patterns/custom">Define a custom pattern</a></p>
+<table>
+  <thead><tr><th>Pattern</th><th>Type</th><th>Volume</th><th>Users</th><th>% frustrated</th><th>Examples</th></tr></thead>
+  <tbody>
+  {% for p in patterns %}
+    <tr>
+      <td><a href="/patterns/{{ p.id }}">{{ p.name }}</a></td>
+      <td>{{ KIND_LABEL.get(p.kind, p.kind) }}</td>
+      <td>{{ p.conversation_count }}</td><td>{{ p.user_count }}</td><td>{{ p.frustrated_pct }}%</td>
+      <td><small>{{ p.example_intents | join(" | ") }}</small></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">No patterns yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

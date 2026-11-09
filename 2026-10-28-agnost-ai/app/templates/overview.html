@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Overview{% endblock %}
+{% block content %}
+<h1>Overview</h1>
+<p>
+  <button id="btn-analyze" onclick="run('/api/v1/analyze', this)">Analyze now</button>
+  <button id="btn-cluster" class="secondary" onclick="run('/api/v1/cluster', this)">Recluster</button>
+  <small id="status" class="muted"></small>
+</p>
+<div class="grid">
+  <article class="stat"><h2>{{ stats.conversations }}</h2>Conversations</article>
+  <article class="stat"><h2>{{ stats.users }}</h2>Users</article>
+  <article class="stat"><h2>{{ stats.analyzed }}</h2>Analyzed</article>
+</div>
+<h3>Signal rates</h3>
+<div class="grid-rates">
+  {% set r = stats.signal_rates %}
+  {% for label, key, link in [("Frustration","frustration","frustration"),("Rephrasing","rephrasing","rephrasing"),("Correction","correction","correction"),("Unresolved outcome","unresolved_outcome",None),("Feature requests","feature_request","feature_request"),("Bugs","bug","bug_report"),("Hallucination","hallucination","hallucination"),("Churn signal","churn","churn_signal"),("Silent failure","silent_failure","silent_failure")] %}
+  <article class="stat"><h3>{{ r[key] }}%</h3>
+    {% if link %}<a href="/conversations?signal={{ link }}">{{ label }}</a>{% else %}<a href="/conversations?outcome=unresolved">{{ label }}</a>{% endif %}
+  </article>
+  {% endfor %}
+</div>
+<h3>Conversations per day by outcome</h3>
+<article><canvas id="chart" height="110"></canvas></article>
+<h3>Top patterns</h3>
+<table>
+  <thead><tr><th>Pattern</th><th>Type</th><th>Conversations</th><th>Users</th></tr></thead>
+  <tbody>
+  {% for p in stats.top_patterns %}
+    <tr><td><a href="/patterns/{{ p.id }}">{{ p.name }}</a></td><td>{{ KIND_LABEL.get(p.kind, p.kind) }}</td><td>{{ p.conversations }}</td><td>{{ p.users }}</td></tr>
+  {% else %}
+    <tr><td colspan="4">No patterns yet. Ingest conversations, click Analyze now, then Recluster.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+const perDay = {{ stats.per_day | tojson }};
+const colors = {"resolved":"#10b981","partial":"#f59e0b","unresolved":"#ef4444","abandoned":"#7c3aed","not analyzed":"#94a3b8"};
+if (window.Chart) {
+  new Chart(document.getElementById('chart'), {
+    type: 'bar',
+    data: {labels: perDay.labels, datasets: perDay.datasets.map(d => ({label: d.outcome, data: d.data, backgroundColor: colors[d.outcome]}))},
+    options: {scales: {x: {stacked: true}, y: {stacked: true, beginAtZero: true, ticks: {precision: 0}}}}
+  });
+}
+async function run(url, btn) {
+  btn.setAttribute('aria-busy', 'true');
+  const r = await fetch(url, {method: 'POST'});
+  document.getElementById('status').textContent = JSON.stringify(await r.json());
+  setTimeout(() => location.reload(), 600);
+}
+</script>
+{% endblock %}

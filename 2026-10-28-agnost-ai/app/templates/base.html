@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Agnost clone{% endblock %} - conversation analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css">
+  <style>
+    .flag{display:inline-block;font-size:.7rem;padding:0 .4rem;border-radius:.6rem;background:#fde68a;color:#78350f;margin-left:.25rem}
+    .flag.bad{background:#fecaca;color:#7f1d1d}
+    .turn{padding:.5rem .8rem;margin:.4rem 0;border-radius:.5rem;border-left:4px solid #cbd5e1;background:rgba(127,127,127,.06)}
+    .turn.user{border-left-color:#3b82f6}.turn.assistant{border-left-color:#10b981}
+    .turn.hl{background:rgba(250,204,21,.18);border-left-color:#f59e0b}
+    .turn .role{font-size:.75rem;text-transform:uppercase;opacity:.7}
+    .stat{text-align:center}.stat h2{margin:0}
+    .grid-rates{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem}
+    nav a[aria-current=page]{font-weight:700}
+    .muted{opacity:.7}
+    footer{margin-top:3rem;font-size:.8rem;opacity:.7}
+  </style>
+</head>
+<body>
+<header class="container">
+  <nav>
+    <ul><li><strong>Agnost clone</strong> <small class="muted">unofficial</small></li></ul>
+    <ul>
+      <li><a href="/" {% if active=='overview' %}aria-current="page"{% endif %}>Overview</a></li>
+      <li><a href="/patterns" {% if active=='patterns' %}aria-current="page"{% endif %}>Patterns</a></li>
+      <li><a href="/feature-requests" {% if active=='feature-requests' %}aria-current="page"{% endif %}>Feature requests</a></li>
+      <li><a href="/bugs" {% if active=='bugs' %}aria-current="page"{% endif %}>Bugs</a></li>
+      <li><a href="/conversations" {% if active=='conversations' %}aria-current="page"{% endif %}>Conversations</a></li>
+    </ul>
+  </nav>
+</header>
+<main class="container">{% block content %}{% endblock %}</main>
+<footer class="container">Educational clone of <a href="https://agnost.ai">Agnost AI</a>. Not affiliated.</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

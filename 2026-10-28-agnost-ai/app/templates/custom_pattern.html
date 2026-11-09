@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Custom pattern{% endblock %}
+{% block content %}
+<h1>Define a custom pattern</h1>
+<p>Describe in plain English what you are looking for. Every analyzed conversation is classified against it, and it is re-applied to new conversations on each analyze run.</p>
+<form method="post" action="/patterns/custom">
+  <label>Name <input name="name" required placeholder="Integration asks"></label>
+  <label>Description <textarea name="description" required placeholder="User asks for an integration we do not have"></textarea></label>
+  <button type="submit">Create pattern</button>
+</form>
+{% endblock %}

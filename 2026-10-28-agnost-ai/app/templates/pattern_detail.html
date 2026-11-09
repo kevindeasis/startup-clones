@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ p.name }}{% endblock %}
+{% block content %}
+<p><a href="/patterns">&larr; All patterns</a></p>
+<h1>{{ p.name }}</h1>
+<p>{{ p.description }}</p>
+<p><span class="flag">{{ KIND_LABEL.get(p.kind, p.kind) }}</span>
+  {{ p.conversation_count }} conversations &middot; {{ p.user_count }} users &middot; {{ p.frustrated_pct }}% frustrated</p>
+{% if p.top_terms %}<p><small>Top terms: {{ p.top_terms | join(", ") }}</small></p>{% endif %}
+<table>
+  <thead><tr><th>Conversation</th><th>User</th><th>Intent</th><th>Outcome</th>{% if p.kind in ('feature_requests','bugs') %}<th>Group</th>{% endif %}</tr></thead>
+  <tbody>
+  {% for c in convs %}
+    <tr><td><a href="/conversations/{{ c.id }}">{{ c.id }}</a></td><td>{{ c.user_id or "-" }}</td><td>{{ c.intent or "-" }}</td><td>{{ c.outcome or "-" }}</td>
+    {% if p.kind in ('feature_requests','bugs') %}<td>{{ c.group_text }}</td>{% endif %}</tr>
+  {% else %}
+    <tr><td colspan="5">No matching conversations.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

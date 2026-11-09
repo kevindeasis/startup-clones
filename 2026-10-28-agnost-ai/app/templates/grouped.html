@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1>{{ title }}</h1>
+<p>{{ blurb }}{% if csv %} <a href="/api/v1/export/feature-requests.csv">Export CSV</a>{% endif %}</p>
+<table>
+  <thead><tr><th>{{ title }} (canonical text)</th><th>Conversations</th><th>Distinct users</th><th>Samples</th></tr></thead>
+  <tbody>
+  {% for g in groups %}
+    <tr><td>{{ g.text }}</td><td>{{ g.count }}</td><td>{{ g.users }}</td>
+      <td>{% for s in g.samples %}<a href="/conversations/{{ s }}">{{ s }}</a> {% endfor %}</td></tr>
+  {% else %}
+    <tr><td colspan="4">Nothing yet. Analyze conversations and click Recluster on the overview.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

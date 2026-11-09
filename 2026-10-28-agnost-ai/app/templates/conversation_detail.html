@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Conversation {{ c.id }}{% endblock %}
+{% block content %}
+<p><a href="/conversations">&larr; All conversations</a></p>
+<h1>Conversation {{ c.id }}</h1>
+<p>User: <strong>{{ c.user_id or "-" }}</strong> &middot; {{ c.message_count }} messages
+  {% if c.metadata %}&middot; <small>{{ c.metadata }}</small>{% endif %}</p>
+<div class="grid">
+<section>
+  <h3>Transcript</h3>
+  {% for m in c.messages %}
+  <div class="turn {{ m.role }} {% if m.flags %}hl{% endif %}">
+    <div class="role">{{ m.role }}{% for f in m.flags %}<span class="flag">{{ f }}</span>{% endfor %}</div>
+    {{ m.content }}
+  </div>
+  {% endfor %}
+</section>
+<section>
+  <h3>Analysis</h3>
+  {% if c.analysis %}
+    <p><strong>{{ c.analysis.intent }}</strong> &mdash; {{ c.analysis.outcome }}, {{ c.analysis.sentiment }}, frustration {{ c.analysis.frustration_score }}</p>
+    <p>{{ c.analysis.summary }}</p>
+    <h4>Patterns</h4>
+    <ul>{% for p in patterns %}<li><a href="/patterns/{{ p.id }}">{{ p.name }}</a>{% if p.group_text %} <small>({{ p.group_text }})</small>{% endif %}</li>{% else %}<li class="muted">none</li>{% endfor %}</ul>
+    <details><summary>Extracted JSON</summary><pre>{{ analysis_json }}</pre></details>
+  {% else %}
+    <p class="muted">Not analyzed yet. Use "Analyze now" on the overview.</p>
+  {% endif %}
+</section>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Conversations{% endblock %}
+{% block content %}
+<h1>Conversations <small class="muted">({{ total }})</small></h1>
+<form method="get" action="/conversations" class="grid">
+  <select name="signal"><option value="">any signal</option>
+    {% for s in signals %}<option value="{{ s }}" {% if s==signal %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+  <select name="outcome"><option value="">any outcome</option>
+    {% for o in outcomes %}<option value="{{ o }}" {% if o==outcome %}selected{% endif %}>{{ o }}</option>{% endfor %}</select>
+  <input name="q" value="{{ q }}" placeholder="search text">
+  <button type="submit">Filter</button>
+</form>
+<table>
+  <thead><tr><th>ID</th><th>User</th><th>Intent</th><th>Outcome</th><th>Signals</th><th>Msgs</th></tr></thead>
+  <tbody>
+  {% for c in convs %}
+    <tr><td><a href="/conversations/{{ c.id }}">{{ c.id }}</a></td><td>{{ c.user_id or "-" }}</td><td>{{ c.intent or "(not analyzed)" }}</td><td>{{ c.outcome or "-" }}</td>
+    <td>
+      {% if c.has_frustration %}<span class="flag bad">frustration</span>{% endif %}
+      {% if c.has_rephrasing %}<span class="flag">rephrase</span>{% endif %}
+      {% if c.has_correction %}<span class="flag">correction</span>{% endif %}
+      {% if c.has_feature_request %}<span class="flag">feature</span>{% endif %}
+      {% if c.has_bug_report %}<span class="flag bad">bug</span>{% endif %}
+      {% if c.has_hallucination %}<span class="flag bad">hallucination</span>{% endif %}
+      {% if c.has_churn_signal %}<span class="flag bad">churn</span>{% endif %}
+      {% if c.silent_failure %}<span class="flag bad">silent failure</span>{% endif %}
+    </td><td>{{ c.message_count }}</td></tr>
+  {% else %}
+    <tr><td colspan="6">No conversations match.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
