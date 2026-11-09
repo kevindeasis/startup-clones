@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Speko-lite</title>
+<style>
+:root{--bg:#0f1115;--fg:#e8eaed;--mut:#8b93a1;--card:#181b22;--line:#2a2f3a;--acc:#6ea8ff;--ok:#4ade80;--bad:#f87171;--warn:#fbbf24}
+@media(prefers-color-scheme:light){:root{--bg:#f6f7f9;--fg:#15171c;--mut:#5b6472;--card:#fff;--line:#dde1e8;--acc:#2563eb;--ok:#15803d;--bad:#b91c1c;--warn:#b45309}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif}
+header{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+h1{font-size:18px;margin:0}.sub{color:var(--mut)}main{padding:16px;max-width:1000px;margin:auto}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+button,select,input,textarea{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+button{cursor:pointer}button.on,button.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:500}
+.tbl{overflow-x:auto}.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;min-width:80px}.bar>i{display:block;height:100%;background:var(--acc)}
+.pill{padding:1px 8px;border-radius:10px;font-size:12px;border:1px solid var(--line)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.stage{border-left:3px solid var(--acc);padding:6px 10px;margin:8px 0}.stage.fb{border-color:var(--warn)}
+.att{font-family:ui-monospace,monospace;font-size:12px;margin-left:8px}.hide{display:none}pre{white-space:pre-wrap;margin:0}
+label{color:var(--mut);font-size:12px;display:flex;flex-direction:column;gap:2px}
+</style></head><body>
+<header><h1>Speko-lite</h1><span class="sub">OpenRouter-style gateway for voice AI &middot; independent learning clone, not affiliated with Speko</span><span id="mode" class="pill"></span></header>
+<main>
+<nav id="tabs"></nav>
+
+<section id="t-leader" class="card">
+ <div class="row">
+  <label>Language<select id="lb-lang"></select></label><label>Stage<select id="lb-stage"><option value="">all</option><option>stt</option><option>llm</option><option>tts</option></select></label>
+  <button class="primary" id="lb-run" style="align-self:flex-end">Run benchmark</button><span id="lb-msg" class="sub"></span>
+ </div><div class="tbl"><table id="lb-table"></table></div>
+</section>
+
+<section id="t-router" class="card hide">
+ <div class="row">
+  <label>Stage<select id="r-stage"><option>stt</option><option>llm</option><option>tts</option></select></label>
+  <label>Language<select id="r-lang"></select></label><label>Use case<select id="r-uc"></select></label>
+  <label>Priority<select id="r-pri"></select></label><button class="primary" id="r-go" style="align-self:flex-end">Route</button>
+ </div><div id="r-out"></div>
+</section>
+
+<section id="t-turn" class="card hide">
+ <div class="row">
+  <label>Language<select id="t-lang"></select></label><label>Use case<select id="t-uc"></select></label><label>Priority<select id="t-pri"></select></label>
+ </div>
+ <div class="row"><textarea id="t-text" rows="2" style="flex:1;min-width:220px" placeholder="Type what the caller says...">please book a table for two at seven tonight</textarea></div>
+ <div class="row"><label>...or upload audio<input type="file" id="t-audio" accept="audio/*"></label>
+  <a id="t-sample" href="#" style="align-self:flex-end">download a sample eval WAV</a>
+  <button class="primary" id="t-go" style="align-self:flex-end">Send turn</button></div>
+ <div id="t-out"></div>
+</section>
+
+<section id="t-health" class="card hide">
+ <div class="row"><button id="h-reset">Reset all health &amp; faults</button><span class="sub">Breaker opens after 3 consecutive failures for 60s.</span></div>
+ <div class="tbl"><table id="h-table"></table></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const j=async(u,o)=>{const r=await fetch(u,o);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof d.detail==='string'?d.detail:JSON.stringify(d.detail));return d};
+const TABS=[['leader','Leaderboard'],['router','Router playground'],['turn','Voice turn'],['health','Health']];
+function show(id){TABS.forEach(([k])=>{$('#t-'+k).classList.toggle('hide',k!==id);$('#tab-'+k).classList.toggle('on',k===id)});if(id==='health')loadHealth();if(id==='leader')loadLB()}
+$('#tabs').innerHTML=TABS.map(([k,l])=>`<button id="tab-${k}">${l}</button>`).join('');
+TABS.forEach(([k])=>$('#tab-'+k).onclick=()=>show(k));
+const opts=(el,arr,sel)=>{$(el).innerHTML=arr.map(a=>`<option ${a===sel?'selected':''}>${esc(a)}</option>`).join('')};
+async function init(){
+ const p=await j('/api/providers');$('#mode').textContent=p.mock_mode?'MOCK MODE':'LIVE MODE';
+ const langs=Object.keys(p.languages);
+ $('#lb-lang').innerHTML='<option value="">all</option>'+langs.map(l=>`<option>${l}</option>`).join('');
+ ['#r-lang','#t-lang'].forEach(e=>opts(e,langs,'en'));['#r-uc','#t-uc'].forEach(e=>opts(e,p.use_cases));
+ ['#r-pri','#t-pri'].forEach(e=>opts(e,p.priorities,'balanced'));
+ $('#lb-lang').onchange=$('#lb-stage').onchange=loadLB;show('leader');
+}
+async function loadLB(){
+ const q=new URLSearchParams();if($('#lb-lang').value)q.set('language',$('#lb-lang').value);if($('#lb-stage').value)q.set('stage',$('#lb-stage').value);
+ const {results}=await j('/api/benchmarks?'+q);
+ $('#lb-table').innerHTML='<tr><th>#</th><th>Stage</th><th>Lang</th><th>Provider</th><th>Quality</th><th>WER</th><th>Latency ms</th><th>Cost USD</th></tr>'+
+ results.map(r=>`<tr><td>${r.rank}</td><td>${r.stage}</td><td>${r.language}</td><td>${esc(r.provider)}</td><td>${r.metric_quality.toFixed(3)}</td><td>${r.wer==null?'-':r.wer.toFixed(3)}</td><td>${r.latency_ms.toFixed(0)}</td><td>${r.cost_usd.toFixed(6)}</td></tr>`).join('');
+}
+$('#lb-run').onclick=async()=>{$('#lb-msg').textContent='running...';try{const r=await j('/api/benchmarks/run',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});$('#lb-msg').textContent=`${r.rows_inserted} rows inserted`;loadLB()}catch(e){$('#lb-msg').textContent=e.message}};
+$('#r-go').onclick=async()=>{
+ try{const r=await j('/api/route',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({stage:$('#r-stage').value,language:$('#r-lang').value,use_case:$('#r-uc').value,priority:$('#r-pri').value})});
+ const w=r.weights;$('#r-out').innerHTML=`<p>Weights: quality ${w.quality}, latency ${w.latency}, cost ${w.cost} &middot; selected <b>${esc(r.selected)}</b></p><table><tr><th>#</th><th>Provider</th><th>Score</th><th>Quality</th><th>Latency</th><th>Cost</th><th></th></tr>`+
+ r.ranked.map(e=>{const b=e.breakdown;const bar=v=>`<div class="bar"><i style="width:${(v*100).toFixed(0)}%"></i></div>`;
+ return `<tr><td>${e.rank}</td><td>${esc(e.provider)}</td><td><b>${e.score.toFixed(3)}</b></td>`+(b?`<td>${bar(b.quality)}</td><td>${bar(b.latency)}</td><td>${bar(b.cost)}</td>`:'<td colspan=3 class="sub">no benchmark data</td>')+`<td>${e.circuit_open?'<span class="pill bad">circuit open</span>':''}</td></tr>`}).join('')+'</table>'}catch(e){$('#r-out').innerHTML=`<p class="bad">${esc(e.message)}</p>`}};
+$('#t-sample').onclick=e=>{e.preventDefault();location.href=`/api/eval-audio?language=${$('#t-lang').value}&idx=0`};
+$('#t-go').onclick=async()=>{
+ const fd=new FormData();fd.set('language',$('#t-lang').value);fd.set('use_case',$('#t-uc').value);fd.set('priority',$('#t-pri').value);
+ const f=$('#t-audio').files[0];if(f)fd.set('audio',f);else fd.set('text',$('#t-text').value);
+ $('#t-out').textContent='running...';
+ try{const r=await j('/api/turn',{method:'POST',body:fd});
+ $('#t-out').innerHTML=`<p><b>Transcript:</b> ${esc(r.transcript)}</p><p><b>Reply:</b> ${esc(r.reply)}</p><audio controls src="data:${r.audio_mime};base64,${r.audio_base64}"></audio>
+ <p class="sub">total ${r.total_latency_ms} ms &middot; $${r.total_cost_usd}</p>`+r.trace.map(t=>`<div class="stage ${t.fallback_used?'fb':''}"><b>${t.stage.toUpperCase()}</b> &rarr; ${esc(t.provider)} &middot; ${t.latency_ms} ms &middot; $${t.cost_usd}${t.fallback_used?' <span class="pill warn">fallback</span>':''}
+ ${t.attempts.map(a=>`<div class="att ${a.ok?'ok':'bad'}">${a.ok?'OK':'FAIL'} ${esc(a.provider)} ${a.error?esc(a.error):''}</div>`).join('')}
+ ${t.skipped_open_circuit.length?`<div class="att warn">skipped (circuit open): ${esc(t.skipped_open_circuit.join(', '))}</div>`:''}</div>`).join('')}catch(e){$('#t-out').innerHTML=`<p class="bad">${esc(e.message)}</p>`}};
+async function loadHealth(){
+ const h=await j('/api/health');
+ $('#h-table').innerHTML='<tr><th>Provider</th><th>Stage</th><th>Fail streak</th><th>Circuit</th><th>Fault</th><th>Last error</th><th>Inject</th></tr>'+h.providers.map(p=>`<tr><td>${esc(p.provider)}</td><td>${p.stage}</td><td>${p.consecutive_failures}</td>
+ <td>${p.circuit_open?'<span class="bad">OPEN until '+esc(p.open_until.slice(11,19))+'</span>':'<span class="ok">closed</span>'}</td><td>${p.fault_mode}</td><td class="sub">${esc(p.last_error||'')}</td>
+ <td>${['fail','slow','ok'].map(m=>`<button data-p="${esc(p.provider)}" data-m="${m}">${m}</button>`).join(' ')}</td></tr>`).join('');
+ document.querySelectorAll('#h-table button').forEach(b=>b.onclick=async()=>{await j('/api/admin/fault',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({provider:b.dataset.p,mode:b.dataset.m})});loadHealth()});
+}
+$('#h-reset').onclick=async()=>{await j('/api/admin/reset',{method:'POST'});loadHealth()};
+init();
+</script></body></html>
