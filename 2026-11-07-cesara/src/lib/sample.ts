@@ -1,0 +1,101 @@
+import type { ContractTerms, Term } from "./types";
+
+/** Canned extraction for data/sample-contract.md. source_clause strings are verbatim from that file. */
+const fs = (code: string, rate: number, desc: string, clause: string): Term => ({
+  id: `fs-${code}`,
+  kind: "fee_schedule",
+  code_type: "CPT",
+  code,
+  description: desc,
+  rate,
+  applies_to: "outpatient",
+  source_clause: clause,
+});
+
+const drg = (code: string, rate: number, desc: string, clause: string): Term => ({
+  id: `drg-${code}`,
+  kind: "case_rate",
+  code_type: "DRG",
+  code,
+  description: desc,
+  rate,
+  applies_to: "inpatient",
+  source_clause: clause,
+});
+
+export const SAMPLE_TERMS: ContractTerms = {
+  payer: "Blue Harbor Health Plan",
+  provider: "Riverside Medical Center",
+  contract_name: "Commercial PPO Participating Hospital Agreement",
+  effective_date: "2026-01-01",
+  end_date: "2028-12-31",
+  terms: [
+    drg("470", 24500, "Major joint replacement or reattachment of lower extremity", "2.1 DRG 470. Major joint replacement or reattachment of lower extremity (MS-DRG 470) shall be paid a case rate of $24,500 per discharge."),
+    drg("291", 11200, "Heart failure and shock with MCC", "2.2 DRG 291. Heart failure and shock with MCC (MS-DRG 291) shall be paid a case rate of $11,200 per discharge."),
+    drg("871", 14800, "Sepsis with MCC", "2.3 DRG 871. Sepsis with MCC (MS-DRG 871) shall be paid a case rate of $14,800 per discharge."),
+    {
+      id: "stoploss-1",
+      kind: "stop_loss",
+      description: "Inpatient stop-loss (outlier): case rate plus % of charges above threshold",
+      percent: 70,
+      threshold: 100000,
+      applies_to: "inpatient",
+      source_clause: "3.1 Stop-Loss. For any Inpatient claim for which billed charges exceed $100,000, Payer shall pay the applicable case rate plus 70% of billed charges above $100,000.",
+    },
+    {
+      id: "perdiem-0124",
+      kind: "per_diem",
+      code_type: "REV",
+      code: "0124",
+      description: "Inpatient behavioral health per diem",
+      rate: 1350,
+      applies_to: "inpatient",
+      source_clause: "4.1 Behavioral Health. Inpatient behavioral health services billed under revenue code 0124 shall be paid a per diem of $1,350 per covered day.",
+    },
+    fs("99213", 125, "Office or outpatient visit, established patient, low complexity", "5.1 CPT 99213. Office or outpatient visit, established patient, low complexity, shall be paid $125 per unit."),
+    fs("99214", 185, "Office or outpatient visit, established patient, moderate complexity", "5.2 CPT 99214. Office or outpatient visit, established patient, moderate complexity, shall be paid $185 per unit."),
+    fs("70450", 410, "CT head or brain without contrast", "5.3 CPT 70450. CT head or brain without contrast shall be paid $410 per unit."),
+    fs("73721", 780, "MRI of any joint of lower extremity without contrast", "5.4 CPT 73721. MRI of any joint of lower extremity without contrast shall be paid $780 per unit."),
+    fs("45378", 950, "Diagnostic colonoscopy", "5.5 CPT 45378. Diagnostic colonoscopy shall be paid $950 per unit."),
+    fs("29881", 3200, "Knee arthroscopy with meniscectomy", "5.6 CPT 29881. Knee arthroscopy with meniscectomy shall be paid $3,200 per unit."),
+    {
+      id: "carveout-0278",
+      kind: "carve_out",
+      code_type: "REV",
+      code: "0278",
+      description: "Implants carved out at percent of billed charges",
+      percent: 65,
+      applies_to: "all",
+      source_clause: "6.1 Implants. Implantable devices billed under revenue code 0278 are carved out of all other rates and shall be paid at 65% of billed charges.",
+    },
+    {
+      id: "escalator-1",
+      kind: "escalator",
+      description: "Annual rate increase on Articles 2, 4 and 5",
+      percent: 3,
+      effective_from: "2026-07-01",
+      applies_to: "all",
+      source_clause: "7.1 Rate Increase. All rates in Articles 2, 4 and 5 shall increase by 3% for dates of service on or after July 1, 2026.",
+    },
+    {
+      id: "default-1",
+      kind: "default_rule",
+      description: "Covered services not otherwise listed",
+      percent: 55,
+      applies_to: "all",
+      source_clause: "8.1 Default Rule. Covered services not otherwise listed in this Agreement shall be paid at 55% of billed charges.",
+    },
+    {
+      id: "admin-1",
+      kind: "admin",
+      description: "Timely filing 90 days; appeals within 180 days of remittance",
+      applies_to: "all",
+      source_clause: "9.2 Appeals. Provider may appeal any underpayment within 180 days of the remittance advice date.",
+    },
+  ],
+  admin: {
+    timely_filing_days: 90,
+    appeal_window_days: 180,
+    notes: "9.1 Timely Filing. Provider shall submit claims within 90 days of the date of service.",
+  },
+};

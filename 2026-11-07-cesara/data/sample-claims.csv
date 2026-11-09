@@ -1,0 +1,15 @@
+claim_id,patient_ref,service_date,code_type,code,description,units,billed_charges,paid_amount
+C1001,PT-0001,2026-02-10,DRG,470,Major joint replacement,1,160000,42000
+C1002,PT-0002,2026-03-05,DRG,291,Heart failure and shock w MCC,1,62000,11200
+C1003,PT-0003,2026-03-20,DRG,871,Sepsis w MCC,1,48000,9000
+C1004,PT-0004,2026-04-02,REV,0124,Behavioral health inpatient (6 days billed),6,14000,6750
+C1005,PT-0005,2026-02-15,CPT,99213,Office visit low complexity,1,300,125
+C1006,PT-0006,2026-03-12,CPT,99214,Office visit moderate complexity,1,420,150
+C1007,PT-0007,2026-08-14,CPT,29881,Knee arthroscopy with meniscectomy,1,9000,3200
+C1008,PT-0008,2026-05-20,CPT,73721,MRI lower extremity joint,1,2400,600
+C1009,PT-0009,2026-05-02,REV,0278,Implants,1,20000,9000
+C1010,PT-0010,2026-04-18,CPT,45378,Diagnostic colonoscopy,1,2800,1100
+C1011,PT-0011,2026-06-10,CPT,99999,Unlisted procedure,1,1000,550
+C1012,PT-0012,2026-09-03,CPT,99213,Office visit low complexity,1,300,128.75
+C1013,PT-0013,2026-09-18,DRG,470,Major joint replacement,1,90000,25235
+C1014,PT-0014,2026-10-05,CPT,70450,CT head without contrast,1,1100,422.30
