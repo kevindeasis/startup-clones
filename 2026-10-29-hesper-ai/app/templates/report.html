@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% macro doc(id) %}{{ names.get(id, id) }}{% endmacro %}
+{% block title %}Evidence file - {{ claim.claim_number }}{% endblock %}
+{% block content %}
+<p><a href="/claims/{{ claim.id }}">&larr; Back to claim</a></p>
+<h1>Evidence file: {{ claim.claim_number }}</h1>
+<p>{{ claim.claimant_name }} &middot; {{ claim.line_of_business }} &middot; loss date {{ claim.loss_date }}</p>
+<div class="row">
+  <a class="btn" href="/api/investigations/{{ inv.id }}/export.md">Download .md</a>
+  <a class="btn" href="/api/investigations/{{ inv.id }}/export.pdf">Download .pdf</a>
+  <a class="btn" href="/api/investigations/{{ inv.id }}/export.json">Download .json</a>
+</div>
+
+<section><h2>Executive summary</h2><p>{{ r.executive_summary }}</p></section>
+
+<section><h2>Risk score</h2>
+<p><span class="score band-{{ r.risk.band }}">{{ r.risk.score }}</span> / 100 &mdash; <strong>{{ r.risk.band }}</strong></p>
+<ul>{% for x in r.risk.rationale %}<li>{{ x }}</li>{% endfor %}</ul></section>
+
+<section><h2>Timeline</h2>
+<table><thead><tr><th>Date</th><th>Event</th><th>Source</th><th>Quote</th></tr></thead><tbody>
+{% for e in r.timeline.events %}<tr><td>{{ e.date }}</td><td>{{ e.event }}</td><td>{{ doc(e.document_id) }}</td><td><q>{{ e.quote }}</q></td></tr>{% endfor %}
+</tbody></table>
+{% for a in r.timeline.gaps_or_anomalies %}<p class="warn">Anomaly: {{ a }}</p>{% endfor %}</section>
+
+<section><h2>Statement analysis</h2>
+<h3>Inconsistencies</h3>
+{% for i in r.inconsistencies %}
+<div class="card"><strong>{{ i.title }}</strong> <span class="badge sev-{{ i.severity }}">{{ i.severity }}</span>
+<p><em>{{ doc(i.claim_a.document_id) }}:</em> <q>{{ i.claim_a.quote }}</q></p>
+<p><em>{{ doc(i.claim_b.document_id) }}:</em> <q>{{ i.claim_b.quote }}</q></p>
+<p>{{ i.explanation }}</p></div>
+{% else %}<p class="muted">No inconsistencies identified.</p>{% endfor %}
+{% if r.corroborations %}<h3>Corroborated</h3><ul>{% for c in r.corroborations %}<li>{{ c.fact }}</li>{% endfor %}</ul>{% endif %}
+<h3>Assertions by document</h3>
+{% for s in r.statement_analysis %}<details><summary>{{ s.filename }} ({{ s.doc_type }}) &mdash; {{ s.facts.assertions|length }} assertions</summary>
+<p class="muted">{{ s.facts.summary }}</p><ul>{% for a in s.facts.assertions %}<li>{{ a.speaker }}: <q>{{ a.quote }}</q></li>{% endfor %}</ul></details>{% endfor %}
+</section>
+
+<section><h2>Coverage position: <span class="badge cov-{{ r.coverage.position }}">{{ r.coverage.position }}</span></h2>
+<p>{{ r.coverage.rationale }}</p>
+<ul>{% for c in r.coverage.clauses %}<li><span class="badge">{{ c.effect }}</span> <q>{{ c.clause_quote }}</q> ({{ doc(c.document_id) }})</li>{% endfor %}</ul>
+{% for q in r.coverage.open_questions %}<p class="muted">Open question: {{ q }}</p>{% endfor %}</section>
+
+<section><h2>Document forensics</h2>
+{% for f in r.forensics %}<p><span class="badge sev-{{ f.severity }}">{{ f.severity }}</span> <strong>{{ doc(f.document_id) }}</strong>: {{ f.flag }} &mdash; {{ f.detail }}</p>
+{% else %}<p class="muted">No flags.</p>{% endfor %}</section>
+
+<section><h2>Recommended next actions</h2>
+<ol>{% for a in r.recommended_actions %}<li><span class="badge prio-{{ a.priority }}">{{ a.priority }}</span> {{ a.action }} <span class="muted">&mdash; {{ a.why }}</span></li>{% endfor %}</ol></section>
+
+<section><h2>Decision log</h2>
+<table><thead><tr><th>#</th><th>Step</th><th>Model</th><th>In</th><th>Out</th><th>ms</th><th>Time (UTC)</th></tr></thead><tbody>
+{% for d in r.decision_log %}<tr><td>{{ d.id }}</td><td>{{ d.step }}</td><td>{{ d.model }}</td><td>{{ d.input_tokens }}</td><td>{{ d.output_tokens }}</td><td>{{ d.duration_ms }}</td><td>{{ d.created_at }}</td></tr>
+<tr class="rawrow"><td colspan="7"><details><summary>raw structured output</summary><pre>{{ d.output | tojson(indent=2) }}</pre></details></td></tr>{% endfor %}
+</tbody></table></section>
+<p class="muted">AI-generated; verify against source documents. Independent educational clone, not affiliated with Hesper AI.</p>
+{% endblock %}

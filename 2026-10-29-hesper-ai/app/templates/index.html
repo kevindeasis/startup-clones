@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Claims</h1>
+<div class="row">
+  <button id="demo-btn" class="primary">Load demo claim</button>
+  <span class="muted">Creates a sample homeowners claim with 4 documents containing deliberate inconsistencies.</span>
+</div>
+<h2>New claim</h2>
+<form id="claim-form" class="grid">
+  <label>Claim number <input name="claim_number" required></label>
+  <label>Line of business <select name="line_of_business">{% for l in lobs %}<option>{{ l }}</option>{% endfor %}</select></label>
+  <label>Claimant name <input name="claimant_name" required></label>
+  <label>Loss date <input type="date" name="loss_date" required></label>
+  <label class="wide">Loss description <textarea name="description" rows="2"></textarea></label>
+  <button class="primary" type="submit">Create claim</button>
+</form>
+<p id="msg" class="error"></p>
+<h2>Existing claims</h2>
+{% if claims %}
+<table><thead><tr><th>Claim #</th><th>LOB</th><th>Claimant</th><th>Loss date</th><th>Status</th></tr></thead><tbody>
+{% for c in claims %}<tr><td><a href="/claims/{{ c.id }}">{{ c.claim_number }}</a></td><td>{{ c.line_of_business }}</td><td>{{ c.claimant_name }}</td><td>{{ c.loss_date }}</td><td><span class="badge {{ c.status }}">{{ c.status }}</span></td></tr>{% endfor %}
+</tbody></table>
+{% else %}<p class="muted">No claims yet.</p>{% endif %}
+{% endblock %}

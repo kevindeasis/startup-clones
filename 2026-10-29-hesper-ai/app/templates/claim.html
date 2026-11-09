@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<p><a href="/">&larr; All claims</a></p>
+<h1>Claim {{ claim.claim_number }} <span class="badge {{ claim.status }}">{{ claim.status }}</span></h1>
+<p>{{ claim.claimant_name }} &middot; {{ claim.line_of_business }} &middot; loss date {{ claim.loss_date }}</p>
+<p class="muted">{{ claim.description }}</p>
+
+<h2>Documents</h2>
+{% if claim.documents %}
+<table><thead><tr><th>Type</th><th>File</th><th>Pages</th><th>Forensics</th><th></th></tr></thead><tbody>
+{% for d in claim.documents %}<tr>
+<td>{{ d.doc_type }}</td><td>{{ d.filename }}</td><td>{{ d.page_count }}</td>
+<td>{% for f in d.forensics if f.severity != 'info' %}<span class="badge sev-{{ f.severity }}" title="{{ f.detail }}">{{ f.flag }}</span> {% endfor %}
+{% for f in d.forensics if f.severity == 'info' %}<span class="badge sev-info" title="{{ f.detail }}">{{ f.flag }}</span> {% endfor %}</td>
+<td><button class="link del-doc" data-claim="{{ claim.id }}" data-doc="{{ d.id }}">delete</button></td></tr>{% endfor %}
+</tbody></table>
+{% else %}<p class="muted">No documents yet.</p>{% endif %}
+
+<h3>Upload a document</h3>
+<form id="upload-form" data-claim="{{ claim.id }}" class="row">
+  <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.txt,.md" required>
+  <select name="doc_type">{% for t in doc_types %}<option>{{ t }}</option>{% endfor %}</select>
+  <button class="primary" type="submit">Upload</button>
+</form>
+<p id="msg" class="error"></p>
+
+<h2>Investigation</h2>
+<div class="row">
+  <button id="investigate-btn" class="primary" data-claim="{{ claim.id }}" data-running="{{ running.id if running else '' }}">Run investigation</button>
+  {% if done %}<a class="btn" href="/claims/{{ claim.id }}/report">View latest evidence file</a>{% endif %}
+</div>
+<ol id="progress" class="progress"></ol>
+{% endblock %}
