@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Investor targeting - Northwind Robotics (NWR)</h2><p class="muted">Deterministic fit score out of 100 plus rationale.</p>
+<table><thead><tr><th>#</th><th>Investor</th><th>Score</th><th>Breakdown</th><th>Rationale</th></tr></thead><tbody id="rows"></tbody></table></div>
+{% endblock %}{% block script %}<script>
+(async()=>{const r=await api('/api/targeting');rows.innerHTML=r.ranked.map(x=>`<tr><td>${x.rank}</td><td>${esc(x.name)}<br><span class="muted">${esc(x.style)}, $${x.aum_musd}M</span></td><td><b>${x.score}</b></td>
+<td class="muted">${Object.entries(x.breakdown).map(([k,v])=>k+' '+v).join(' | ')}</td><td>${esc(x.rationale)}</td></tr>`).join('')||'<tr><td colspan=5 class="muted">No investors. Load the demo first.</td></tr>'})();
+</script>{% endblock %}

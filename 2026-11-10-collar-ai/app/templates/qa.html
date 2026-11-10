@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Live Q&amp;A assist</h2><textarea id="q" rows="3" placeholder="Paste the analyst question..."></textarea>
+<div class="row"><select id="mode"><option value="earnings-call">earnings-call (all documents)</option><option value="front-desk">front-desk (public only)</option></select><button onclick="ask()">Suggest answer</button></div></div>
+<div id="out"></div>{% endblock %}{% block script %}<script>
+async function ask(){try{const r=await post('/api/qa',{question:q.value,mode:mode.value});out.innerHTML=renderAnswer(r)}catch(e){out.innerHTML='<p class="warn">'+esc(e.message)+'</p>'}}
+</script>{% endblock %}

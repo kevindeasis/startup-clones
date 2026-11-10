@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Dashboard</h2>
+<p>{{stats.documents}} documents ({{stats.chunks}} chunks) &middot; {{stats.investors}} investors &middot; {{stats.interactions}} interactions &middot; {{stats.qa}} Q&amp;A answered</p>
+<button onclick="loadDemo()">Load demo company (Northwind Robotics, NWR)</button> <span id="out" class="muted"></span></div>
+<div class="card"><p>Start with <a href="/qa">Q&amp;A Assist</a>, the public <a href="/desk">Front Desk</a>, paste <a href="/notes">call notes</a>, or see <a href="/targeting">investor targeting</a>.</p></div>
+{% endblock %}{% block script %}<script>
+async function loadDemo(){const r=await api('/api/demo/load',{method:'POST'});document.getElementById('out').textContent=JSON.stringify(r)+' - reloading';setTimeout(()=>location.reload(),600)}
+</script>{% endblock %}

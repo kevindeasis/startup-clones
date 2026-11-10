@@ -1,0 +1,13 @@
+[
+ {"name":"Meridian Growth Partners","style":"growth","aum_musd":12500,"mandate":"Large-cap growth, technology and automation","sectors":"robotics, ai, technology","holds_us":true,
+  "interactions":[{"date":"2026-10-20","summary":"Post-Q2 follow-up, keen on software mix.","sentiment":"positive"}]},
+ {"name":"Ironbridge Value Fund","style":"value","aum_musd":4200,"mandate":"Deep value industrials","sectors":"industrials, manufacturing","holds_us":false,"interactions":[]},
+ {"name":"Cascade GARP Capital","style":"garp","aum_musd":2800,"mandate":"Growth at a reasonable price, mid-cap","sectors":"industrial automation, logistics, technology","holds_us":true,
+  "interactions":[{"date":"2026-08-02","summary":"Asked about margin trajectory.","sentiment":"neutral"},{"date":"2026-09-15","summary":"Positive on backlog.","sentiment":"positive"}]},
+ {"name":"Quantum Alpha Systematic","style":"quant","aum_musd":9000,"mandate":"Systematic multi-factor","sectors":"technology, industrials","holds_us":false,"interactions":[]},
+ {"name":"Harborview Small Cap","style":"growth","aum_musd":220,"mandate":"Small-cap growth","sectors":"technology, healthcare","holds_us":false,"interactions":[]},
+ {"name":"Northern Lights Pension","style":"value","aum_musd":58000,"mandate":"Diversified long-only","sectors":"financials, energy, industrials","holds_us":false,"interactions":[]},
+ {"name":"Vector Logistics Opportunities","style":"growth","aum_musd":1600,"mandate":"Supply chain and logistics themes","sectors":"logistics, robotics, industrial automation","holds_us":false,
+  "interactions":[{"date":"2026-05-10","summary":"Intro call.","sentiment":"neutral"}]},
+ {"name":"Pinecrest Income Advisors","style":"value","aum_musd":950,"mandate":"Dividend income","sectors":"utilities, consumer","holds_us":false,"interactions":[]}
+]

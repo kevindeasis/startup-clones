@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Investors</h2><table><thead><tr><th>Name</th><th>Style</th><th>AUM ($M)</th><th>Last contact</th><th>Next step</th><th>Sentiment trend</th></tr></thead><tbody>
+{% for i in investors %}<tr><td><a href="/investors/{{i.id}}">{{i.name}}</a></td><td>{{i.style}}</td><td>{{ '{:,.0f}'.format(i.aum_musd or 0) }}</td><td>{{i.last_contact or '-'}}</td>
+<td>{{ i.next_step.action if i.next_step else '-' }}</td><td>{{ i.sentiment_trend|join(' > ') or '-' }}</td></tr>
+{% else %}<tr><td colspan="6" class="muted">No investors yet. Load the demo or submit call notes.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}

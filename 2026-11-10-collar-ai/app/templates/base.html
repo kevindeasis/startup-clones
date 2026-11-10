@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IR Desk</title><link rel="stylesheet" href="/static/style.css"></head><body>
+<nav><span class="brand">IR Desk</span>
+{% for href,label,key in [("/","Dashboard","home"),("/docs-library","Documents","docs"),("/qa","Q&amp;A Assist","qa"),("/desk","Front Desk","desk"),("/investors","Investors","investors"),("/targeting","Targeting","targeting"),("/notes","Call Notes","notes")] %}
+<a href="{{href}}" class="{{'on' if active==key}}">{{label|safe}}</a>{% endfor %}
+{% if mock %}<span class="badge">mock mode</span>{% endif %}</nav>
+<main>{% block body %}{% endblock %}
+<p class="muted">Independent learning clone, not affiliated with Collar AI. Fictional demo company.</p></main>
+<script src="/static/app.js"></script>{% block script %}{% endblock %}</body></html>

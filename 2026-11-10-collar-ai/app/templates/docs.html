@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Upload IR document</h2><form id="f" class="row">
+<input type="file" name="file" accept=".pdf,.docx,.xlsx,.txt,.md" required>
+<input name="title" placeholder="Title (optional)"><input name="kind" placeholder="Kind (e.g. press release)">
+<label><input type="checkbox" name="public" value="true" style="width:auto"> public</label><button>Upload</button></form>
+<p id="msg" class="muted"></p></div>
+<div class="card"><h2>Library</h2><table><thead><tr><th>Title</th><th>Kind</th><th>Chunks</th><th>Public</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+{% endblock %}{% block script %}<script>
+async function load(){const d=await api('/api/documents');document.getElementById('rows').innerHTML=d.map(x=>`<tr><td>${esc(x.title)}</td><td>${esc(x.kind)}</td><td>${x.chunks}</td>
+<td><button class="sec" onclick="tog(${x.id})">${x.public?'public':'private'}</button></td><td><button class="sec" onclick="del(${x.id})">delete</button></td></tr>`).join('')||'<tr><td colspan=5 class="muted">No documents. Load the demo from the dashboard or upload one.</td></tr>'}
+async function tog(i){await api('/api/documents/'+i+'/toggle-public',{method:'POST'});load()}
+async function del(i){await api('/api/documents/'+i,{method:'DELETE'});load()}
+document.getElementById('f').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.target);if(!fd.get('public'))fd.set('public','false');
+try{const r=await api('/api/documents',{method:'POST',body:fd});msg.textContent='Stored '+r.chunks+' chunks'}catch(x){msg.textContent='Error: '+x.message}load()};
+load();</script>{% endblock %}

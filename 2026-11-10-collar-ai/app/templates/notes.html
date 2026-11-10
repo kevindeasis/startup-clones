@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Paste meeting / call notes</h2><textarea id="n" rows="10" placeholder="Meeting with Meridian Growth Partners on 2026-11-09..."></textarea>
+<button onclick="go()">Extract and save to CRM</button></div><div id="out"></div>{% endblock %}{% block script %}<script>
+async function go(){try{const r=await post('/api/notes',{notes:n.value});const e=r.extracted;
+out.innerHTML=`<div class="card"><h3>Saved to <a href="/investors/${r.investor_id}">${esc(e.investor)}</a> ${r.investor_created?'(new)':''}</h3><p>${esc(e.summary)}</p>
+<p>Sentiment: <b>${esc(e.sentiment)}</b> &middot; Topics: ${e.topics.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</p>
+<p>Concerns:</p><ul>${e.concerns.map(c=>`<li>${esc(c)}</li>`).join('')}</ul><p>Next steps:</p><ul>${e.next_steps.map(s=>`<li>${esc(s.action)} (owner: ${esc(s.owner)}, due: ${esc(s.due||'n/a')})</li>`).join('')}</ul></div>`}catch(x){out.innerHTML='<p class="warn">'+esc(x.message)+'</p>'}}
+</script>{% endblock %}

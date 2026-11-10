@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Investor Relations Front Desk</h2><p class="muted">Answers come only from publicly disclosed documents.</p>
+<div id="chat"></div><div class="row"><input id="q" placeholder="Ask a question about the company..." onkeydown="if(event.key==='Enter')send()"><button onclick="send()" style="flex:0">Ask</button></div></div>
+{% endblock %}{% block script %}<script>
+let sid=null;
+async function send(){const text=q.value;if(!text.trim())return;q.value='';
+try{const r=await post('/api/desk',{question:text,session_id:sid});sid=r.session_id;
+chat.innerHTML=r.history.map(m=>m.role==='user'?`<div class="msg-u"><b>You:</b> ${esc(m.text)}</div>`:`<div class="msg-a">${esc(m.text)}</div>`).join('')+
+((r.citations||[]).length?`<p class="muted">Sources: ${r.citations.map(c=>esc(c.doc)).join(', ')}</p>`:'')}catch(e){chat.innerHTML+='<p class="warn">'+esc(e.message)+'</p>'}}
+</script>{% endblock %}
