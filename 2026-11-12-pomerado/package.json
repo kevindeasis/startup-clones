@@ -1,0 +1,36 @@
+{
+  "name": "pomerado-minter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Independent learning clone of Pomerado: turn any website into an MCP tool",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "mint": "tsx src/cli.ts mint",
+    "run": "tsx src/cli.ts run",
+    "list": "tsx src/cli.ts list",
+    "heal": "tsx src/cli.ts heal",
+    "mcp": "tsx src/cli.ts mcp",
+    "serve": "tsx src/cli.ts serve",
+    "demo-site": "tsx src/cli.ts demo-site",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.102",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "ai": "^7.0.170",
+    "commander": "^13.1.0",
+    "express": "^5.1.0",
+    "playwright": "1.63.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  }
+}

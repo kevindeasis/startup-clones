@@ -1,0 +1,98 @@
+{
+  "name": "search_parts",
+  "description": "Search the parts catalog and return the matching parts with name, price and stock",
+  "url": "http://localhost:4310/catalog",
+  "task": "Search the parts catalog and return the matching parts with name, price and stock",
+  "authority": "read",
+  "exampleInput": {
+    "query": "bolt"
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search parts (e.g. \"bolt\")"
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "auth": null,
+  "steps": [
+    {
+      "type": "goto",
+      "url": "{{url}}"
+    },
+    {
+      "type": "fill",
+      "target": {
+        "selector": "#q",
+        "hints": {
+          "role": "textbox",
+          "name": "Search parts",
+          "placeholder": "Part name",
+          "tag": "input"
+        }
+      },
+      "value": "{{input.query}}"
+    },
+    {
+      "type": "click",
+      "target": {
+        "selector": "#search-form > button:nth-of-type(1)",
+        "hints": {
+          "role": "button",
+          "name": "Search",
+          "text": "Search",
+          "tag": "button"
+        }
+      }
+    },
+    {
+      "type": "waitFor",
+      "target": {
+        "selector": "#results",
+        "hints": {
+          "role": "table",
+          "text": "Part | SKU | Price | Stock | Category",
+          "tag": "table"
+        }
+      }
+    },
+    {
+      "type": "extract",
+      "mode": "table",
+      "target": {
+        "selector": "#results",
+        "hints": {
+          "role": "table",
+          "text": "Part | SKU | Price | Stock | Category",
+          "tag": "table"
+        }
+      },
+      "as": "rows"
+    }
+  ],
+  "output": {
+    "shape": "rows",
+    "columns": [
+      "part",
+      "sku",
+      "price",
+      "stock",
+      "category"
+    ]
+  },
+  "version": 1,
+  "createdAt": "2026-11-12T06:23:23.531Z",
+  "updatedAt": "2026-11-12T06:23:23.531Z",
+  "history": [
+    {
+      "version": 1,
+      "at": "2026-11-12T06:23:23.531Z",
+      "reason": "mint"
+    }
+  ]
+}
