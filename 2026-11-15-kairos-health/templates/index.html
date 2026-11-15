@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="two">
+  <section class="card chat">
+    <div class="chat-head">
+      <div><strong>Call {{ practice.name }}</strong> <span class="muted">{{ practice.phone }}</span></div>
+      <div class="row">
+        <label class="voice" title="Uses your browser's speech recognition and speech synthesis"><input type="checkbox" id="voice"> Voice</label>
+        <button class="ghost" id="mic" hidden>Hold to talk</button>
+        <button class="ghost" id="hangup">Hang up / new call</button>
+      </div>
+    </div>
+    <div id="log" class="log" aria-live="polite"></div>
+    <form id="chat-form" class="row">
+      <input id="chat-input" autocomplete="off" placeholder="Say something to the receptionist..." required>
+      <button type="submit">Send</button>
+    </form>
+    <div id="outcome" class="muted"></div>
+  </section>
+  <aside class="card">
+    <h3>Try these</h3>
+    <p class="muted">Seeded demo patients (all fictional):</p>
+    <ul class="tips">
+      <li><b>Maria Gonzalez</b>, 1984-03-12 (overdue for a cleaning)</li>
+      <li><b>Tom Becker</b>, 1968-01-30 (inactive insurance)</li>
+      <li><b>Oscar Fernandes</b>, 1994-05-17 (out of network)</li>
+      <li><b>Priyanka Shah</b>, 1982-12-01 (low remaining maximum)</li>
+    </ul>
+    <p class="muted">Quick prompts:</p>
+    <div class="chips">
+      <button class="chip">I need a cleaning</button>
+      <button class="chip">What are your hours?</button>
+      <button class="chip">Is parking available?</button>
+      <button class="chip">Can you check my insurance?</button>
+      <button class="chip">I want to reschedule my appointment</button>
+      <button class="chip">I want to cancel my appointment</button>
+      <button class="chip">I'd like to speak to a person about my bill</button>
+    </div>
+    <h3>Practice hours</h3>
+    <p class="muted">{{ hours }}</p>
+  </aside>
+</div>
+{% endblock %}

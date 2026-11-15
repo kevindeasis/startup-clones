@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="row between">
+  <h2>Outbound recall <span class="muted">overdue = last hygiene/exam more than {{ months }} months ago and nothing booked</span></h2>
+  <button id="run-recall">Run recall</button>
+</div>
+<div class="stats" id="counters">
+  <div class="stat"><b data-c="overdue">{{ counters.overdue }}</b><span>overdue patients</span></div>
+  <div class="stat"><b data-c="sent">{{ counters.sent }}</b><span>outreach sent</span></div>
+  <div class="stat"><b data-c="replies">{{ counters.replies }}</b><span>replies</span></div>
+  <div class="stat"><b data-c="booked">{{ counters.booked }}</b><span>booked from recall</span></div>
+</div>
+<div id="run-result" class="muted"></div>
+
+<h3>Outreach</h3>
+{% if not outreach %}<p class="muted">No outreach yet. Click "Run recall".</p>{% endif %}
+<div id="outreach">
+{% for o in outreach %}
+<div class="card outreach" data-id="{{ o.id }}">
+  <div class="row between"><strong>{{ o.patient }}</strong><span class="pill {{ o.status }}">{{ o.status }}</span></div>
+  <div class="sms out">{{ o.message }}</div>
+  <div class="thread"></div>
+  <form class="row reply-form"><input placeholder="Simulate the patient's reply, e.g. &quot;the first one works&quot;" required><button>Simulate reply</button></form>
+</div>
+{% endfor %}
+</div>
+
+<h3>Overdue patients ({{ overdue|length }})</h3>
+<table>
+  <tr><th>Patient</th><th>Phone</th><th>Last visit</th><th>Months ago</th><th>Usual hygienist</th><th>Outreach</th></tr>
+  {% for p in overdue %}
+  <tr><td>{{ p.first_name }} {{ p.last_name }}</td><td>{{ p.phone }}</td><td>{{ p.last_visit_date }}</td><td>{{ p.months_since }}</td><td>{{ p.hygienist_name or '-' }}</td><td>{{ p.outreach_status or '-' }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

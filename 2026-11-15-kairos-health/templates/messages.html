@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Messages for staff</h2>
+{% if not msgs %}<p class="muted">No messages taken yet. Ask the receptionist to speak to a person about a bill.</p>{% endif %}
+<table>
+  <tr><th>Patient</th><th>Phone</th><th>Summary</th><th>Created</th><th>Done</th></tr>
+  {% for m in msgs %}
+  <tr><td>{{ m.patient_name }}</td><td>{{ m.phone }}</td><td>{{ m.summary }}</td><td>{{ m.created_at }}</td>
+    <td><input type="checkbox" class="done" data-id="{{ m.id }}" {{ 'checked' if m.done }}></td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

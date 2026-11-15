@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Calls &amp; analytics <span class="muted">last 30 days</span></h2>
+<div class="stats">
+  <div class="stat"><b>{{ stats.calls_handled }}</b><span>calls handled</span></div>
+  <div class="stat"><b>{{ stats.ai_bookings }}</b><span>booked by AI</span></div>
+  <div class="stat"><b>{{ stats.reschedules }}</b><span>reschedules</span></div>
+  <div class="stat"><b>{{ stats.insurance_verifications }}</b><span>insurance verifications</span></div>
+  <div class="stat"><b>{{ stats.messages_taken }}</b><span>messages taken</span></div>
+  <div class="stat"><b>{{ stats.recall_sent }}</b><span>recall sent</span></div>
+  <div class="stat"><b>{{ stats.recall_booked }}</b><span>recall booked</span></div>
+</div>
+<div class="two">
+<table id="calls">
+  <tr><th>#</th><th>Channel</th><th>Patient</th><th>Started</th><th>Outcome</th><th>Turns</th><th>Mode</th></tr>
+  {% for c in convs %}
+  <tr class="fill" data-id="{{ c.id }}"><td>{{ c.id }}</td><td>{{ c.channel }}</td><td>{{ c.patient or '-' }}</td><td>{{ c.started_at }}</td>
+    <td>{{ c.outcome or 'in progress' }}</td><td>{{ c.turns }}</td><td><span class="badge {{ c.mode }}">{{ c.mode }}</span></td></tr>
+  {% endfor %}
+</table>
+<aside class="card drawer" id="drawer"><p class="muted">Click a conversation to see its transcript and tool calls.</p></aside>
+</div>
+{% endblock %}

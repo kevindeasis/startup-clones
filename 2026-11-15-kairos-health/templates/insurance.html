@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Insurance verification</h2>
+<div class="two">
+  <section class="card">
+    <form id="ins-form" class="stack">
+      <label>Payer
+        <select name="payer">{% for p in payers %}<option>{{ p }}</option>{% endfor %}</select></label>
+      <label>Member ID <input name="member_id" placeholder="DM-100003" required></label>
+      <label>Subscriber date of birth <input name="dob" type="date" required></label>
+      <label>Patient ID (optional, stores the result on file) <input name="patient_id" type="number" min="1"></label>
+      <button>Verify</button>
+    </form>
+    <div id="ins-result"></div>
+  </section>
+  <section class="card">
+    <h3>Plans on file (click a row to fill the form)</h3>
+    <table class="small">
+      <tr><th>Patient</th><th>Payer</th><th>Member</th><th>Status</th><th>Verified</th><th>Flags</th></tr>
+      {% for p in plans %}
+      <tr class="fill" data-payer="{{ p.payer }}" data-member="{{ p.member_id }}" data-dob="{{ p.dob }}" data-pid="{{ p.patient_id }}">
+        <td>{{ p.first_name }} {{ p.last_name }}</td><td>{{ p.payer }}</td><td>{{ p.member_id }}</td><td>{{ p.status }}</td>
+        <td>{{ p.verified_at or '-' }}</td><td>{{ (p.flags_json or '[]') | replace('"', '') | replace('[', '') | replace(']', '') }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+</div>
+{% endblock %}

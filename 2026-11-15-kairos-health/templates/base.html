@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChairFill - {{ practice.name }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-page="{{ active }}">
+<header class="top">
+  <div class="brand">ChairFill <span class="sub">AI front desk for {{ practice.name }}</span></div>
+  <nav>
+    {% for href, key, label in [('/', 'index', 'Receptionist'), ('/schedule', 'schedule', 'Schedule'), ('/recall', 'recall', 'Recall'), ('/insurance', 'insurance', 'Insurance'), ('/calls', 'calls', 'Calls'), ('/messages', 'messages', 'Messages')] %}
+    <a href="{{ href }}" class="{{ 'on' if active == key }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+  <div class="right">
+    {% if mock %}<span class="badge mock" title="No ANTHROPIC_API_KEY (or MOCK_LLM=1): scripted receptionist drives the same tools">MOCK MODE</span>{% else %}<span class="badge live">LIVE</span>{% endif %}
+    <button class="ghost" id="reset-demo" title="Drop and re-seed all demo data">Reset demo data</button>
+  </div>
+</header>
+<main>{% block body %}{% endblock %}</main>
+<footer>Independent learning clone, not affiliated with Kairos Health. All patients, payers and the practice are fictional.</footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
