@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Activity{% endblock %}
+{% block content %}
+<h1>Agent activity</h1>
+<table><tr><th>#</th><th>Agent</th><th>Matter</th><th>Mode</th><th>Model</th><th>In</th><th>Out</th><th>ms</th><th>When</th></tr>
+{% for r in runs %}<tr><td>{{ r.id }}</td><td>{{ r.agent }}</td><td>{{ r.matter_title or (('inquiry #' ~ r.inquiry_id) if r.inquiry_id else '-') }}</td><td>{{ r.mode }}</td><td>{{ r.model }}</td><td>{{ r.input_tokens }}</td><td>{{ r.output_tokens }}</td><td>{{ r.duration_ms }}</td><td>{{ r.created_at.replace('T',' ') }}</td></tr>
+<tr class="detail"><td colspan="9"><details><summary>prompt / response</summary><h4>Prompt</h4><pre>{{ r.prompt }}</pre><h4>Output</h4><pre>{{ r.output }}</pre></details></td></tr>{% endfor %}
+</table>
+{% endblock %}

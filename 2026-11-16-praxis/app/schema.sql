@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT);
+CREATE TABLE IF NOT EXISTS firm_rules(id INTEGER PRIMARY KEY, rule_type TEXT, value TEXT, note TEXT);
+CREATE TABLE IF NOT EXISTS clients(id INTEGER PRIMARY KEY, name TEXT, type TEXT, email TEXT, phone TEXT, address TEXT, created_at TEXT);
+CREATE TABLE IF NOT EXISTS contacts(id INTEGER PRIMARY KEY, name TEXT, kind TEXT, matter_id INTEGER, note TEXT);
+CREATE TABLE IF NOT EXISTS inquiries(id INTEGER PRIMARY KEY, received_at TEXT, source TEXT, name TEXT, email TEXT, phone TEXT, subject TEXT, message TEXT, status TEXT DEFAULT 'new', pipeline_json TEXT, created_at TEXT);
+CREATE TABLE IF NOT EXISTS matters(id INTEGER PRIMARY KEY, client_id INTEGER, inquiry_id INTEGER, title TEXT, practice_area TEXT, matter_type TEXT, summary TEXT, adverse_parties_json TEXT DEFAULT '[]', stage TEXT, portal_token TEXT UNIQUE, lawyer_name TEXT, created_at TEXT, updated_at TEXT);
+CREATE TABLE IF NOT EXISTS engagement_letters(id INTEGER PRIMARY KEY, matter_id INTEGER, terms_json TEXT, markdown TEXT, docx_path TEXT, status TEXT DEFAULT 'draft', sent_at TEXT, signed_at TEXT, signed_name TEXT);
+CREATE TABLE IF NOT EXISTS approvals(id INTEGER PRIMARY KEY, type TEXT, matter_id INTEGER, inquiry_id INTEGER, title TEXT, draft_text TEXT, subject TEXT, to_email TEXT, rationale TEXT, payload_json TEXT, status TEXT DEFAULT 'pending', reject_reason TEXT, created_at TEXT, decided_at TEXT);
+CREATE TABLE IF NOT EXISTS outbox(id INTEGER PRIMARY KEY, matter_id INTEGER, to_email TEXT, subject TEXT, body TEXT, attachment_path TEXT, kind TEXT, sent_at TEXT);
+CREATE TABLE IF NOT EXISTS checklist_templates(id INTEGER PRIMARY KEY, practice_area TEXT, item TEXT, description TEXT, required INTEGER DEFAULT 1);
+CREATE TABLE IF NOT EXISTS matter_documents(id INTEGER PRIMARY KEY, matter_id INTEGER, item TEXT, description TEXT, required INTEGER DEFAULT 1, status TEXT DEFAULT 'requested', file_path TEXT, original_name TEXT, client_note TEXT, verification_json TEXT, requested_at TEXT, last_chased_at TEXT, chase_count INTEGER DEFAULT 0, uploaded_at TEXT, verified_at TEXT);
+CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY, matter_id INTEGER, title TEXT, owner TEXT, due_date TEXT, status TEXT DEFAULT 'open', created_at TEXT, done_at TEXT, last_chased_at TEXT);
+CREATE TABLE IF NOT EXISTS time_entries(id INTEGER PRIMARY KEY, matter_id INTEGER, entry_date TEXT, minutes INTEGER, description TEXT, rate_usd REAL, invoice_id INTEGER);
+CREATE TABLE IF NOT EXISTS invoices(id INTEGER PRIMARY KEY, matter_id INTEGER, number TEXT, status TEXT DEFAULT 'draft', issue_date TEXT, due_date TEXT, subtotal_usd REAL, lines_json TEXT, cover_email TEXT, reminder_stage INTEGER DEFAULT 0, sent_at TEXT, paid_at TEXT);
+CREATE TABLE IF NOT EXISTS agent_runs(id INTEGER PRIMARY KEY, agent TEXT, matter_id INTEGER, inquiry_id INTEGER, mode TEXT, model TEXT, input_tokens INTEGER, output_tokens INTEGER, duration_ms INTEGER, prompt TEXT, output TEXT, created_at TEXT);
+CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY, matter_id INTEGER, kind TEXT, text TEXT, created_at TEXT);

@@ -1,0 +1,25 @@
+{% macro card(a) %}
+<article class="card approval" data-id="{{ a.id }}">
+  <div class="row between"><h3>{{ a.title }}</h3><span class="tag">{{ a.type }}</span></div>
+  <p class="muted">
+    {% if a.matter_id %}Matter: <a href="/matters/{{ a.matter_id }}">{{ a.matter_title }}</a>{% endif %}
+    {% if a.inquiry_id %} Inquiry: <a href="/inbox/{{ a.inquiry_id }}">{{ a.inquiry_name }}</a>{% endif %}
+    {% if a.to_email %} &middot; To: {{ a.to_email }}{% endif %}
+  </p>
+  {% if a.subject %}<label>Subject <input class="subj" value="{{ a.subject }}"></label>{% endif %}
+  <label>Agent's draft (editable)<textarea class="draft" rows="{{ 18 if a.type == 'engagement_letter' else 9 }}">{{ a.draft_text }}</textarea></label>
+  {% if a.invoice %}
+  <details open><summary>Invoice {{ a.invoice.number }} - {{ a.invoice.subtotal_usd|usd }} due {{ a.invoice.due_date }}</summary>
+    <table><tr><th>Date</th><th>Narrative</th><th>Min</th><th>Amount</th></tr>
+    {% for l in a.invoice.lines %}<tr><td>{{ l.date }}</td><td>{{ l.narrative }}</td><td>{{ l.minutes }}</td><td>{{ l.amount_usd|usd }}</td></tr>{% endfor %}</table></details>
+  {% endif %}
+  {% if a.type == 'engagement_letter' %}<details><summary>Rendered preview</summary><div class="preview md">{{ a.draft_text|md|safe }}</div></details>{% endif %}
+  <p class="rationale"><b>Agent rationale:</b> {{ a.rationale }}</p>
+  <div class="row actions">
+    <button class="primary" data-approve="{{ a.id }}">Approve</button>
+    <button data-approve="{{ a.id }}" data-edited="1">Save edits &amp; approve</button>
+    <input class="reason" placeholder="Rejection reason (required)">
+    <button class="danger" data-reject="{{ a.id }}">Reject</button>
+  </div>
+</article>
+{% endmacro %}

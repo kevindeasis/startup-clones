@@ -1,0 +1,49 @@
+:root{--bg:#f6f7f9;--fg:#1b2430;--muted:#6b7686;--card:#fff;--line:#dde2ea;--accent:#1f4e79;--ok:#1e7a46;--bad:#b3261e;--warn:#9a6700}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+a{color:var(--accent)}
+header.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;background:var(--accent);color:#fff;padding:10px 20px}
+header.top a{color:#fff;text-decoration:none}
+.brand{font-weight:700;font-size:18px}.brand small{font-weight:400;opacity:.8;margin-left:6px}
+header nav{display:flex;gap:14px;flex:1}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{padding:2px 8px;border-radius:10px;font-size:12px;background:#fff3;text-transform:uppercase}
+main{max-width:1100px;margin:0 auto;padding:20px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+h1{margin:.2em 0}h2{margin-top:1.6em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);margin:8px 0}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1f5;font-size:13px}
+.muted{color:var(--muted)}.ok{color:var(--ok);font-weight:600}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;background:#e6ebf2;font-size:12px}
+.tag.verified,.tag.paid,.tag.active,.tag.accept,.tag.accepted,.tag.signed{background:#d8f0e0;color:var(--ok)}
+.tag.mismatch,.tag.expired,.tag.unreadable,.tag.decline,.tag.declined,.tag.bad,.tag.void{background:#f8dcda;color:var(--bad)}
+.tag.needs_lawyer,.tag.requested,.tag.sent,.tag.onboarding{background:#fdeccb;color:var(--warn)}
+button,input,select,textarea{font:inherit}
+button{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer}
+header.top button{background:#ffffff22;color:#fff;border-color:#fff5}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+header.top button.primary{background:#fff;color:var(--accent)}
+button.danger{color:var(--bad);border-color:var(--bad)}
+button:disabled{opacity:.5}
+input,select,textarea{padding:6px 8px;border:1px solid var(--line);border-radius:6px;width:100%;background:#fff}
+label{display:block;font-size:13px;color:var(--muted);margin:8px 0}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}
+.actions input{flex:1;min-width:180px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;color:var(--muted)}
+.stat b{display:block;font-size:22px;color:var(--fg)}.stat.wide{grid-column:1/-1}
+form.inline{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}form.inline input,form.inline select{width:auto;flex:1;min-width:120px}
+form.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.span{grid-column:1/-1}
+pre{white-space:pre-wrap;background:#f1f3f6;padding:10px;border-radius:6px;font-size:13px;overflow:auto}
+.preview,.md{background:#fff;padding:8px 14px;border:1px solid var(--line);border-radius:6px}
+.rationale{font-size:13px;color:var(--muted)}
+.timeline{list-style:none;padding:0}.timeline li{padding:4px 0;border-bottom:1px solid var(--line)}
+.bar{display:flex;list-style:none;padding:0;gap:4px}.bar li{flex:1;text-align:center;padding:6px;background:#e6ebf2;border-radius:6px;font-size:13px;text-transform:capitalize}
+.bar li.done{background:#d8f0e0}.bar li.now{background:var(--accent);color:#fff}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+tr.detail td{padding:0 10px}
+.toast{position:fixed;right:16px;bottom:16px;background:#1b2430;color:#fff;padding:10px 14px;border-radius:8px;max-width:420px;white-space:pre-wrap;font-size:13px}
+@media(max-width:700px){form.grid{grid-template-columns:1fr}main{padding:12px}table{display:block;overflow-x:auto}}

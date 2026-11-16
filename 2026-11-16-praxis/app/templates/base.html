@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Docketeer{% endblock %} - Docketeer</title>
+<link rel="stylesheet" href="/static/app.css"></head>
+<body>
+<header class="top">
+  <a class="brand" href="/">Docketeer <small>{{ firm.name }}</small></a>
+  <nav>
+    <a href="/">Approvals</a><a href="/inbox">Inbox</a><a href="/matters">Matters</a><a href="/billing">Billing</a><a href="/outbox">Outbox</a><a href="/activity">Activity</a>
+  </nav>
+  <div class="tools">
+    <span class="badge {{ mode }}" title="{{ model }}">{{ mode }} mode</span>
+    <span class="today">Today: <b id="today">{{ today }}</b></span>
+    <button data-post="/api/settings/advance?days=1">Advance +1</button>
+    <button data-post="/api/settings/advance?days=7">+7</button>
+    <button class="primary" data-post="/agents/run-daily" data-summary="1">Run daily agents</button>
+  </div>
+</header>
+<main>{% block content %}{% endblock %}</main>
+<footer>Independent learning clone, not affiliated with Praxis. All firm, client and legal content is fictional and is not legal advice.</footer>
+<script src="/static/app.js"></script>
+</body></html>

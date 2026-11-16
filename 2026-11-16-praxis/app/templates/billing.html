@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Billing{% endblock %}
+{% block content %}
+<h1>Accounts receivable</h1>
+<section class="stats"><div class="stat"><b>{{ outstanding|usd }}</b>outstanding</div><div class="stat"><b>{{ overdue|usd }}</b>overdue</div><div class="stat"><b>{{ paid|usd }}</b>paid</div></section>
+<table><tr><th>Invoice</th><th>Client</th><th>Matter</th><th>Amount</th><th>Status</th><th>Due</th><th>Days overdue</th><th>Reminder stage</th></tr>
+{% for r in rows %}<tr><td>{{ r.number }}</td><td>{{ r.client_name }}</td><td><a href="/matters/{{ r.matter_id }}">{{ r.matter_title }}</a></td><td>{{ r.subtotal_usd|usd }}</td><td><span class="tag {{ r.status }}">{{ r.status }}</span></td><td>{{ r.due_date }}</td><td>{{ r.days_overdue }}</td><td>{{ r.reminder_stage }}</td></tr>{% endfor %}
+</table>
+{% endblock %}

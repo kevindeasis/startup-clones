@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Matters{% endblock %}
+{% block content %}
+<h1>Matters</h1>
+<table><tr><th>#</th><th>Matter</th><th>Client</th><th>Area</th><th>Stage</th><th>Next action</th><th>Portal</th></tr>
+{% for m in matters %}<tr><td>{{ m.id }}</td><td><a href="/matters/{{ m.id }}">{{ m.title }}</a></td><td>{{ m.client_name }}</td><td>{{ m.practice_area }}</td>
+<td><span class="tag {{ m.stage }}">{{ m.stage }}</span></td><td>{{ m.next_action }}</td><td><a href="/portal/{{ m.portal_token }}">open</a></td></tr>{% endfor %}
+</table>
+{% endblock %}

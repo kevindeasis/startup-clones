@@ -1,0 +1,46 @@
+# {{ firm.name }}
+{{ firm.address }} | {{ firm.phone }} | {{ firm.email }}
+
+*SAMPLE DOCUMENT - fictional firm, fictional terms, not legal advice and not a real engagement letter.*
+
+{{ date }}
+
+**{{ client.name }}**
+{{ client.email }}
+
+**Re: Engagement letter - {{ matter.title }}**
+
+Dear {{ client.name }},
+
+Thank you for choosing {{ firm.name }} (the "Firm"). This letter sets out the terms on which the Firm will represent you (the "Client").
+
+## 1. Scope of representation
+{{ terms.scope }}
+
+## 2. Fees and billing
+{{ terms.fee_arrangement }}
+
+Time is recorded in six-minute increments and billed monthly. Invoices are payable within {{ net_days }} days of the invoice date.
+
+## 3. Initial retainer
+The Client will pay an initial retainer of **${{ "{:,}".format(terms.initial_retainer_usd) }}**, which the Firm will hold and apply against invoices.
+
+## 4. Exclusions
+{{ terms.exclusions }}
+
+## 5. Client responsibilities
+The Client agrees to provide complete and accurate information, to respond promptly to the Firm's requests (including requests for documents through the client portal), and to keep the Firm informed of any change in contact details.
+
+## 6. Communications
+The Firm will communicate by email and through the client portal. Lawyers at the Firm review and approve every substantive communication sent on the Firm's behalf. No outcome is promised or guaranteed.
+
+## 7. Termination and file retention
+Either party may end the representation by written notice. The Firm will retain the file for seven years after the matter closes, after which it may be securely destroyed.
+
+## 8. Acceptance
+To accept these terms, type your full name and tick the confirmation box in the client portal. A typed name is treated as your signature.
+
+Sincerely,
+
+**{{ matter.lawyer_name }}**
+{{ firm.name }}

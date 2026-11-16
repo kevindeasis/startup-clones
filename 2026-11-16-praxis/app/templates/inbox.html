@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Inbox{% endblock %}
+{% block content %}
+<h1>Inquiry inbox</h1>
+<table>
+<tr><th>#</th><th>From</th><th>Subject</th><th>Source</th><th>Status</th><th></th></tr>
+{% for i in inquiries %}
+<tr><td>{{ i.id }}</td><td>{{ i.name }}<br><span class="muted">{{ i.email }}</span></td><td><a href="/inbox/{{ i.id }}">{{ i.subject }}</a></td>
+<td>{{ i.source }}</td><td><span class="tag {{ i.status }}">{{ i.status }}</span></td>
+<td><button class="primary" data-post="/api/inquiries/{{ i.id }}/run" data-goto="/inbox/{{ i.id }}">Run intake</button></td></tr>
+{% endfor %}
+</table>
+<h2>Add an inquiry</h2>
+<form class="ajax card grid" action="/api/inquiries" data-reload="1">
+  <label>Name<input name="name" required></label><label>Email<input name="email" type="email" required></label>
+  <label>Phone<input name="phone"></label><label>Source<select name="source"><option>email</option><option>web_form</option><option>referral</option></select></label>
+  <label class="span">Subject<input name="subject"></label>
+  <label class="span">Message<textarea name="message" rows="4" required></textarea></label>
+  <button class="primary">Add inquiry</button>
+</form>
+{% endblock %}

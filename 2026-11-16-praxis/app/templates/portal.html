@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ firm.name }} - Client portal</title><link rel="stylesheet" href="/static/app.css"></head>
+<body class="portal">
+<header class="top"><a class="brand">{{ firm.name }} <small>Client portal</small></a><span class="muted">{{ firm.address }} &middot; {{ firm.phone }}</span></header>
+<main>
+<h1>{{ m.title }}</h1>
+<p>Welcome, {{ client.name }}.</p>
+<ol class="bar">{% for s in stages %}<li class="{{ 'done' if stages.index(s) < stages.index(m.stage) else ('now' if s == m.stage else '') }}">{{ s.replace('_',' ') }}</li>{% endfor %}</ol>
+
+{% if letter %}<section class="card"><h2>Engagement letter</h2>
+<details {{ 'open' if letter.status == 'sent' }}><summary>View letter</summary><div class="md">{{ letter.markdown|md|safe }}</div></details>
+{% if letter.status == 'sent' %}
+<form class="ajax" action="/api/portal/{{ token }}/sign" data-reload="1">
+  <label>Type your full name to sign<input name="name" required></label>
+  <label class="check"><input type="checkbox" name="agree" value="on" required> I have read and agree to the engagement letter</label>
+  <button class="primary">Sign</button></form>
+{% elif letter.status == 'signed' %}<p class="ok">Signed by {{ letter.signed_name }} on {{ letter.signed_at|date }}.</p>{% endif %}</section>{% endif %}
+
+<section class="card"><h2>What we need from you</h2>
+{% if docs %}<table><tr><th>Document</th><th>Status</th><th>Upload</th></tr>
+{% for d in docs %}<tr><td>{{ d.item }}<br><span class="muted">{{ d.description }}</span></td>
+<td>{% if d.status == 'verified' %}<span class="ok">Received, verified</span>{% elif d.message %}{{ d.message }}{% elif d.status == 'requested' %}Waiting for your upload{% else %}{{ d.status }}{% endif %}</td>
+<td>{% if d.status != 'verified' %}<form class="ajax inline" action="/api/portal/{{ token }}/upload" enctype="multipart/form-data" data-reload="1">
+<input type="hidden" name="document_id" value="{{ d.id }}"><input type="file" name="file" accept=".pdf,.txt,.md,.png,.jpg,.jpeg" required><input name="note" placeholder="Short description (optional)"><button>Upload</button></form>{% endif %}</td></tr>{% endfor %}</table>
+{% else %}<p class="muted">Nothing is needed from you right now.</p>{% endif %}
+{% if client_tasks %}<h3>Your tasks</h3><ul>{% for t in client_tasks %}<li>{{ t.title }} {% if t.due_date %}<span class="muted">(due {{ t.due_date }})</span>{% endif %}</li>{% endfor %}</ul>{% endif %}</section>
+
+{% if invoices %}<section class="card"><h2>Invoices</h2>
+{% for i in invoices %}<div class="invoice"><b>{{ i.number }}</b> &middot; {{ i.subtotal_usd|usd }} &middot; due {{ i.due_date }} &middot; <span class="tag {{ i.status }}">{{ i.status }}</span>
+<table>{% for l in i.lines %}<tr><td>{{ l.date }}</td><td>{{ l.narrative }}</td><td>{{ l.minutes }} min</td><td>{{ l.amount_usd|usd }}</td></tr>{% endfor %}</table>
+{% if i.status == 'sent' %}<button class="primary" data-post="/api/portal/{{ token }}/pay/{{ i.id }}">Pay now</button>{% else %}<span class="ok">Paid {{ i.paid_at|date }}</span>{% endif %}</div>{% endfor %}</section>{% endif %}
+
+<section class="card"><h2>Recent updates</h2>
+{% for u in updates %}<details><summary>{{ u.subject }} <span class="muted">{{ u.sent_at|date }}</span></summary><pre>{{ u.body }}</pre></details>{% else %}<p class="muted">No updates yet.</p>{% endfor %}</section>
+</main>
+<footer>Independent learning clone, not affiliated with Praxis. Fictional firm; not legal advice.</footer>
+<script src="/static/app.js"></script></body></html>

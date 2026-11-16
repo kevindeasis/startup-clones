@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Inquiry {{ inq.id }}{% endblock %}
+{% block content %}
+<p><a href="/inbox">&larr; Inbox</a></p>
+<h1>{{ inq.subject }}</h1>
+<div class="card"><p class="muted">{{ inq.name }} &lt;{{ inq.email }}&gt; {{ inq.phone }} &middot; {{ inq.source }} &middot; <span class="tag {{ inq.status }}">{{ inq.status }}</span></p>
+<p>{{ inq.message }}</p>
+<button class="primary" data-post="/api/inquiries/{{ inq.id }}/run" data-goto="/inbox/{{ inq.id }}">{{ 'Re-run intake' if pipeline else 'Run intake' }}</button></div>
+{% if pipeline %}
+<h2>Pipeline result: <span class="tag {{ pipeline.decision }}">{{ pipeline.decision }}</span></h2>
+<ul>{% for r in pipeline.reasons %}<li>{{ r }}</li>{% endfor %}</ul>
+{% for s in pipeline.steps %}
+<details class="card" open><summary><b>{{ loop.index }}. {{ s.name }}</b></summary>
+  {% if s.name == 'Extract' %}
+    <table>{% for k, v in s.result.items() %}<tr><th>{{ k }}</th><td>{% if k == 'parties' %}{% for p in v %}{{ p.name }} <span class="tag">{{ p.role }}</span> {% endfor %}{% elif v is iterable and v is not string %}{{ v|join('; ') }}{% else %}{{ v }}{% endif %}</td></tr>{% endfor %}</table>
+  {% elif s.name == 'Screen' %}
+    <p>Decision: <b>{{ s.result.decision }}</b></p><ul>{% for r in s.result.reasons %}<li>{{ r }}</li>{% endfor %}</ul>
+  {% elif s.name == 'Conflict check' %}
+    <p>Conflict: <b>{{ s.result.conflict }}</b> &middot; Possible: <b>{{ s.result.possible }}</b></p>
+    {% if s.result.matches %}<table><tr><th>Party</th><th>Role</th><th>Matched record</th><th>Source</th><th>Score</th><th>Level</th></tr>
+    {% for m in s.result.matches %}<tr><td>{{ m.party }}</td><td>{{ m.role }}</td><td>{{ m.matched_name }}</td><td>{{ m.source }}</td><td>{{ m.score }}</td><td><span class="tag {{ 'bad' if m.conflicting }}">{{ m.level }}{{ ' / conflict' if m.conflicting }}</span></td></tr>{% endfor %}</table>
+    {% else %}<p>No matches at or above 70.</p>{% endif %}
+  {% elif s.name == 'Draft reply' %}
+    <p><b>{{ s.result.subject }}</b> (approval #{{ s.result.approval_id }})</p><pre>{{ s.result.body }}</pre>
+  {% else %}
+    <p>Approval #{{ s.result.approval_id }}</p><pre>{{ s.result.terms|tojson(indent=2) }}</pre>
+  {% endif %}
+</details>
+{% endfor %}
+<p>Drafts created: {% for a in pipeline.approval_ids %}#{{ a }} {% endfor %} - review them in the <a href="/">approval queue</a>.</p>
+{% endif %}
+{% endblock %}

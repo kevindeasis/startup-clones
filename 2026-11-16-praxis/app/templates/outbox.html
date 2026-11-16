@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Outbox{% endblock %}
+{% block content %}
+<h1>Outbox (everything "sent", all lawyer-approved)</h1>
+{% for r in rows %}<details class="card"><summary><b>{{ r.subject }}</b> &rarr; {{ r.to_email }} <span class="tag">{{ r.kind }}</span> <span class="muted">{{ r.sent_at.replace('T',' ') }}</span></summary>
+{% if r.matter_title %}<p class="muted">Matter: <a href="/matters/{{ r.matter_id }}">{{ r.matter_title }}</a></p>{% endif %}
+{% if r.attachment_path %}<p>Attachment: <code>{{ r.attachment_path }}</code></p>{% endif %}<pre>{{ r.body }}</pre></details>
+{% else %}<p class="empty">Nothing sent yet.</p>{% endfor %}
+{% endblock %}
