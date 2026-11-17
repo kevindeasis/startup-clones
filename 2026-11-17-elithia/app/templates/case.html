@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Chronolog - {{ case.name }}{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/">Cases</a> / {{ case.name }}</p>
+<h1>{{ case.name }}</h1>
+<p class="muted">{{ case.claimant }} &middot; {{ case.matter_type }} &middot; {{ case.firm_name }} &middot; status <b id="case-status">{{ case.status }}</b> &middot; LLM runs: <b>{{ stats.llm_runs }}</b></p>
+<div class="stats">
+<div><b>{{ stats.pages_in }}</b>pages in</div><div><b>{{ stats.blanks }}</b>blanks removed</div>
+<div><b>{{ stats.duplicates }}</b>duplicates removed</div><div><b>{{ stats.documents }}</b>documents</div>
+<div><b>{{ stats.events }}</b>events</div><div><b>{{ stats.pct_verified }}%</b>verified</div></div>
+<section class="card actions" data-case="{{ case.id }}">
+<div><b>1. Records</b> ({{ files|length }} file{{ '' if files|length == 1 else 's' }}):
+{% for f in files %}<span class="chip">{{ f.filename }} ({{ f.page_count }}p)</span>{% endfor %}</div>
+<form id="upload-form" data-case="{{ case.id }}"><input type="file" name="files" accept="application/pdf" multiple required>
+<button>Upload PDFs</button> <button type="button" id="sample-btn">Load sample bundle</button></form>
+<div class="btnrow">
+<button class="primary" id="paginate-btn">2. Paginate</button>
+<button class="primary" id="chrono-btn">3. Build chronology</button>
+<a class="btn" href="/cases/{{ case.id }}/pages">View pages</a>
+<a class="btn" href="/cases/{{ case.id }}/export.docx">Export DOCX</a>
+<a class="btn" href="/cases/{{ case.id }}/export.pdf">Export PDF</a></div>
+<div id="progress" class="progress hidden"><div id="bar"></div><span id="progress-msg"></span></div>
+</section>
+
+<h2>Conflicts</h2>
+<ul id="conflicts" class="conflicts">
+{% for c in conflicts %}
+<li class="{{ 'resolved' if c.resolved else '' }}">{{ c.description }}
+<span class="muted">events {% for i in c.event_ids %}<a href="#event-{{ i }}">#{{ i }}</a> {% endfor %}</span>
+{% if c.resolved %}<em>resolved{% if c.resolution_note %}: {{ c.resolution_note }}{% endif %}</em>
+{% else %}<button class="small" onclick="resolveConflict({{ c.id }})">resolve</button>{% endif %}</li>
+{% else %}<li class="muted">No conflicts detected (or chronology not built yet).</li>{% endfor %}
+</ul>
+
+<h2>Chronology</h2>
+<table class="grid" id="events">
+<thead><tr><th>Date</th><th>Category</th><th>Facility / provider</th><th>Summary</th><th>Sig.</th><th>Citations</th><th>Review</th></tr></thead>
+<tbody>
+{% for e in events %}
+<tr id="event-{{ e.id }}" data-id="{{ e.id }}" class="{{ 'verified' if e.verified }}">
+<td class="c-date">{{ e.date or 'undated' }}{% if e.time %}<br><span class="muted">{{ e.time }}</span>{% endif %}</td>
+<td>{{ e.category }}</td>
+<td>{{ e.facility or '' }}<br><span class="muted">{{ e.provider or '' }}</span></td>
+<td class="c-summary">{{ e.summary }}{% if e.created_by == 'user' %} <span class="chip">manual</span>{% endif %}</td>
+<td class="c-sig sig-{{ e.significance }}">{{ e.significance }}</td>
+<td>{% for b in e.source_pages %}{% if bates.get(b) %}<a href="#" class="cite" data-page="{{ bates[b] }}" data-event="{{ e.id }}">{{ b }}</a> {% else %}{{ b }} {% endif %}{% endfor %}</td>
+<td class="nowrap">
+<button class="small" onclick="editEvent({{ e.id }})">edit</button>
+<button class="small verify" onclick="verifyEvent({{ e.id }})">{{ 'verified &#10003;'|safe if e.verified else 'verify' }}</button>
+<button class="small danger" onclick="deleteEvent({{ e.id }})">delete</button>
+{% if e.verified %}<div class="muted tiny">{{ e.verified_by }} {{ e.verified_at }}</div>{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">No events yet. Paginate, then build the chronology.</td></tr>{% endfor %}
+</tbody></table>
+
+<h3>Add event</h3>
+<form id="add-event" class="card form-grid" data-case="{{ case.id }}">
+<label>Date<input name="date" placeholder="2024-03-14"></label>
+<label>Category<select name="category">{% for c in categories %}<option>{{ c }}</option>{% endfor %}</select></label>
+<label>Significance<select name="significance">{% for l in levels %}<option>{{ l }}</option>{% endfor %}</select></label>
+<label>Summary<input name="summary" required></label>
+<label>Citation (Bates, optional)<input name="source_pages" placeholder="CHR-000004"></label>
+<button class="primary">Add event</button></form>
+
+<aside id="panel" class="panel hidden"><button class="close" onclick="closePanel()">&times;</button>
+<h3 id="panel-title"></h3><img id="panel-img" alt="source page"><pre id="panel-text"></pre></aside>
+{% endblock %}

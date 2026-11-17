@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Chronolog - Pages{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/">Cases</a> / <a href="/cases/{{ case.id }}">{{ case.name }}</a> / Pages</p>
+<h1>Paginated records</h1>
+<p class="muted">{{ stats.pages_in }} pages in &middot; {{ stats.blanks }} blank &middot; {{ stats.duplicates }} duplicate &middot; {{ stats.documents }} documents</p>
+{% for d in docs %}
+<section class="card doc">
+<h3>{{ d.bates_start }} &ndash; {{ d.bates_end }} &middot; {{ d.doc_type }}
+{% if d.undated %}<span class="flag">undated</span>{% endif %}</h3>
+<p class="muted">{{ d.facility or '-' }} &middot; {{ d.provider or '-' }} &middot; {{ d.service_date or 'undated' }}</p>
+<div class="thumbs">
+{% for p in d.pages %}
+<figure><img loading="lazy" src="/pages/{{ p.id }}.png?thumb=1" alt="{{ p.bates }}" data-page="{{ p.id }}" class="thumb">
+<figcaption><b>{{ p.bates }}</b><br>{{ p.filename }} p.{{ p.page_index + 1 }}<br>{{ p.page_role }} &middot; conf {{ '%.2f'|format(p.confidence or 0) }}</figcaption></figure>
+{% endfor %}</div>
+</section>
+{% else %}<p>No documents yet. Run pagination from the case page.</p>{% endfor %}
+{% if removed %}
+<h2>Removed pages</h2>
+<ul class="removed">
+{% for p in removed %}
+<li><s>{{ p.filename }} p.{{ p.page_index + 1 }}</s> &mdash; {{ 'blank page' if p.is_blank else p.dup_reason }}
+{% if p.is_duplicate %}(duplicate of page id {{ p.duplicate_of }}){% endif %}
+<img loading="lazy" class="thumb small" src="/pages/{{ p.id }}.png?thumb=1" alt="removed page"></li>
+{% endfor %}</ul>
+{% endif %}
+<aside id="panel" class="panel hidden"><button class="close" onclick="closePanel()">&times;</button><h3 id="panel-title"></h3>
+<img id="panel-img" alt="page"><pre id="panel-text"></pre></aside>
+{% endblock %}

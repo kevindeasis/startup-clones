@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Chronolog - Cases{% endblock %}
+{% block content %}
+<h1>Cases</h1>
+<table class="grid" id="cases">
+<thead><tr><th>Case</th><th>Claimant</th><th>Matter</th><th>Files</th><th>Pages</th><th>Docs</th><th>Events</th><th>Verified</th><th>Status</th></tr></thead>
+<tbody>
+{% for c in cases %}
+<tr><td><a href="/cases/{{ c.id }}">{{ c.name }}</a></td><td>{{ c.claimant }}</td><td>{{ c.matter_type }}</td><td>{{ c.files }}</td>
+<td>{{ c.stats.pages_in }}</td><td>{{ c.stats.documents }}</td><td>{{ c.stats.events }}</td><td>{{ c.stats.pct_verified }}%</td><td>{{ c.status }}</td></tr>
+{% else %}<tr><td colspan="9">No cases yet.</td></tr>{% endfor %}
+</tbody></table>
+<h2>New case</h2>
+<form id="new-case" class="card form-grid">
+<label>Case name<input name="name" required placeholder="Doe v. General Hospital"></label>
+<label>Client / claimant<input name="claimant"></label>
+<label>Matter type<input name="matter_type" placeholder="Birth injury, nursing home, ..."></label>
+<label>Firm name (branding)<input name="firm_name"></label>
+<label>Report title<input name="report_title" placeholder="Medical Chronology Report"></label>
+<label>Footer line<input name="footer"></label>
+<button type="submit" class="primary">Create case</button>
+</form>
+{% endblock %}
