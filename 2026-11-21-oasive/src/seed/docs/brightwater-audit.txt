@@ -1,0 +1,29 @@
+Brightwater Health System
+Consolidated Financial Statements and Independent Auditor's Report
+Fiscal years 2022 through 2024 (fiscal year ends June 30)
+Report issued: {{d-170}}
+=== Page 1 ===
+Brightwater Health System
+Consolidated Financial Statements, fiscal years 2022 through 2024
+Prepared by Harlan & Pike LLP, independent auditors (fictional).
+The System operates two acute-care hospitals and nine outpatient clinics serving a six-county region of western Pennsylvania.
+Net patient service revenue in fiscal year 2024 was $641,000,000.
+=== Page 2 ===
+FISCAL YEAR 2022 - Key liquidity and performance indicators
+Days cash on hand: 187
+Operating margin: 2.1%
+Debt service coverage: 2.31x
+The System ended fiscal year 2022 with strong unrestricted liquidity following the recovery in elective volumes.
+=== Page 3 ===
+FISCAL YEAR 2023 - Key liquidity and performance indicators
+Days cash on hand: 151
+Operating margin: -0.8%
+Debt service coverage: 1.74x
+Labor expense growth outpaced net patient revenue growth during the year.
+=== Page 4 ===
+FISCAL YEAR 2024 - Key liquidity and performance indicators
+Days cash on hand: 118
+Operating margin: -3.1%
+Debt service coverage: 1.12x
+Management notes that the fiscal 2024 debt service coverage of 1.12x was below the 1.20x level required by the master trust indenture covenant on the System's $212,000,000 of outstanding Series 2019 bonds.
+Total outstanding debt: $212,000,000

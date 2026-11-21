@@ -1,0 +1,25 @@
+City of Ashford Falls, Ohio
+Annual Comprehensive Financial Report (ACFR), fiscal years 2022 through 2024
+Report issued: {{d-200}}
+=== Page 1 ===
+City of Ashford Falls, Ohio - Annual Comprehensive Financial Report
+Prepared by the Department of Finance. The City has a population of about 61,000 and is the seat of Ashford County.
+=== Page 2 ===
+FISCAL YEAR 2022 - General fund and pension indicators
+Total governmental fund balance: $41,200,000
+Unassigned fund balance at year end was 18.4% of general fund expenditures
+Pension funded ratio: 61%
+Top ten taxpayers accounted for 23.9% of assessed valuation
+=== Page 3 ===
+FISCAL YEAR 2023 - General fund and pension indicators
+Total governmental fund balance: $29,800,000
+Unassigned fund balance at year end was 11.2% of general fund expenditures
+Pension funded ratio: 59%
+Top ten taxpayers accounted for 24.3% of assessed valuation
+=== Page 4 ===
+FISCAL YEAR 2024 - General fund and pension indicators
+Total governmental fund balance: $15,300,000
+Unassigned fund balance at year end was 5.6% of general fund expenditures
+Pension funded ratio: 57%
+Top ten taxpayers accounted for 24.8% of assessed valuation
+The City's largest taxpayer, a regional steel fabricator, announced a plant consolidation after year end.

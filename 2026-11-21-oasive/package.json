@@ -1,0 +1,40 @@
+{
+  "name": "muniwatch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "seed": "tsx scripts/seed.ts",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.107",
+    "@mozilla/readability": "^0.6.0",
+    "ai": "^7.0.179",
+    "jsdom": "^31.0.1",
+    "minisearch": "^7.2.0",
+    "next": "16.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "rss-parser": "^3.13.0",
+    "unpdf": "^2.2.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "pdf-lib": "^1.17.1",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.1.1"
+  }
+}

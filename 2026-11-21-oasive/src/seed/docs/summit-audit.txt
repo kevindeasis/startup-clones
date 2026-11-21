@@ -1,0 +1,23 @@
+Summit Regional Airport Authority
+Audited Financial Statements, fiscal years 2022 through 2024
+Report issued: {{d-185}}
+=== Page 1 ===
+Summit Regional Airport Authority - Audited Financial Statements
+The Authority operates Summit Regional Airport, a small-hub airport serving the Colorado mountain region.
+Rating: A3
+Total outstanding debt: $240,000,000
+=== Page 2 ===
+FISCAL YEAR 2022 - Traffic, coverage and liquidity
+Enplaned passengers: 1,180,000
+Debt service coverage: 1.31x
+Days cash on hand: 312
+=== Page 3 ===
+FISCAL YEAR 2023 - Traffic, coverage and liquidity
+Enplaned passengers: 1,390,000
+Debt service coverage: 1.52x
+Days cash on hand: 335
+=== Page 4 ===
+FISCAL YEAR 2024 - Traffic, coverage and liquidity
+Enplaned passengers: 1,560,000
+Debt service coverage: 1.74x
+Days cash on hand: 361
