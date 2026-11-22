@@ -1,0 +1,144 @@
+[
+  {
+    "id": "inv_lume1",
+    "accountId": "acc_lumenfold",
+    "issuedAt": "2026-07-25",
+    "dueAt": "2026-08-24",
+    "paidAt": "2026-08-18",
+    "amount": 60000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_lume2",
+    "accountId": "acc_lumenfold",
+    "issuedAt": "2026-10-13",
+    "dueAt": "2026-11-12",
+    "paidAt": "2026-11-06",
+    "amount": 60000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_lume3",
+    "accountId": "acc_lumenfold",
+    "issuedAt": "2026-11-14",
+    "dueAt": "2026-12-14",
+    "amount": 60000,
+    "status": "open"
+  },
+  {
+    "id": "inv_brig1",
+    "accountId": "acc_brightwater",
+    "issuedAt": "2026-07-25",
+    "dueAt": "2026-08-24",
+    "paidAt": "2026-08-18",
+    "amount": 45000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_brig2",
+    "accountId": "acc_brightwater",
+    "issuedAt": "2026-10-13",
+    "dueAt": "2026-11-12",
+    "paidAt": "2026-11-06",
+    "amount": 45000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_copp1",
+    "accountId": "acc_copperline",
+    "issuedAt": "2026-07-25",
+    "dueAt": "2026-08-24",
+    "paidAt": "2026-08-18",
+    "amount": 24000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_copp2",
+    "accountId": "acc_copperline",
+    "issuedAt": "2026-10-13",
+    "dueAt": "2026-11-12",
+    "paidAt": "2026-11-06",
+    "amount": 24000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_fern1",
+    "accountId": "acc_fernhollow",
+    "issuedAt": "2026-07-25",
+    "dueAt": "2026-08-24",
+    "paidAt": "2026-08-18",
+    "amount": 13500,
+    "status": "paid"
+  },
+  {
+    "id": "inv_fern2",
+    "accountId": "acc_fernhollow",
+    "issuedAt": "2026-10-13",
+    "dueAt": "2026-11-12",
+    "paidAt": "2026-11-06",
+    "amount": 13500,
+    "status": "paid"
+  },
+  {
+    "id": "inv_quil1",
+    "accountId": "acc_quillstone",
+    "issuedAt": "2026-09-20",
+    "dueAt": "2026-10-20",
+    "paidAt": "2026-10-14",
+    "amount": 18000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_marl1",
+    "accountId": "acc_marlowe",
+    "issuedAt": "2026-07-25",
+    "dueAt": "2026-08-24",
+    "paidAt": "2026-08-18",
+    "amount": 90000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_marl2",
+    "accountId": "acc_marlowe",
+    "issuedAt": "2026-10-13",
+    "dueAt": "2026-11-12",
+    "paidAt": "2026-11-06",
+    "amount": 90000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_tide1",
+    "accountId": "acc_tidepool",
+    "issuedAt": "2026-07-20",
+    "dueAt": "2026-08-19",
+    "paidAt": "2026-08-13",
+    "amount": 33000,
+    "status": "paid"
+  },
+  {
+    "id": "inv_tide2",
+    "accountId": "acc_tidepool",
+    "issuedAt": "2026-09-28",
+    "dueAt": "2026-10-28",
+    "amount": 33000,
+    "status": "overdue"
+  },
+  {
+    "id": "inv_ostr1",
+    "accountId": "acc_ostrander",
+    "issuedAt": "2026-07-25",
+    "dueAt": "2026-08-24",
+    "paidAt": "2026-08-18",
+    "amount": 37500,
+    "status": "paid"
+  },
+  {
+    "id": "inv_ostr2",
+    "accountId": "acc_ostrander",
+    "issuedAt": "2026-10-13",
+    "dueAt": "2026-11-12",
+    "paidAt": "2026-11-06",
+    "amount": 37500,
+    "status": "paid"
+  }
+]

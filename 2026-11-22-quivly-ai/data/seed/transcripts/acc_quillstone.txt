@@ -1,0 +1,16 @@
+Kickoff call — Quillstone Payments onboarding
+Date: 2026-10-23
+
+Priya Raman (PostSale, Customer Success Lead): Welcome everyone. Our goal today is to agree what a successful rollout looks like and who owns what. I will send the recap after the call.
+Elliot Marsh (Quillstone Payments, CTO): Thanks Priya. Our goal is to go live with the fraud-scoring workflow for the risk team by Dec 15. We want to onboard fifty users in the first month.
+Priya Raman (PostSale, Customer Success Lead): Great. Success looks like fifty active seats and the first scored transactions flowing through the API by the end of the quarter.
+Jonas Becker (PostSale, Solutions Engineer): I will set up the sandbox workspace and share API keys with the Quillstone engineers by Friday.
+Mei Tanaka (Quillstone Payments, Security Lead): Our security review is the long pole. We need to complete the vendor risk questionnaire and I will return it by Tuesday.
+Elliot Marsh (Quillstone Payments, CTO): SSO and SCIM are a blocker for us. We require Okta SSO before any production user can log in, and nobody on our side owns the SCIM provisioning setup yet.
+Priya Raman (PostSale, Customer Success Lead): Understood, SSO and SCIM ownership is unresolved, so we will track it as a blocker. Jonas will prepare the SAML and SCIM configuration guide by Monday.
+Mei Tanaka (Quillstone Payments, Security Lead): I will ask the identity team to name an owner for the Okta integration. We need to confirm that by next week.
+Jonas Becker (PostSale, Solutions Engineer): Marcus will join the next call to cover data retention. We need to agree the retention window before production.
+Elliot Marsh (Quillstone Payments, CTO): There is a risk that the holiday freeze delays the production cutover, since change windows close on Dec 18.
+Priya Raman (PostSale, Customer Success Lead): Noted. I will schedule weekly check-ins every Thursday, and we will review the training plan for the risk analysts at the second session.
+Elliot Marsh (Quillstone Payments, CTO): Please send the pricing schedule for overage units by Dec 5 so finance can approve the budget.
+Priya Raman (PostSale, Customer Success Lead): Will do. Thanks all, talk Thursday.

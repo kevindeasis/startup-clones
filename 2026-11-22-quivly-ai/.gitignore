@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+# next
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+# env (keep the example)
+.env
+.env.*
+!.env.example
+# local database (recreated by `npm run seed`)
+data/db.json
+data/db.json.tmp
+# misc
+*.log
+coverage/
+.DS_Store

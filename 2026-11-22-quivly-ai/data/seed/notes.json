@@ -1,0 +1,114 @@
+[
+  {
+    "accountId": "acc_lumenfold",
+    "at": "2026-11-19",
+    "kind": "call",
+    "title": "Quarterly business review",
+    "body": "QBR with Ravi Okafor. Four new product teams are moving onto the platform and usage is approaching the weekly quota. Ravi asked what a higher quota tier would cost and mentioned an upcoming acquisition that would add two more teams."
+  },
+  {
+    "accountId": "acc_lumenfold",
+    "at": "2026-11-02",
+    "kind": "email",
+    "title": "Re: Capacity planning",
+    "body": "Ravi confirmed the data platform team will migrate their batch jobs next month, which should add roughly 15% to metered units."
+  },
+  {
+    "accountId": "acc_lumenfold",
+    "at": "2026-10-08",
+    "kind": "note",
+    "title": "Champion strong",
+    "body": "Ravi is a vocal internal champion and presented the integration at their all-hands."
+  },
+  {
+    "accountId": "acc_brightwater",
+    "at": "2026-10-11",
+    "kind": "call",
+    "title": "Check-in with data team lead",
+    "body": "Helena Park said the analytics team was reorganised and two heavy users left. Seat logins may drop. She asked for a refresher training for the new analysts."
+  },
+  {
+    "accountId": "acc_brightwater",
+    "at": "2026-09-08",
+    "kind": "note",
+    "title": "Expansion idea parked",
+    "body": "Discussed adding a second business unit after the reorg settles."
+  },
+  {
+    "accountId": "acc_copperline",
+    "at": "2026-10-27",
+    "kind": "email",
+    "title": "Customer reports latency on batch API",
+    "body": "Tomas Reyes wrote that batch API calls have been timing out since the last release and the platform team is frustrated. Support opened two high-priority tickets."
+  },
+  {
+    "accountId": "acc_copperline",
+    "at": "2026-09-23",
+    "kind": "call",
+    "title": "Roadmap sync",
+    "body": "Tomas is happy with the core product but wants better rate limits and clearer usage reporting."
+  },
+  {
+    "accountId": "acc_fernhollow",
+    "at": "2026-09-13",
+    "kind": "call",
+    "title": "Quarterly sync",
+    "body": "Gwen Alder mentioned budget pressure and that her sponsor is leaving the company next quarter. No follow-up booked."
+  },
+  {
+    "accountId": "acc_fernhollow",
+    "at": "2026-08-04",
+    "kind": "email",
+    "title": "Welcome back",
+    "body": "Gwen confirmed the team reactivated two integrations."
+  },
+  {
+    "accountId": "acc_quillstone",
+    "at": "2026-10-27",
+    "kind": "email",
+    "title": "Security questionnaire returned",
+    "body": "Elliot Marsh's team returned the completed security questionnaire. SSO and SCIM requirements still need an owner on their side."
+  },
+  {
+    "accountId": "acc_marlowe",
+    "at": "2026-11-17",
+    "kind": "call",
+    "title": "Renewal pre-read",
+    "body": "Annika Voss said the logistics network expansion is going well and the team is happy. She expects to discuss renewal terms in December."
+  },
+  {
+    "accountId": "acc_marlowe",
+    "at": "2026-10-23",
+    "kind": "call",
+    "title": "Executive sync",
+    "body": "Annika wants to extend the platform to the new Rotterdam hub in Q1."
+  },
+  {
+    "accountId": "acc_tidepool",
+    "at": "2026-10-13",
+    "kind": "email",
+    "title": "Invoice follow-up unanswered",
+    "body": "Sent a reminder for invoice inv_tide2 to Samir Joshi. No reply; accounts payable contact is unknown."
+  },
+  {
+    "accountId": "acc_tidepool",
+    "at": "2026-09-03",
+    "kind": "call",
+    "title": "Usage review",
+    "body": "Samir said usage is stable and the team is satisfied."
+  },
+  {
+    "accountId": "acc_ostrander",
+    "at": "2026-11-14",
+    "kind": "email",
+    "title": "Re: Minor feature request",
+    "body": "Beatrix Lund asked for a CSV export of the weekly usage report."
+  },
+  {
+    "accountId": "acc_ostrander",
+    "at": "2026-10-18",
+    "kind": "call",
+    "title": "Routine check-in",
+    "body": "Everything is steady, no concerns raised."
+  }
+]

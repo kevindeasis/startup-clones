@@ -1,0 +1,179 @@
+[
+  {
+    "id": "acc_lumenfold",
+    "name": "Lumenfold Labs",
+    "aliases": [
+      "Lumenfold"
+    ],
+    "domain": "lumenfold.example",
+    "segment": "Mid-market",
+    "plan": "Scale",
+    "arr": 240000,
+    "seats": 60,
+    "quotaUnitsPerWeek": 10000,
+    "contractStart": "2025-06-15",
+    "renewalDate": "2027-06-15",
+    "owner": "Dana Whitfield",
+    "champion": {
+      "name": "Ravi Okafor",
+      "title": "VP Engineering",
+      "email": "ravi@lumenfold.example"
+    },
+    "stage": "active"
+  },
+  {
+    "id": "acc_brightwater",
+    "name": "Brightwater Analytics",
+    "aliases": [
+      "Brightwater"
+    ],
+    "domain": "brightwater.example",
+    "segment": "Enterprise",
+    "plan": "Enterprise",
+    "arr": 180000,
+    "seats": 80,
+    "quotaUnitsPerWeek": 20000,
+    "contractStart": "2025-03-10",
+    "renewalDate": "2027-03-10",
+    "owner": "Marcus Lindqvist",
+    "champion": {
+      "name": "Helena Park",
+      "title": "Head of Data",
+      "email": "helena@brightwater.example"
+    },
+    "stage": "active"
+  },
+  {
+    "id": "acc_copperline",
+    "name": "Copperline Robotics",
+    "aliases": [
+      "Copperline"
+    ],
+    "domain": "copperline.example",
+    "segment": "Mid-market",
+    "plan": "Growth",
+    "arr": 96000,
+    "seats": 40,
+    "quotaUnitsPerWeek": 8000,
+    "contractStart": "2025-04-02",
+    "renewalDate": "2027-04-02",
+    "owner": "Dana Whitfield",
+    "champion": {
+      "name": "Tomas Reyes",
+      "title": "Director of Platform",
+      "email": "tomas@copperline.example"
+    },
+    "stage": "active"
+  },
+  {
+    "id": "acc_fernhollow",
+    "name": "Fernhollow Systems",
+    "aliases": [
+      "Fernhollow"
+    ],
+    "domain": "fernhollow.example",
+    "segment": "SMB",
+    "plan": "Growth",
+    "arr": 54000,
+    "seats": 30,
+    "quotaUnitsPerWeek": 6000,
+    "contractStart": "2025-03-05",
+    "renewalDate": "2027-03-05",
+    "owner": "Marcus Lindqvist",
+    "champion": {
+      "name": "Gwen Alder",
+      "title": "Ops Lead",
+      "email": "gwen@fernhollow.example"
+    },
+    "stage": "active"
+  },
+  {
+    "id": "acc_quillstone",
+    "name": "Quillstone Payments",
+    "aliases": [
+      "Quillstone"
+    ],
+    "domain": "quillstone.example",
+    "segment": "Enterprise",
+    "plan": "Enterprise",
+    "arr": 72000,
+    "seats": 50,
+    "quotaUnitsPerWeek": 5000,
+    "contractStart": "2026-09-14",
+    "renewalDate": "2027-09-14",
+    "owner": "Priya Raman",
+    "champion": {
+      "name": "Elliot Marsh",
+      "title": "CTO",
+      "email": "elliot@quillstone.example"
+    },
+    "stage": "onboarding"
+  },
+  {
+    "id": "acc_marlowe",
+    "name": "Marlowe Finch Logistics",
+    "aliases": [
+      "Marlowe & Finch",
+      "Marlowe Finch"
+    ],
+    "domain": "marlowefinch.example",
+    "segment": "Enterprise",
+    "plan": "Enterprise",
+    "arr": 360000,
+    "seats": 100,
+    "quotaUnitsPerWeek": 15000,
+    "contractStart": "2026-01-21",
+    "renewalDate": "2027-01-21",
+    "owner": "Priya Raman",
+    "champion": {
+      "name": "Annika Voss",
+      "title": "COO",
+      "email": "annika@marlowefinch.example"
+    },
+    "stage": "renewal"
+  },
+  {
+    "id": "acc_tidepool",
+    "name": "Tidepool Health Data",
+    "aliases": [
+      "Tidepool"
+    ],
+    "domain": "tidepool.example",
+    "segment": "Mid-market",
+    "plan": "Scale",
+    "arr": 132000,
+    "seats": 70,
+    "quotaUnitsPerWeek": 12000,
+    "contractStart": "2025-05-20",
+    "renewalDate": "2027-05-20",
+    "owner": "Marcus Lindqvist",
+    "champion": {
+      "name": "Samir Joshi",
+      "title": "VP Operations",
+      "email": "samir@tidepool.example"
+    },
+    "stage": "active"
+  },
+  {
+    "id": "acc_ostrander",
+    "name": "Ostrander Cloud Works",
+    "aliases": [
+      "Ostrander"
+    ],
+    "domain": "ostrander.example",
+    "segment": "Mid-market",
+    "plan": "Growth",
+    "arr": 150000,
+    "seats": 50,
+    "quotaUnitsPerWeek": 14000,
+    "contractStart": "2025-08-30",
+    "renewalDate": "2027-08-30",
+    "owner": "Dana Whitfield",
+    "champion": {
+      "name": "Beatrix Lund",
+      "title": "Engineering Manager",
+      "email": "beatrix@ostrander.example"
+    },
+    "stage": "active"
+  }
+]

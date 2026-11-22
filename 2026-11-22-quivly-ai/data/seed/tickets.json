@@ -1,0 +1,694 @@
+[
+  {
+    "id": "tkt_lume01",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-08-25",
+    "closedAt": "2026-08-27",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_lume02",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-09-08",
+    "closedAt": "2026-09-10",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_lume03",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-09-15",
+    "closedAt": "2026-09-17",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_lume04",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_lume05",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-10-13",
+    "closedAt": "2026-10-15",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_lume06",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-10-20",
+    "closedAt": "2026-10-22",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_lume07",
+    "accountId": "acc_lumenfold",
+    "openedAt": "2026-11-03",
+    "closedAt": "2026-11-05",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_brig01",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-08-25",
+    "closedAt": "2026-08-27",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_brig02",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-09-01",
+    "closedAt": "2026-09-03",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_brig03",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-09-15",
+    "closedAt": "2026-09-17",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_brig04",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-09-16",
+    "closedAt": "2026-09-18",
+    "priority": "low",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_brig05",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-09-22",
+    "closedAt": "2026-09-24",
+    "priority": "medium",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_brig06",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_brig07",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-10-06",
+    "closedAt": "2026-10-08",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_brig08",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-10-20",
+    "closedAt": "2026-10-22",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_brig09",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_brig10",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-11-03",
+    "closedAt": "2026-11-05",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_brig11",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-11-04",
+    "closedAt": "2026-11-06",
+    "priority": "low",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_brig12",
+    "accountId": "acc_brightwater",
+    "openedAt": "2026-11-10",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_copp01",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-08-25",
+    "closedAt": "2026-08-27",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_copp02",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-09-08",
+    "closedAt": "2026-09-10",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_copp03",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-09-15",
+    "closedAt": "2026-09-17",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_copp04",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_copp05",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-10-06",
+    "closedAt": "2026-10-08",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_copp06",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-10-20",
+    "closedAt": "2026-10-22",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_copp07",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_copp08",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-03",
+    "closedAt": "2026-11-05",
+    "priority": "high",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_copp09",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-04",
+    "closedAt": "2026-11-06",
+    "priority": "high",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_copp10",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-05",
+    "closedAt": "2026-11-07",
+    "priority": "high",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_copp11",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-06",
+    "closedAt": "2026-11-08",
+    "priority": "high",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_copp12",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-03",
+    "closedAt": "2026-11-05",
+    "priority": "high",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_copp13",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-10",
+    "priority": "high",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_copp14",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-11",
+    "priority": "high",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_copp15",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-12",
+    "closedAt": "2026-11-14",
+    "priority": "high",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_copp16",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-13",
+    "closedAt": "2026-11-15",
+    "priority": "high",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_copp17",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-10",
+    "closedAt": "2026-11-12",
+    "priority": "high",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_copp18",
+    "accountId": "acc_copperline",
+    "openedAt": "2026-11-11",
+    "closedAt": "2026-11-13",
+    "priority": "high",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_fern01",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-08-25",
+    "closedAt": "2026-08-27",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_fern02",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-09-01",
+    "closedAt": "2026-09-03",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_fern03",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-09-15",
+    "closedAt": "2026-09-17",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_fern04",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-09-22",
+    "closedAt": "2026-09-24",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_fern05",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_fern06",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-10-13",
+    "closedAt": "2026-10-15",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_fern07",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-10-20",
+    "closedAt": "2026-10-22",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_fern08",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_fern09",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-11-03",
+    "closedAt": "2026-11-05",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_fern10",
+    "accountId": "acc_fernhollow",
+    "openedAt": "2026-11-10",
+    "closedAt": "2026-11-12",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_quil01",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-09-22",
+    "closedAt": "2026-09-24",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_quil02",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_quil03",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-09-30",
+    "closedAt": "2026-10-02",
+    "priority": "low",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_quil04",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-10-06",
+    "closedAt": "2026-10-08",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_quil05",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-10-13",
+    "closedAt": "2026-10-15",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_quil06",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-10-14",
+    "closedAt": "2026-10-16",
+    "priority": "low",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_quil07",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-10-20",
+    "closedAt": "2026-10-22",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_quil08",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_quil09",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-11-03",
+    "closedAt": "2026-11-05",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_quil10",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-11-04",
+    "closedAt": "2026-11-06",
+    "priority": "low",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_quil11",
+    "accountId": "acc_quillstone",
+    "openedAt": "2026-11-10",
+    "closedAt": "2026-11-12",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_marl01",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-08-25",
+    "closedAt": "2026-08-27",
+    "priority": "medium",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_marl02",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-09-08",
+    "closedAt": "2026-09-10",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_marl03",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-09-22",
+    "closedAt": "2026-09-24",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_marl04",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-10-06",
+    "closedAt": "2026-10-08",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_marl05",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-10-13",
+    "closedAt": "2026-10-15",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_marl06",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_marl07",
+    "accountId": "acc_marlowe",
+    "openedAt": "2026-11-10",
+    "closedAt": "2026-11-12",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_tide01",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-08-25",
+    "closedAt": "2026-08-27",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_tide02",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-01",
+    "closedAt": "2026-09-03",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_tide03",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-02",
+    "closedAt": "2026-09-04",
+    "priority": "low",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_tide04",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-08",
+    "closedAt": "2026-09-10",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_tide05",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-15",
+    "closedAt": "2026-09-17",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_tide06",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-22",
+    "closedAt": "2026-09-24",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_tide07",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-23",
+    "closedAt": "2026-09-25",
+    "priority": "low",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_tide08",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "Dashboard slow to load"
+  },
+  {
+    "id": "tkt_tide09",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-10-06",
+    "closedAt": "2026-10-08",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_tide10",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-10-13",
+    "closedAt": "2026-10-15",
+    "priority": "medium",
+    "subject": "SSO login loop"
+  },
+  {
+    "id": "tkt_tide11",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-10-14",
+    "closedAt": "2026-10-16",
+    "priority": "low",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_tide12",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-10-20",
+    "closedAt": "2026-10-22",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_tide13",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "API rate-limit increase request"
+  },
+  {
+    "id": "tkt_tide14",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-10-28",
+    "closedAt": "2026-10-30",
+    "priority": "low",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_tide15",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-11-03",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_tide16",
+    "accountId": "acc_tidepool",
+    "openedAt": "2026-11-10",
+    "closedAt": "2026-11-12",
+    "priority": "medium",
+    "subject": "Seat provisioning error"
+  },
+  {
+    "id": "tkt_ostr01",
+    "accountId": "acc_ostrander",
+    "openedAt": "2026-09-01",
+    "closedAt": "2026-09-03",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_ostr02",
+    "accountId": "acc_ostrander",
+    "openedAt": "2026-09-15",
+    "closedAt": "2026-09-17",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  },
+  {
+    "id": "tkt_ostr03",
+    "accountId": "acc_ostrander",
+    "openedAt": "2026-09-29",
+    "closedAt": "2026-10-01",
+    "priority": "medium",
+    "subject": "Question about metered billing"
+  },
+  {
+    "id": "tkt_ostr04",
+    "accountId": "acc_ostrander",
+    "openedAt": "2026-10-13",
+    "closedAt": "2026-10-15",
+    "priority": "medium",
+    "subject": "Export job timed out"
+  },
+  {
+    "id": "tkt_ostr05",
+    "accountId": "acc_ostrander",
+    "openedAt": "2026-10-27",
+    "closedAt": "2026-10-29",
+    "priority": "medium",
+    "subject": "Missing data in weekly report"
+  },
+  {
+    "id": "tkt_ostr06",
+    "accountId": "acc_ostrander",
+    "openedAt": "2026-11-10",
+    "closedAt": "2026-11-12",
+    "priority": "medium",
+    "subject": "Webhook retries failing"
+  }
+]
