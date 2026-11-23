@@ -1,0 +1,524 @@
+[
+ {
+  "id": "aw_001",
+  "agencyId": "ag_brightwater",
+  "vendor": "Summit Environmental Services",
+  "category": "wastewater",
+  "amount": 423000,
+  "date": "2023-02-16",
+  "description": "Sewer rehabilitation (CIPP lining)"
+ },
+ {
+  "id": "aw_002",
+  "agencyId": "ag_brightwater",
+  "vendor": "Ironbridge Civil",
+  "category": "stormwater",
+  "amount": 169000,
+  "date": "2023-06-04",
+  "description": "Storm drain cleaning and repair"
+ },
+ {
+  "id": "aw_003",
+  "agencyId": "ag_brightwater",
+  "vendor": "Ironbridge Civil",
+  "category": "water",
+  "amount": 1096000,
+  "date": "2023-06-18",
+  "description": "Hydrant and valve replacement"
+ },
+ {
+  "id": "aw_004",
+  "agencyId": "ag_brightwater",
+  "vendor": "Ironbridge Civil",
+  "category": "water",
+  "amount": 242000,
+  "date": "2024-02-26",
+  "description": "Reservoir recoating"
+ },
+ {
+  "id": "aw_005",
+  "agencyId": "ag_brightwater",
+  "vendor": "Summit Environmental Services",
+  "category": "wastewater",
+  "amount": 757000,
+  "date": "2024-03-15",
+  "description": "SCADA controls upgrade"
+ },
+ {
+  "id": "aw_006",
+  "agencyId": "ag_brightwater",
+  "vendor": "Ironbridge Civil",
+  "category": "roads_bridges",
+  "amount": 1060000,
+  "date": "2024-02-23",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_007",
+  "agencyId": "ag_brightwater",
+  "vendor": "Meridian Electrical Controls",
+  "category": "wastewater",
+  "amount": 165000,
+  "date": "2025-07-23",
+  "description": "Headworks screen upgrade"
+ },
+ {
+  "id": "aw_008",
+  "agencyId": "ag_brightwater",
+  "vendor": "Ironbridge Civil",
+  "category": "stormwater",
+  "amount": 566000,
+  "date": "2025-08-19",
+  "description": "Storm drain cleaning and repair"
+ },
+ {
+  "id": "aw_009",
+  "agencyId": "ag_brightwater",
+  "vendor": "Hartline Pump & Supply",
+  "category": "water",
+  "amount": 1249000,
+  "date": "2025-06-03",
+  "description": "Booster pump rebuild"
+ },
+ {
+  "id": "aw_010",
+  "agencyId": "ag_brightwater",
+  "vendor": "Ironbridge Civil",
+  "category": "water",
+  "amount": 282000,
+  "date": "2026-10-17",
+  "description": "Booster pump rebuild"
+ },
+ {
+  "id": "aw_011",
+  "agencyId": "ag_brightwater",
+  "vendor": "Summit Environmental Services",
+  "category": "wastewater",
+  "amount": 382000,
+  "date": "2026-04-01",
+  "description": "Sewer rehabilitation (CIPP lining)"
+ },
+ {
+  "id": "aw_012",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Cascade Valve Works",
+  "category": "water",
+  "amount": 1116000,
+  "date": "2023-07-10",
+  "description": "Water main replacement"
+ },
+ {
+  "id": "aw_013",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Meridian Electrical Controls",
+  "category": "wastewater",
+  "amount": 1238000,
+  "date": "2023-02-25",
+  "description": "Sewer rehabilitation (CIPP lining)"
+ },
+ {
+  "id": "aw_014",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Blue Ridge Pipe Co.",
+  "category": "water",
+  "amount": 935000,
+  "date": "2024-04-04",
+  "description": "Water main replacement"
+ },
+ {
+  "id": "aw_015",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Cascade Valve Works",
+  "category": "water",
+  "amount": 413000,
+  "date": "2024-08-19",
+  "description": "Water main replacement"
+ },
+ {
+  "id": "aw_016",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Meridian Electrical Controls",
+  "category": "buildings",
+  "amount": 395000,
+  "date": "2024-09-24",
+  "description": "Roof replacement"
+ },
+ {
+  "id": "aw_017",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Hartline Pump & Supply",
+  "category": "water",
+  "amount": 1080000,
+  "date": "2025-05-05",
+  "description": "Hydrant and valve replacement"
+ },
+ {
+  "id": "aw_018",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Northline Pump & Valve",
+  "category": "wastewater",
+  "amount": 870000,
+  "date": "2025-12-12",
+  "description": "Sewer rehabilitation (CIPP lining)"
+ },
+ {
+  "id": "aw_019",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Ironbridge Civil",
+  "category": "water",
+  "amount": 191000,
+  "date": "2026-01-23",
+  "description": "Reservoir recoating"
+ },
+ {
+  "id": "aw_020",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Cascade Valve Works",
+  "category": "water",
+  "amount": 329000,
+  "date": "2026-05-08",
+  "description": "Reservoir recoating"
+ },
+ {
+  "id": "aw_021",
+  "agencyId": "ag_fernhollow",
+  "vendor": "Meridian Electrical Controls",
+  "category": "buildings",
+  "amount": 1163000,
+  "date": "2026-03-09",
+  "description": "Operations center HVAC replacement"
+ },
+ {
+  "id": "aw_022",
+  "agencyId": "ag_copperline",
+  "vendor": "Ironbridge Civil",
+  "category": "roads_bridges",
+  "amount": 592000,
+  "date": "2023-01-18",
+  "description": "Bridge deck repair"
+ },
+ {
+  "id": "aw_023",
+  "agencyId": "ag_copperline",
+  "vendor": "Tri-County Aggregate",
+  "category": "stormwater",
+  "amount": 425000,
+  "date": "2023-08-19",
+  "description": "Detention basin retrofit"
+ },
+ {
+  "id": "aw_024",
+  "agencyId": "ag_copperline",
+  "vendor": "Meridian Electrical Controls",
+  "category": "buildings",
+  "amount": 400000,
+  "date": "2023-05-12",
+  "description": "Operations center HVAC replacement"
+ },
+ {
+  "id": "aw_025",
+  "agencyId": "ag_copperline",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 1171000,
+  "date": "2024-12-16",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_026",
+  "agencyId": "ag_copperline",
+  "vendor": "Ironbridge Civil",
+  "category": "stormwater",
+  "amount": 426000,
+  "date": "2024-07-14",
+  "description": "Storm drain cleaning and repair"
+ },
+ {
+  "id": "aw_027",
+  "agencyId": "ag_copperline",
+  "vendor": "Blue Ridge Pipe Co.",
+  "category": "water",
+  "amount": 933000,
+  "date": "2024-10-09",
+  "description": "Hydrant and valve replacement"
+ },
+ {
+  "id": "aw_028",
+  "agencyId": "ag_copperline",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 196000,
+  "date": "2025-05-13",
+  "description": "Chip seal program"
+ },
+ {
+  "id": "aw_029",
+  "agencyId": "ag_copperline",
+  "vendor": "Tri-County Aggregate",
+  "category": "stormwater",
+  "amount": 183000,
+  "date": "2025-07-09",
+  "description": "Storm drain cleaning and repair"
+ },
+ {
+  "id": "aw_030",
+  "agencyId": "ag_copperline",
+  "vendor": "Meridian Electrical Controls",
+  "category": "buildings",
+  "amount": 664000,
+  "date": "2025-04-20",
+  "description": "Operations center HVAC replacement"
+ },
+ {
+  "id": "aw_031",
+  "agencyId": "ag_copperline",
+  "vendor": "Tri-County Aggregate",
+  "category": "roads_bridges",
+  "amount": 1086000,
+  "date": "2026-09-25",
+  "description": "Pavement markings"
+ },
+ {
+  "id": "aw_032",
+  "agencyId": "ag_copperline",
+  "vendor": "Blue Ridge Pipe Co.",
+  "category": "water",
+  "amount": 1019000,
+  "date": "2026-01-15",
+  "description": "Water main replacement"
+ },
+ {
+  "id": "aw_033",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Cascade Valve Works",
+  "category": "water",
+  "amount": 419000,
+  "date": "2023-01-26",
+  "description": "Booster pump rebuild"
+ },
+ {
+  "id": "aw_034",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Cascade Valve Works",
+  "category": "water",
+  "amount": 336000,
+  "date": "2024-07-01",
+  "description": "Hydrant and valve replacement"
+ },
+ {
+  "id": "aw_035",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Summit Environmental Services",
+  "category": "wastewater",
+  "amount": 93000,
+  "date": "2024-02-03",
+  "description": "Sewer rehabilitation (CIPP lining)"
+ },
+ {
+  "id": "aw_036",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Tri-County Aggregate",
+  "category": "roads_bridges",
+  "amount": 329000,
+  "date": "2024-06-27",
+  "description": "Pavement markings"
+ },
+ {
+  "id": "aw_037",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Ironbridge Civil",
+  "category": "water",
+  "amount": 233000,
+  "date": "2025-09-08",
+  "description": "Reservoir recoating"
+ },
+ {
+  "id": "aw_038",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Kestrel Excavation",
+  "category": "wastewater",
+  "amount": 326000,
+  "date": "2025-08-21",
+  "description": "Sewer rehabilitation (CIPP lining)"
+ },
+ {
+  "id": "aw_039",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Ironbridge Civil",
+  "category": "roads_bridges",
+  "amount": 131000,
+  "date": "2025-03-03",
+  "description": "Bridge deck repair"
+ },
+ {
+  "id": "aw_040",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Cascade Valve Works",
+  "category": "water",
+  "amount": 434000,
+  "date": "2026-08-23",
+  "description": "Hydrant and valve replacement"
+ },
+ {
+  "id": "aw_041",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Kestrel Excavation",
+  "category": "wastewater",
+  "amount": 265000,
+  "date": "2026-05-20",
+  "description": "SCADA controls upgrade"
+ },
+ {
+  "id": "aw_042",
+  "agencyId": "ag_larkmoor",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 389000,
+  "date": "2026-04-22",
+  "description": "Chip seal program"
+ },
+ {
+  "id": "aw_043",
+  "agencyId": "ag_cdot",
+  "vendor": "Tri-County Aggregate",
+  "category": "roads_bridges",
+  "amount": 8048000,
+  "date": "2023-02-16",
+  "description": "Pavement markings"
+ },
+ {
+  "id": "aw_044",
+  "agencyId": "ag_cdot",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 1068000,
+  "date": "2023-06-02",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_045",
+  "agencyId": "ag_cdot",
+  "vendor": "Tri-County Aggregate",
+  "category": "roads_bridges",
+  "amount": 4092000,
+  "date": "2023-12-19",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_046",
+  "agencyId": "ag_cdot",
+  "vendor": "Granite Peak Paving",
+  "category": "roads_bridges",
+  "amount": 4998000,
+  "date": "2023-07-26",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_047",
+  "agencyId": "ag_cdot",
+  "vendor": "Granite Peak Paving",
+  "category": "roads_bridges",
+  "amount": 7532000,
+  "date": "2024-12-21",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_048",
+  "agencyId": "ag_cdot",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 7286000,
+  "date": "2024-11-24",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_049",
+  "agencyId": "ag_cdot",
+  "vendor": "Tri-County Aggregate",
+  "category": "roads_bridges",
+  "amount": 6438000,
+  "date": "2024-12-17",
+  "description": "Chip seal program"
+ },
+ {
+  "id": "aw_050",
+  "agencyId": "ag_cdot",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 7095000,
+  "date": "2024-10-13",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_051",
+  "agencyId": "ag_cdot",
+  "vendor": "Granite Peak Paving",
+  "category": "roads_bridges",
+  "amount": 4997000,
+  "date": "2025-08-07",
+  "description": "Bridge deck repair"
+ },
+ {
+  "id": "aw_052",
+  "agencyId": "ag_cdot",
+  "vendor": "Granite Peak Paving",
+  "category": "roads_bridges",
+  "amount": 2111000,
+  "date": "2025-10-19",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_053",
+  "agencyId": "ag_cdot",
+  "vendor": "Ironbridge Civil",
+  "category": "roads_bridges",
+  "amount": 1731000,
+  "date": "2025-10-27",
+  "description": "Bridge deck repair"
+ },
+ {
+  "id": "aw_054",
+  "agencyId": "ag_cdot",
+  "vendor": "Ironbridge Civil",
+  "category": "roads_bridges",
+  "amount": 1988000,
+  "date": "2025-02-23",
+  "description": "Bridge deck repair"
+ },
+ {
+  "id": "aw_055",
+  "agencyId": "ag_cdot",
+  "vendor": "Ironbridge Civil",
+  "category": "roads_bridges",
+  "amount": 5742000,
+  "date": "2026-05-20",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_056",
+  "agencyId": "ag_cdot",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 8686000,
+  "date": "2026-10-02",
+  "description": "Arterial resurfacing"
+ },
+ {
+  "id": "aw_057",
+  "agencyId": "ag_cdot",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 3458000,
+  "date": "2026-04-25",
+  "description": "Bridge deck repair"
+ },
+ {
+  "id": "aw_058",
+  "agencyId": "ag_cdot",
+  "vendor": "Redline Striping",
+  "category": "roads_bridges",
+  "amount": 1395000,
+  "date": "2026-10-12",
+  "description": "Arterial resurfacing"
+ }
+]

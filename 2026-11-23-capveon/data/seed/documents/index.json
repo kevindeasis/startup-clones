@@ -1,0 +1,11 @@
+[
+  { "file": "larkmoor-council-2026-07-14.md", "title": "Larkmoor Town Council Minutes - July 14, 2026", "agency": "Town of Larkmoor", "kind": "minutes", "date": "2026-07-14" },
+  { "file": "copperline-board-2026-08-19.md", "title": "Copperline County Public Works Committee Minutes - August 19, 2026", "agency": "Copperline County Public Works", "kind": "minutes", "date": "2026-08-19" },
+  { "file": "brightwater-council-2026-09-08.md", "title": "Brightwater City Council Minutes - September 8, 2026", "agency": "City of Brightwater", "kind": "minutes", "date": "2026-09-08" },
+  { "file": "brightwater-cip-fy2027.md", "title": "Brightwater Capital Improvement Plan FY2027-FY2031 (Excerpt)", "agency": "City of Brightwater", "kind": "cip", "date": "2026-06-16" },
+  { "file": "fernhollow-cip-fy2027.md", "title": "Fernhollow Water District Five-Year CIP FY2027-FY2031 (Excerpt)", "agency": "Fernhollow Water District", "kind": "cip", "date": "2026-05-20" },
+  { "file": "copperline-budget-fy2027.md", "title": "Copperline County FY2027 Adopted Budget - Public Works (Excerpt)", "agency": "Copperline County Public Works", "kind": "budget", "date": "2026-06-30" },
+  { "file": "brightwater-rfp-2026-14.md", "title": "RFP 2026-14 Mill Creek Lift Station Rehabilitation", "agency": "City of Brightwater", "kind": "solicitation", "date": "2026-11-02" },
+  { "file": "cdot-ifb-route9.md", "title": "IFB R9-2026-07 Route 9 Resurfacing Phase 2", "agency": "Cascadia Dept. of Transportation", "kind": "solicitation", "date": "2026-11-09" },
+  { "file": "brightwater-rfp-addendum-1.md", "title": "Addendum No. 1 to RFP 2026-14", "agency": "City of Brightwater", "kind": "addendum", "date": "2026-11-20", "parent": "RFP 2026-14 Mill Creek Lift Station Rehabilitation" }
+]

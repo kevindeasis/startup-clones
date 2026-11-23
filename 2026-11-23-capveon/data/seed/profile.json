@@ -1,0 +1,40 @@
+{
+  "id": "default",
+  "name": "Northline Pump & Valve",
+  "description": "Northline Pump & Valve is a manufacturer's representative selling submersible and vertical turbine pumps, check and gate valves, SCADA control panels and packaged lift stations to municipal water, wastewater and stormwater agencies in the Cascadia region. We provide application engineering, startup and field service.",
+  "categories": ["water", "wastewater", "stormwater"],
+  "keywords": ["pump", "pump station", "lift station", "valve", "SCADA", "VFD", "wet well", "force main", "booster"],
+  "regions": ["Brightwater County", "Copperline County", "Fernhollow County"],
+  "minValue": 100000,
+  "maxValue": 15000000,
+  "certifications": ["AWWA C-series", "NSF/ANSI 61", "UL 508A panels"],
+  "bondingCapacity": 5000000,
+  "team": [
+    { "name": "Dana Whitfield", "role": "Regional Sales Lead" },
+    { "name": "Marcus Oyelaran", "role": "Application Engineer" },
+    { "name": "Priya Raman", "role": "Estimator & Contracts Admin" }
+  ],
+  "pastBids": [
+    {
+      "title": "Elm Street Lift Station Pump Replacement",
+      "agency": "Harborview Sanitary District",
+      "year": 2024,
+      "outcome": "won",
+      "summary": "Supplied two 30 HP submersible pumps, VFD panel and SCADA integration for a duplex lift station; commissioned on schedule."
+    },
+    {
+      "title": "Ridgeway Booster Station Package",
+      "agency": "Ridgeway Water Authority",
+      "year": 2023,
+      "outcome": "won",
+      "summary": "Packaged booster station with three vertical turbine pumps, AWWA C508 check valves and a UL 508A control panel."
+    },
+    {
+      "title": "Delta Basin Stormwater Pump Station",
+      "agency": "Delta County Drainage District",
+      "year": 2025,
+      "outcome": "lost",
+      "summary": "Proposed four 60 HP stormwater pumps with level controls; lost on price to a competing packaged system."
+    }
+  ]
+}

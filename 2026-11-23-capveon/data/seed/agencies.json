@@ -1,0 +1,7 @@
+[
+  { "id": "ag_brightwater", "name": "City of Brightwater", "region": "Brightwater County, Cascadia", "type": "city", "population": 84000 },
+  { "id": "ag_fernhollow", "name": "Fernhollow Water District", "region": "Fernhollow County, Cascadia", "type": "district", "population": 31000 },
+  { "id": "ag_copperline", "name": "Copperline County Public Works", "region": "Copperline County, Cascadia", "type": "county", "population": 112000 },
+  { "id": "ag_larkmoor", "name": "Town of Larkmoor", "region": "Copperline County, Cascadia", "type": "city", "population": 9400 },
+  { "id": "ag_cdot", "name": "Cascadia Dept. of Transportation", "region": "Cascadia (statewide)", "type": "state" }
+]

@@ -1,0 +1,14 @@
+[
+  { "id": "ct_01", "agencyId": "ag_brightwater", "name": "Helena Marsh", "title": "Director of Public Utilities", "role": "decision_maker", "email": "hmarsh@brightwater.example" },
+  { "id": "ct_02", "agencyId": "ag_brightwater", "name": "Rafael Quintero", "title": "Purchasing Manager", "role": "procurement", "email": "purchasing@brightwater.example" },
+  { "id": "ct_03", "agencyId": "ag_brightwater", "name": "Tomas Eriksen, PE", "title": "Senior Utilities Engineer", "role": "engineer" },
+  { "id": "ct_04", "agencyId": "ag_fernhollow", "name": "Gwen Abernathy", "title": "General Manager", "role": "decision_maker", "email": "gabernathy@fernhollowwd.example" },
+  { "id": "ct_05", "agencyId": "ag_fernhollow", "name": "Owen Castellan, PE", "title": "District Engineer", "role": "engineer" },
+  { "id": "ct_06", "agencyId": "ag_copperline", "name": "Ruth Delacroix", "title": "Public Works Director", "role": "decision_maker" },
+  { "id": "ct_07", "agencyId": "ag_copperline", "name": "Simon Park", "title": "Contracts Administrator", "role": "procurement", "email": "spark@copperline.example" },
+  { "id": "ct_08", "agencyId": "ag_larkmoor", "name": "Hal Brennan", "title": "Public Works Director", "role": "decision_maker" },
+  { "id": "ct_09", "agencyId": "ag_larkmoor", "name": "Ellen Tarrant", "title": "Mayor", "role": "decision_maker" },
+  { "id": "ct_10", "agencyId": "ag_cdot", "name": "Nadia Kowalczyk", "title": "State Contracts Officer", "role": "procurement", "email": "contracts@cdot.example" },
+  { "id": "ct_11", "agencyId": "ag_cdot", "name": "Victor Almeida, PE", "title": "Region 2 Design Engineer", "role": "engineer" },
+  { "id": "ct_12", "agencyId": "ag_cdot", "name": "Carol Neumann", "title": "Deputy Director, Highways", "role": "decision_maker" }
+]
