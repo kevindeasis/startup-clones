@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proven</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#14171f;--mute:#5d6678;--line:#dfe3ea;--ok:#127a3d;--okbg:#e5f6ec;--bad:#b3261e;--badbg:#fdeceb;--acc:#2f4bd8;--warn:#8a5a00;--warnbg:#fff4d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1218;--card:#181c25;--fg:#e8ebf2;--mute:#9aa3b5;--line:#2a3040;--ok:#5fd18a;--okbg:#12281c;--bad:#ff8a80;--badbg:#321816;--acc:#8ea2ff;--warn:#f1c35c;--warnbg:#332a10}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:space-between}
+h1{margin:0;font-size:22px}
+.badge{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--warnbg);color:var(--warn)}
+.badge.live{background:var(--okbg);color:var(--ok)}
+nav{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap}
+nav button{border:1px solid var(--line);background:var(--card);color:var(--fg);padding:8px 12px;border-radius:8px;cursor:pointer;font:inherit}
+nav button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0;min-width:0}
+.card h3{margin:0 0 8px;font-size:15px}
+textarea,input,select{width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+button.go{background:var(--acc);color:#fff;border:0;padding:9px 16px;border-radius:8px;font:inherit;cursor:pointer;margin-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:5px 10px;font-size:13px;cursor:pointer}
+.chk{display:flex;gap:8px;align-items:flex-start;padding:3px 0;font-size:14px}
+.pass{color:var(--ok);font-weight:700}.fail{color:var(--bad);font-weight:700}
+.tag{font-weight:700;padding:2px 8px;border-radius:6px;font-size:13px}
+.tag.proven{background:var(--okbg);color:var(--ok)}.tag.unproven{background:var(--badbg);color:var(--bad)}
+.scroll{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+pre{white-space:pre-wrap;word-break:break-word;background:var(--bg);padding:10px;border-radius:8px;font-size:13px;margin:6px 0}
+code{background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-word}
+.mute{color:var(--mute);font-size:13px}
+.att{border-left:3px solid var(--line);padding-left:10px;margin:8px 0}
+.att.bad{border-color:var(--bad)}.att.good{border-color:var(--ok)}
+summary{cursor:pointer}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Proven <span class="mute">verified data queries</span></h1><span id="mode" class="badge hidden"></span></header>
+<nav id="tabs"></nav>
+
+<section id="ask">
+  <div class="card">
+    <textarea id="q" rows="2" placeholder="Ask a question about the business data"></textarea>
+    <button class="go" id="askbtn">Ask</button>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div id="out"></div>
+</section>
+
+<section id="rules" class="hidden"></section>
+<section id="schema" class="hidden"></section>
+
+<section id="verify" class="hidden">
+  <div class="card">
+    <h3>Verify raw SQL</h3>
+    <p class="mute">The agent integration surface: <code>POST /api/verify</code>. Check a query against a metric's definition.</p>
+    <label class="mute">Metric</label><select id="vmetric"></select>
+    <label class="mute">SQL</label>
+    <textarea id="vsql" rows="5">SELECT SUM(invoices.total) FROM invoices JOIN invoice_lines ON invoices.invoice_id = invoice_lines.invoice_id</textarea>
+    <button class="go" id="vbtn">Verify</button>
+  </div>
+  <div id="vout"></div>
+</section>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const api = (p, o) => fetch(p, o).then(r => r.json());
+const post = (p, b) => api(p, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(b)});
+
+const TABS = [['ask','Ask'],['rules','Rules'],['schema','Schema'],['verify','Verify SQL']];
+TABS.forEach(([id, label]) => {
+  const b = document.createElement('button'); b.textContent = label; b.dataset.id = id;
+  b.onclick = () => show(id); $('#tabs').appendChild(b);
+});
+function show(id) {
+  TABS.forEach(([t]) => $('#' + t).classList.toggle('hidden', t !== id));
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+  if (id === 'rules') loadRules(); if (id === 'schema') loadSchema();
+}
+const checks = cs => cs.map(c => `<div class="chk"><span class="${c.passed ? 'pass' : 'fail'}">${c.passed ? '&#10003;' : '&#10007;'}</span><div><b>${esc(c.name)}</b><br><span class="mute">${esc(c.detail)}</span></div></div>`).join('');
+const table = (cols, rows) => `<div class="scroll"><table><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+
+async function ask(question) {
+  $('#q').value = question; $('#out').innerHTML = '<div class="card mute">Verifying...</div>';
+  const r = await post('/api/ask', {question});
+  let h = `<div class="card"><span class="tag ${r.status}">${r.status === 'proven' ? 'PROVEN' : 'NOT PROVEN'}</span>`;
+  if (r.status === 'proven') {
+    h += `<h3 style="margin-top:10px">How I understood your question</h3><p>${esc(r.restatement)}</p></div>`;
+    h += `<div class="card"><h3>Verification certificate</h3>${checks(r.checks)}</div>`;
+    h += `<div class="card"><h3>Result</h3>${table(r.columns, r.rows)}<details><summary class="mute">SQL that ran</summary><pre>${esc(r.sql)}</pre></details></div>`;
+  } else {
+    h += `<p><b>I couldn't find a proven answer.</b></p><p>${esc(r.reason)}</p><p class="mute">No numbers are shown because nothing was proven.</p></div>`;
+  }
+  if (r.attempts.length) {
+    h += `<div class="card"><h3>Attempts (${r.attempts.length})</h3>` + r.attempts.map(a => {
+      const bad = (a.checks || []).filter(c => !c.passed), ok = !a.error && !bad.length;
+      return `<div class="att ${ok ? 'good' : 'bad'}"><b>Attempt ${a.attempt}</b> ${ok ? '<span class="pass">passed</span>' : '<span class="fail">failed</span>'}
+        ${a.restatement ? `<div class="mute">${esc(a.restatement)}</div>` : ''}
+        ${a.error ? `<div>${esc(a.error)}</div>` : ''}
+        ${bad.map(c => `<div class="mute"><span class="fail">${esc(c.name)}</span>: ${esc(c.detail)}</div>`).join('')}
+        ${a.interpretation ? `<details><summary class="mute">interpretation</summary><pre>${esc(JSON.stringify(a.interpretation, null, 2))}</pre></details>` : ''}</div>`;
+    }).join('') + '</div>';
+  }
+  $('#out').innerHTML = h;
+}
+$('#askbtn').onclick = () => $('#q').value.trim() && ask($('#q').value.trim());
+
+async function loadRules() {
+  const r = await api('/api/rules');
+  $('#rules').innerHTML = `<div class="card"><h3>Metrics</h3>` + r.metrics.map(m => `<details><summary><b>${esc(m.name)}</b> <span class="mute">${esc(m.english)}</span></summary>
+    <p class="mute">Canonical SQL</p><pre>${esc(m.sql)}</pre>
+    <p class="mute">Mandatory filters</p><pre>${esc(m.required_predicates.join('\nAND '))}</pre>
+    <p class="mute">Base: ${esc(m.base)}; forbidden tables: ${esc((m.forbidden_tables || []).join(', ') || 'none')}; invariants: ${esc((m.invariants || []).join(', '))}</p></details>`).join('') + `</div>
+    <div class="card"><h3>Dimensions</h3>` + r.dimensions.map(d => `<div><b>${esc(d.name)}</b> <span class="mute">${esc(d.kind)} &middot; ${esc(d.sql || d.table + '.' + d.column)}</span></div>`).join('') + `</div>
+    <div class="card"><h3>Data invariants</h3>` + r.invariants.map(i => `<div><b>${esc(i.name)}</b><br><span class="mute">${esc(i.english)}</span><pre>${esc(i.check)}</pre></div>`).join('') + `</div>`;
+}
+async function loadSchema() {
+  const r = await api('/api/schema');
+  $('#schema').innerHTML = r.tables.map(t => `<div class="card"><h3>${esc(t.name)} <span class="${t.allowed ? 'pass' : 'fail'}">${t.allowed ? 'allowed' : 'blocked'}</span></h3>
+    <div class="scroll">${table(['column','type','allowed'], t.columns.map(c => [c.name, c.type, c.allowed ? 'yes' : 'no']))}</div></div>`).join('');
+}
+$('#vbtn').onclick = async () => {
+  const r = await post('/api/verify', {sql: $('#vsql').value, metric: $('#vmetric').value});
+  $('#vout').innerHTML = `<div class="card"><span class="tag ${r.passed ? 'proven' : 'unproven'}">${r.passed ? 'PASSED' : 'FAILED'}</span>${checks(r.checks)}</div>`;
+};
+(async () => {
+  const h = await api('/api/health');
+  const b = $('#mode'); b.classList.remove('hidden');
+  b.textContent = h.mock ? 'MOCK MODE' : 'LIVE: ' + h.model; b.classList.toggle('live', !h.mock);
+  const ex = await api('/api/examples');
+  $('#chips').innerHTML = ex.examples.map(e => `<button class="chip">${esc(e)}</button>`).join('');
+  document.querySelectorAll('.chip').forEach(c => c.onclick = () => ask(c.textContent));
+  const r = await api('/api/rules');
+  $('#vmetric').innerHTML = r.metrics.map(m => `<option>${esc(m.name)}</option>`).join('');
+  $('#vmetric').value = 'revenue';
+  show('ask');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+# Proven semantic layer: the single source of truth for what a metric means.
+# Everything here is data. The compiler and verifier read it; the LLM never writes SQL.
+tables:
+  accounts: [account_id, name, plan, status, is_trial, created_at, country]
+  subscriptions: [subscription_id, account_id, plan, mrr, started_at, ended_at]
+  invoices: [invoice_id, account_id, issued_at, total]
+  invoice_lines: [line_id, invoice_id, description, amount]
+  payments: [payment_id, invoice_id, paid_at, amount, status]
+
+dimensions:
+  - {name: month, kind: time, sql: "CAST(date_trunc('month', {date_col}) AS DATE)", english: "month"}
+  - {name: plan, kind: category, table: accounts, column: plan, english: "plan"}
+  - {name: country, kind: category, table: accounts, column: country, english: "country"}
+  - {name: payment_status, kind: category, table: payments, column: status, english: "payment status"}
+  - {name: account_status, kind: category, table: accounts, column: status, english: "account status"}
+  - {name: is_trial, kind: boolean, table: accounts, column: is_trial, english: "trial flag"}
+
+metrics:
+  - name: revenue
+    english: "sum of succeeded payment amounts minus refunded amounts"
+    date_label: "payment date"
+    sql: "SUM(CASE WHEN payments.status = 'succeeded' THEN payments.amount WHEN payments.status = 'refunded' THEN -payments.amount ELSE 0 END)"
+    base: payments
+    joins:
+      - "invoices ON payments.invoice_id = invoices.invoice_id"
+      - "accounts ON invoices.account_id = accounts.account_id"
+    date_column: payments.paid_at
+    required_predicates: ["payments.status IN ('succeeded','refunded')"]
+    forbidden_tables: [invoice_lines]   # joining lines to invoices double counts invoice totals
+    invariants: [revenue_not_above_gross]
+
+  - name: customers
+    english: "count of distinct accounts that are not trials and not churned"
+    date_label: "account creation date"
+    sql: "COUNT(DISTINCT accounts.account_id)"
+    base: accounts
+    joins: []
+    date_column: accounts.created_at
+    required_predicates: ["accounts.is_trial = false", "accounts.status <> 'churned'"]
+    forbidden_tables: []
+    invariants: [customers_not_above_accounts, count_non_negative]
+
+  - name: active_subscriptions
+    english: "count of subscriptions that have not ended (no end date)"
+    date_label: "subscription start date"
+    sql: "COUNT(subscriptions.subscription_id)"
+    base: subscriptions
+    joins: ["accounts ON subscriptions.account_id = accounts.account_id"]
+    date_column: subscriptions.started_at
+    required_predicates: ["subscriptions.ended_at IS NULL"]
+    forbidden_tables: []
+    invariants: [active_subs_not_above_subs, count_non_negative]
+
+  - name: mrr
+    english: "sum of monthly recurring revenue over subscriptions that have not ended"
+    date_label: "subscription start date"
+    sql: "SUM(subscriptions.mrr)"
+    base: subscriptions
+    joins: ["accounts ON subscriptions.account_id = accounts.account_id"]
+    date_column: subscriptions.started_at
+    required_predicates: ["subscriptions.ended_at IS NULL"]
+    forbidden_tables: []
+    invariants: [mrr_not_above_all_subscriptions]
+
+  - name: trial_accounts
+    english: "count of distinct accounts that are trials"
+    date_label: "account creation date"
+    sql: "COUNT(DISTINCT accounts.account_id)"
+    base: accounts
+    joins: []
+    date_column: accounts.created_at
+    required_predicates: ["accounts.is_trial = true"]
+    forbidden_tables: []
+    invariants: [customers_not_above_accounts, count_non_negative]
+
+  - name: churned_customers
+    english: "count of distinct non-trial accounts whose status is churned"
+    date_label: "account creation date"
+    sql: "COUNT(DISTINCT accounts.account_id)"
+    base: accounts
+    joins: []
+    date_column: accounts.created_at
+    required_predicates: ["accounts.status = 'churned'", "accounts.is_trial = false"]
+    forbidden_tables: []
+    invariants: [customers_not_above_accounts, count_non_negative]
+
+  - name: refunds
+    english: "sum of payment amounts whose status is refunded"
+    date_label: "payment date"
+    sql: "SUM(payments.amount)"
+    base: payments
+    joins:
+      - "invoices ON payments.invoice_id = invoices.invoice_id"
+      - "accounts ON invoices.account_id = accounts.account_id"
+    date_column: payments.paid_at
+    required_predicates: ["payments.status = 'refunded'"]
+    forbidden_tables: [invoice_lines]
+    invariants: [refunds_not_above_payments]
+
+# Data invariants: SQL that must evaluate to true. {query_total} is replaced with the
+# candidate query's total (sum of its metric column over all result rows).
+invariants:
+  - name: revenue_not_above_gross
+    english: "Revenue can never exceed the gross amount of succeeded payments."
+    check: "({query_total}) <= (SELECT SUM(amount) FROM payments WHERE status = 'succeeded')"
+  - name: customers_not_above_accounts
+    english: "A count of accounts can never exceed the number of accounts."
+    check: "({query_total}) <= (SELECT COUNT(*) FROM accounts)"
+  - name: count_non_negative
+    english: "A count can never be negative."
+    check: "({query_total}) >= 0"
+  - name: active_subs_not_above_subs
+    english: "Active subscriptions can never exceed all subscriptions."
+    check: "({query_total}) <= (SELECT COUNT(*) FROM subscriptions)"
+  - name: mrr_not_above_all_subscriptions
+    english: "MRR of active subscriptions can never exceed the MRR of all subscriptions."
+    check: "({query_total}) <= (SELECT SUM(mrr) FROM subscriptions)"
+  - name: refunds_not_above_payments
+    english: "Refunds can never exceed the total of all payments."
+    check: "({query_total}) <= (SELECT SUM(amount) FROM payments)"
