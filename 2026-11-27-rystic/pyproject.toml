@@ -1,0 +1,12 @@
+[project]
+name = "rehearsal"
+version = "0.1.0"
+description = "Stateful local simulators (Stripe/Slack/GitHub) for testing AI agents - an independent Rystic learning clone"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.setuptools.packages.find]
+include = ["rehearsal*"]

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rehearsal</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --ink: #1c1c1a; --muted: #6b6b66; --line: #deded8;
+    --accent: #2f5de0; --pass: #1a7f45; --fail: #c0392b; --code: #f0f0ec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151514; --panel: #1f1f1d; --ink: #ecece8; --muted: #9a9a93; --line: #34342f;
+      --accent: #7c9cff; --pass: #4cc38a; --fail: #ff7b6b; --code: #2a2a27;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: hidden; }
+  body { font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; padding: 16px; max-width: 980px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0 0 2px; }
+  h2 { font-size: 1rem; margin: 0 0 8px; }
+  p.sub { color: var(--muted); margin: 0 0 16px; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  select, button { font: inherit; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); max-width: 100%; }
+  button { cursor: pointer; background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.alt { background: var(--panel); color: var(--ink); border-color: var(--line); }
+  .wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line); vertical-align: top; white-space: nowrap; }
+  td.w { white-space: normal; overflow-wrap: anywhere; min-width: 180px; }
+  th { color: var(--muted); font-weight: 600; }
+  pre { background: var(--code); padding: 8px; border-radius: 6px; overflow-x: auto; font-size: 12px; margin: 0; max-height: 360px; }
+  .pass { color: var(--pass); font-weight: 600; } .fail { color: var(--fail); font-weight: 600; }
+  .muted { color: var(--muted); }
+  .tabs button { background: var(--panel); color: var(--ink); border-color: var(--line); }
+  .tabs button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  code { background: var(--code); padding: 1px 4px; border-radius: 4px; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>Rehearsal</h1>
+<p class="sub">Stateful Stripe / Slack / GitHub twins for testing agents. Independent learning clone, not affiliated with Rystic.</p>
+
+<section>
+  <h2>Environments</h2>
+  <div class="row">
+    <select id="envSel" aria-label="Environment"></select>
+    <button id="newEnv">New env</button>
+    <button id="refresh" class="alt">Refresh</button>
+  </div>
+  <p id="envInfo" class="muted"></p>
+  <div class="row">
+    <select id="scnSel" aria-label="Scenario"></select>
+    <button id="loadScn" class="alt">Load into env</button>
+  </div>
+</section>
+
+<section>
+  <h2>Inspect</h2>
+  <div class="row tabs" id="tabs">
+    <button data-t="calls" class="on">Ledger</button>
+    <button data-t="inspect">State</button>
+    <button data-t="egress">Egress</button>
+  </div>
+  <div id="view" class="wrap" style="margin-top:10px"></div>
+</section>
+
+<section>
+  <h2>Run the grader</h2>
+  <div class="row">
+    <select id="gradeSel" aria-label="Scenario to grade"></select>
+    <button id="runGrade">Run agent + grade</button>
+  </div>
+  <div id="gradeOut" class="wrap" style="margin-top:10px"></div>
+</section>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let tab = "calls";
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const text = await r.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
+  if (!r.ok) throw new Error(path + " -> " + r.status + " " + (typeof data === "string" ? data : JSON.stringify(data)));
+  return data;
+}
+const post = (p, body) => api(p, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body || {}) });
+function envId() { return $("envSel").value; }
+
+async function loadScenarios() {
+  const { scenarios } = await api("/_sim/scenarios");
+  for (const id of ["scnSel", "gradeSel"]) {
+    $(id).innerHTML = scenarios.map((s) => `<option value="${esc(s.name)}" title="${esc(s.description)}">${esc(s.name)}</option>`).join("");
+  }
+}
+async function loadEnvs(keep) {
+  const { envs } = await api("/_sim/envs");
+  const cur = keep || envId();
+  $("envSel").innerHTML = envs.map((e) => `<option value="${e.env_id}">${e.env_id}</option>`).join("");
+  if (cur && envs.some((e) => e.env_id === cur)) $("envSel").value = cur;
+  const e = envs.find((x) => x.env_id === envId());
+  $("envInfo").innerHTML = e
+    ? `clock <code>${esc(e.clock)}</code> &middot; ${e.calls} calls &middot; ${e.egress} egress events &middot; scenario: ${esc(e.scenario || "none")}<br>base URL <code>${location.origin}/e/${e.env_id}/stripe</code>`
+    : "No environments yet. Create one.";
+  await render();
+}
+function table(rows, cols) {
+  if (!rows.length) return '<p class="muted">Nothing yet.</p>';
+  return `<table><thead><tr>${cols.map((c) => `<th>${c}</th>`).join("")}</tr></thead><tbody>` +
+    rows.map((r) => `<tr>${cols.map((c) => { const v = r[c]; const t = v === null || v === undefined ? "" : typeof v === "object" ? JSON.stringify(v) : v; return `<td${typeof v === "object" && v !== null ? ' class="w"' : ""}>${esc(t)}</td>`; }).join("")}</tr>`).join("") + "</tbody></table>";
+}
+async function render() {
+  const id = envId();
+  if (!id) { $("view").innerHTML = '<p class="muted">Select an environment.</p>'; return; }
+  try {
+    if (tab === "calls") {
+      const { calls } = await api(`/_sim/envs/${id}/calls`);
+      $("view").innerHTML = table(calls.slice().reverse(), ["seq", "service", "method", "path", "status", "fault", "mutations"]);
+    } else if (tab === "egress") {
+      const { events } = await api(`/_sim/envs/${id}/egress`);
+      $("view").innerHTML = table(events.slice().reverse(), ["seq", "service", "type", "payload"]);
+    } else {
+      const d = await api(`/_sim/envs/${id}/inspect`);
+      $("view").innerHTML = "<pre>" + esc(JSON.stringify(d.registers, null, 2)) + "</pre>";
+    }
+  } catch (e) { $("view").innerHTML = `<p class="fail">${esc(e.message)}</p>`; }
+}
+$("tabs").addEventListener("click", (ev) => {
+  if (!ev.target.dataset.t) return;
+  tab = ev.target.dataset.t;
+  document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b === ev.target));
+  render();
+});
+$("newEnv").onclick = async () => { const r = await post("/_sim/envs"); await loadEnvs(r.env_id); };
+$("refresh").onclick = () => loadEnvs();
+$("envSel").onchange = () => loadEnvs();
+$("loadScn").onclick = async () => {
+  if (!envId()) return;
+  try { await post(`/_sim/envs/${envId()}/scenario`, { name: $("scnSel").value }); await loadEnvs(); }
+  catch (e) { $("view").innerHTML = `<p class="fail">${esc(e.message)}</p>`; }
+};
+$("runGrade").onclick = async () => {
+  $("gradeOut").innerHTML = '<p class="muted">Running...</p>';
+  try {
+    const r = await post("/_sim/grade", { scenario: $("gradeSel").value });
+    $("gradeOut").innerHTML =
+      `<p><b>${r.passed ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL</span>'}</b> ${esc(r.verdict)} <span class="muted">(env ${r.env_id}, agent mode ${r.agent.mode}, ${r.agent.tool_calls.length} tool calls)</span></p>` +
+      `<table><thead><tr><th>assertion</th><th>expected</th><th>actual</th><th>result</th></tr></thead><tbody>` +
+      r.assertions.map((a) => `<tr><td>${esc(a.assertion)}</td><td>${esc(a.expected)}</td><td>${esc(a.actual)}</td><td class="${a.passed ? "pass" : "fail"}">${a.passed ? "PASS" : "FAIL"}</td></tr>`).join("") +
+      "</tbody></table>";
+    await loadEnvs(r.env_id);
+  } catch (e) { $("gradeOut").innerHTML = `<p class="fail">${esc(e.message)}</p>`; }
+};
+loadScenarios().then(() => loadEnvs()).catch((e) => { $("view").innerHTML = `<p class="fail">${esc(e.message)}</p>`; });
+</script>
+</body>
+</html>

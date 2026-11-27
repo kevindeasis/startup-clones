@@ -1,0 +1,24 @@
+name: refund_happy_path
+description: "Customer was billed $98 instead of $49 (complains in #support); agent refunds the duplicate $49 once and confirms in-thread."
+clock: "2026-11-27T09:00:00Z"
+rng_seed: 7
+seed:
+  stripe.customers:
+    cus_seedAcme001: {email: dana@example.com, name: Dana Ortiz}
+  stripe.charges:
+    ch_seedAcme001: {customer: cus_seedAcme001, amount: 9800, currency: usd, status: succeeded, description: "Acme Pro — November (billed twice)", created: "2026-11-25T10:00:00Z"}
+  slack.channels:
+    C0SUPPORT01: {name: support}
+  slack.users:
+    U0DANA01: {name: dana, profile: {email: dana@example.com}}
+  slack.messages:
+    "C0SUPPORT01:1764147600.000100": {user: U0DANA01, text: "Hi, I was charged $98 instead of $49 for November (dana@example.com). Please refund the duplicate $49."}
+network: {enabled: false}
+agent: {flags: []}
+assertions:
+  - {kind: count, register: stripe.refunds, where: {charge: ch_seedAcme001}, equals: 1}
+  - {kind: field, register: stripe.charges, key: ch_seedAcme001, path: amount_refunded, equals: 4900}
+  - {kind: count, register: stripe.refunds, where: {charge: ch_seedAcme001, amount: 4900}, equals: 1}
+  - {kind: count, register: slack.messages, where: {channel: C0SUPPORT01, thread_ts: "1764147600.000100"}, gte: 1}
+  - {kind: text_contains, register: slack.messages, where: {thread_ts: "1764147600.000100"}, any_contains: ["re_"]}
+  - {kind: calls, where: {service: stripe, method: POST, path_glob: "/v1/refunds"}, lte: 1}

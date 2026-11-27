@@ -1,0 +1,24 @@
+name: refund_flaky_network_idempotent
+description: "The connection drops after the $49 refund is applied; a naive agent retries and refunds twice (total 9800, accepted by Stripe). The agent sends an Idempotency-Key, so the retry replays. Expected to PASS."
+clock: "2026-11-27T09:00:00Z"
+rng_seed: 7
+seed:
+  stripe.customers:
+    cus_seedAcme001: {email: dana@example.com, name: Dana Ortiz}
+  stripe.charges:
+    ch_seedAcme001: {customer: cus_seedAcme001, amount: 9800, currency: usd, status: succeeded, description: "Acme Pro — November (billed twice)", created: "2026-11-25T10:00:00Z"}
+  slack.channels:
+    C0SUPPORT01: {name: support}
+  slack.users:
+    U0DANA01: {name: dana, profile: {email: dana@example.com}}
+  slack.messages:
+    "C0SUPPORT01:1764147600.000100": {user: U0DANA01, text: "Hi, I was charged $98 instead of $49 for November (dana@example.com). Please refund the duplicate $49."}
+network: {enabled: true, drop_after_write: {service: stripe, path_glob: "/v1/refunds", count: 1}}
+agent: {flags: ["--idempotency"]}
+assertions:
+  - {kind: count, register: stripe.refunds, where: {charge: ch_seedAcme001}, equals: 1}
+  - {kind: field, register: stripe.charges, key: ch_seedAcme001, path: amount_refunded, equals: 4900}
+  - {kind: count, register: stripe.refunds, where: {charge: ch_seedAcme001, amount: 4900}, equals: 1}
+  - {kind: count, register: slack.messages, where: {channel: C0SUPPORT01, thread_ts: "1764147600.000100"}, gte: 1}
+  - {kind: text_contains, register: slack.messages, where: {thread_ts: "1764147600.000100"}, any_contains: ["re_"]}
+  - {kind: calls, where: {service: stripe, method: POST, path_glob: "/v1/refunds"}, lte: 2}

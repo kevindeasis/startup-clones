@@ -1,0 +1,20 @@
+name: github_triage
+description: Triage 3 open issues; the agent labels bug-like ones `bug` and comments on them.
+clock: "2026-11-27T09:00:00Z"
+rng_seed: 11
+seed:
+  github.repos:
+    acme/widgets: {description: Widgets}
+  github.issues:
+    "acme/widgets#1": {title: "App crashes on startup with NullPointer exception", body: "Stack trace attached.", user: alice}
+    "acme/widgets#2": {title: "Add dark mode", body: "Would love a dark theme.", user: bob}
+    "acme/widgets#3": {title: "Checkout button broken on Safari", body: "Nothing happens when clicked.", user: carol}
+network: {enabled: false}
+agent: {task: triage, flags: []}
+assertions:
+  - {kind: count, register: github.issues, where: {state: open}, equals: 3}
+  - {kind: egress, where: {type: github.issue.labeled}, equals: 2}
+  - {kind: count, register: github.comments, where: {issue_number: 1}, equals: 1}
+  - {kind: count, register: github.comments, where: {issue_number: 3}, equals: 1}
+  - {kind: count, register: github.comments, where: {issue_number: 2}, equals: 0}
+  - {kind: calls, where: {service: github, method: POST, path_glob: "/repos/acme/widgets/issues/2/*"}, equals: 0}
