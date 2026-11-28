@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steer dashboard</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#1b1f24;--muted:#5d6672;--line:#dde1e6;--accent:#2457d6;--accent-fg:#fff;--ok:#1a7f4b;--bad:#b3261e;--warn:#9a6700;--code:#eef0f3}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1318;--card:#171c23;--fg:#e6e9ee;--muted:#98a2b0;--line:#2a313b;--accent:#6c93f5;--accent-fg:#0b0f14;--ok:#4cc38a;--bad:#f0746d;--warn:#e3b341;--code:#1f2630}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow-x:hidden}
+main{max-width:980px;margin:0 auto;padding:12px 16px 40px}
+h1{font-size:20px;margin:6px 0}h2{font-size:16px;margin:0 0 8px}h3{font-size:14px;margin:12px 0 4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.grow{flex:1 1 140px;min-width:0}
+input,select,textarea,button{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 10px;max-width:100%}
+textarea{width:100%;min-height:70px;resize:vertical}
+button{cursor:pointer}button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+button.danger{color:var(--bad)}button:disabled{opacity:.5;cursor:default}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}nav button.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.muted{color:var(--muted)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.item{border-top:1px solid var(--line);padding:8px 0;overflow-wrap:anywhere}.item:first-child{border-top:0}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 8px;font-size:12px;color:var(--muted)}
+pre,code{background:var(--code);border-radius:6px;font:12px/1.4 ui-monospace,Menlo,monospace}
+pre{padding:8px;overflow:auto;white-space:pre-wrap;word-break:break-word;margin:6px 0}
+.msg{margin:4px 0;padding:6px 8px;border-radius:8px;background:var(--code);overflow-wrap:anywhere}
+.msg b{font-size:12px;color:var(--muted);text-transform:uppercase}
+.bar{height:20px;border-radius:5px;background:var(--code);overflow:hidden;margin:3px 0}.bar>i{display:block;height:100%;background:var(--accent)}.bar.h>i{background:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:4px 6px;border-bottom:1px solid var(--line)}
+#err{color:var(--bad);min-height:1.2em}
+</style>
+</head>
+<body>
+<main>
+<h1>Steer <span class="muted" style="font-size:13px">scoped, measured corrections for AI agents (independent learning clone)</span></h1>
+<div class="card row">
+  <label class="grow">API key <input id="key" type="text" autocomplete="off" style="width:100%"></label>
+  <label class="grow">Agent <select id="agent" style="width:100%"></select></label>
+  <label>Mode <select id="mode"><option>off</option><option>shadow</option><option>active</option></select></label>
+  <div class="row"><input id="newname" placeholder="new agent name" class="grow"><button id="addagent">Add</button></div>
+</div>
+<div id="err" role="alert"></div>
+<nav id="tabs"></nav>
+<section id="view"></section>
+</main>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var store={get:function(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+var S={agent:null,tab:'turns',openTurn:null,openCorr:null,draft:null,detail:{}};
+$('#key').value=store.get('steer_key','dev');
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function err(m){$('#err').textContent=m||''}
+function api(method,path,body){
+  var o={method:method,headers:{'X-Steer-Key':$('#key').value||'dev'}};
+  if(body!==undefined){o.headers['Content-Type']='application/json';o.body=JSON.stringify(body)}
+  return fetch(path,o).then(function(r){return r.text().then(function(t){var d;try{d=JSON.parse(t)}catch(e){d=t}
+    if(!r.ok)throw new Error(r.status+' '+(d&&d.detail?(typeof d.detail==='string'?d.detail:JSON.stringify(d.detail)):t));return d})})
+}
+function guard(p){return p.then(function(r){err('');return r},function(e){err(e.message);throw e})}
+$('#key').addEventListener('change',function(){store.set('steer_key',this.value);loadAgents()});
+var TABS=[['turns','Turns'],['mistakes','Mistakes'],['corrections','Corrections']];
+function renderTabs(){$('#tabs').innerHTML=TABS.map(function(t){return '<button data-t="'+t[0]+'" class="'+(S.tab===t[0]?'on':'')+'">'+t[1]+'</button>'}).join('')}
+$('#tabs').addEventListener('click',function(e){var t=e.target.getAttribute&&e.target.getAttribute('data-t');if(t){S.tab=t;render()}});
+function loadAgents(){
+  return guard(api('GET','/v1/agents')).then(function(list){
+    var sel=$('#agent');sel.innerHTML=list.map(function(a){return '<option value="'+esc(a.id)+'">'+esc(a.name)+' ('+esc(a.id)+')</option>'}).join('');
+    if(!list.length){S.agent=null;$('#view').innerHTML='<div class="card muted">No agents yet. Add one above, or run <code>python -m examples.demo --api-url ...</code>.</div>';return}
+    var keep=list.filter(function(a){return a.id===S.agent})[0];S.agent=keep?keep.id:list[0].id;sel.value=S.agent;
+    $('#mode').value=(keep||list[0]).mode;render();
+  },function(){$('#view').innerHTML='';});
+}
+$('#agent').addEventListener('change',function(){S.agent=this.value;loadAgents()});
+$('#mode').addEventListener('change',function(){guard(api('PATCH','/v1/agents/'+S.agent,{mode:this.value}))});
+$('#addagent').addEventListener('click',function(){var n=$('#newname').value.trim();if(!n)return;guard(api('POST','/v1/agents',{name:n})).then(function(a){S.agent=a.id;$('#newname').value='';loadAgents()})});
+function render(){renderTabs();if(!S.agent)return;({turns:viewTurns,mistakes:viewMistakes,corrections:viewCorrections})[S.tab]()}
+function badge(t){return t.outcome_success===true?'<span class="ok">success</span>':t.outcome_success===false?'<span class="bad">failed</span>':'<span class="muted">no outcome</span>'}
+function viewTurns(){
+  guard(api('GET','/v1/agents/'+S.agent+'/turns?limit=60')).then(function(ts){
+    var h='<div class="card"><h2>Turns <span class="muted">('+ts.length+' most recent)</span></h2><label class="muted"><input type="checkbox" id="fo"> failed only</label>';
+    h+='<div id="tl">'+ts.map(function(t){return '<div class="item" data-f="'+(t.outcome_success===false?1:0)+'"><div>'+esc(t.last_user_message)+'</div><div class="muted">'+esc(t.conversation_id)+' #'+t.revision+' &middot; '+badge(t)+' <button data-turn="'+esc(t.trace_id)+'">review</button></div><div id="t_'+esc(t.trace_id)+'"></div></div>'}).join('')||'<div class="muted">No turns captured yet.</div>';
+    $('#view').innerHTML=h+'</div></div>';
+    $('#fo').addEventListener('change',function(){var on=this.checked;document.querySelectorAll('#tl .item').forEach(function(i){i.style.display=on&&i.getAttribute('data-f')!=='1'?'none':''})});
+  },function(){});
+}
+$('#view').addEventListener('click',function(e){
+  var b=e.target,id;
+  if(id=b.getAttribute('data-turn')){var box=document.getElementById('t_'+id);if(box.innerHTML){box.innerHTML='';return}
+    guard(api('GET','/v1/turns/'+id)).then(function(t){box.innerHTML=t.messages.map(function(m){var x='<div class="msg"><b>'+esc(m.role)+(m.name?' '+esc(m.name):'')+'</b><div>'+esc(m.content)+'</div>';
+      (m.toolCalls||[]).forEach(function(c){x+='<code>'+esc(c.name)+'('+esc(JSON.stringify(c.arguments))+')</code> '});return x+'</div>'}).join('')+'<div class="muted">terminal: '+esc(t.terminal)+' &middot; outcome: '+esc(t.outcome_success)+' '+esc(t.outcome_note)+'</div>'})}
+  else if(id=b.getAttribute('data-mk')){var m=S.mistakes[+id];S.draft={title:m.title,guidance:m.suggested_guidance,trigger:m.suggested_trigger};S.openCorr=null;S.tab='corrections';render()}
+  else if(b.id==='disc'){b.disabled=true;b.textContent='Discovering...';guard(api('POST','/v1/agents/'+S.agent+'/discover',{max_turns:200})).then(viewMistakes,function(){b.disabled=false;b.textContent='Discover mistakes'})}
+  else if(id=b.getAttribute('data-corr')){S.openCorr=id;S.draft=null;viewCorrections()}
+  else if(b.id==='newcorr'){S.openCorr=null;S.draft={title:'',guidance:'',trigger:{all:[{type:'message_matches',role:'user',pattern:'',where:'last'}]}};viewCorrections()}
+  else if(b.id==='save')saveCorr();
+  else if(b.id==='preview')doPreview();
+  else if(b.id==='activate')doActivate();
+  else if(b.id==='pause')act('pause');
+  else if(b.id==='del'){if(confirm('Delete this correction?'))guard(api('DELETE','/v1/corrections/'+S.openCorr)).then(function(){S.openCorr=null;viewCorrections()})}
+});
+function viewMistakes(){
+  guard(api('GET','/v1/agents/'+S.agent+'/mistakes')).then(function(ms){S.mistakes=ms;
+    var h='<div class="card"><div class="row"><h2 class="grow">Recurring mistakes</h2><button id="disc" class="primary">Discover mistakes</button></div>';
+    h+=ms.map(function(m,i){return '<div class="item"><b>'+esc(m.title)+'</b> <span class="pill">'+m.evidence.length+' turns</span><div>'+esc(m.description)+'</div><div class="muted">Suggested: '+esc(m.suggested_guidance)+'</div><details><summary class="muted">trigger &amp; evidence</summary><pre>'+esc(JSON.stringify(m.suggested_trigger,null,1))+'</pre><div class="muted">'+m.evidence.map(esc).join(', ')+'</div></details><button data-mk="'+i+'">Write correction</button></div>'}).join('')||'<div class="muted">None yet. Capture some traces, then discover.</div>';
+    $('#view').innerHTML=h+'</div>';
+  },function(){});
+}
+function viewCorrections(){
+  guard(api('GET','/v1/agents/'+S.agent+'/corrections')).then(function(cs){
+    var h='<div class="card"><div class="row"><h2 class="grow">Corrections</h2><button id="newcorr">New</button></div>'+cs.map(function(c){return '<div class="item"><b>'+esc(c.title)+'</b> <span class="pill">'+esc(c.status)+'</span> <span class="pill">v'+c.version+'</span> <span class="pill">holdout '+c.holdout_pct+'%</span> <button data-corr="'+esc(c.id)+'">open</button></div>'}).join('')||'<div class="muted">No corrections yet.</div>';
+    h+='</div><div id="editor"></div>';$('#view').innerHTML=h;
+    var cur=cs.filter(function(c){return c.id===S.openCorr})[0];
+    if(cur)editor(cur);else if(S.draft)editor(S.draft,true);
+  },function(){});
+}
+function editor(c,isNew){
+  var st=isNew?'new':c.status;
+  var h='<div class="card"><h2>'+(isNew?'New correction':'Edit correction')+' <span class="pill">'+esc(st)+'</span></h2>';
+  h+='<label>Title<input id="f_title" style="width:100%" value="'+esc(c.title)+'"></label>';
+  h+='<label>Guidance (appended to the system prompt when it matches)<textarea id="f_guid">'+esc(c.guidance)+'</textarea></label>';
+  h+='<label>Trigger (JSON: all, situation, situation_keywords)<textarea id="f_trig" style="min-height:130px;font-family:ui-monospace,monospace;font-size:12px">'+esc(JSON.stringify(c.trigger,null,1))+'</textarea></label>';
+  h+='<div class="row"><button id="save" class="primary">'+(isNew?'Create':'Save')+'</button>';
+  if(!isNew)h+='<button id="preview">Preview</button><label>holdout % <input id="hold" type="number" min="0" max="100" value="'+(c.holdout_pct||50)+'" style="width:72px"></label><button id="activate">Activate</button><button id="pause">Pause</button><button id="del" class="danger">Delete</button>';
+  h+='</div><div id="pv"></div><div id="rp"></div></div>';
+  $('#editor').innerHTML=h;
+  if(!isNew){if(c.preview)showPreview(c.preview);if(c.status==='active'||c.status==='paused')showReport()}
+}
+function readForm(){var t;try{t=JSON.parse($('#f_trig').value)}catch(e){err('Trigger is not valid JSON: '+e.message);throw e}
+  return {title:$('#f_title').value,guidance:$('#f_guid').value,trigger:t}}
+function saveCorr(){var f=readForm();
+  var p=S.openCorr?api('PATCH','/v1/corrections/'+S.openCorr,f):api('POST','/v1/corrections',Object.assign({agentId:S.agent},f));
+  guard(p).then(function(c){S.openCorr=c.id;S.draft=null;viewCorrections()})}
+function doPreview(){guard(api('POST','/v1/corrections/'+S.openCorr+'/preview')).then(viewCorrections)}
+function showPreview(p){var c=p.counts||{};
+  var h='<h3>Preview</h3><div>Would reach <b>'+c.matched+'</b> turns in '+c.matched_conversations+' conversations of '+c.scanned+' scanned; '+c.exclusions+' near misses; '+(p.conflicts||[]).length+' conflicts.</div>';
+  h+='<h3>Matched</h3>'+(p.matched.slice(0,15).map(function(m){return '<div class="item">'+esc(m.last_user_message)+'<div class="muted">'+esc(m.conversation_id)+' #'+m.revision+' &middot; '+m.matched_conditions.map(esc).join('; ')+'</div></div>'}).join('')||'<div class="muted">none</div>');
+  h+='<h3>Exclusions (near misses)</h3>'+(p.exclusions.slice(0,8).map(function(m){return '<div class="item">'+esc(m.last_user_message)+'<div class="bad">failed: '+m.failed_conditions.map(esc).join('; ')+'</div></div>'}).join('')||'<div class="muted">none</div>');
+  h+='<h3>Conflicts</h3>'+((p.conflicts||[]).map(function(m){return '<div class="item warn">'+esc(m.title)+' overlaps on '+m.overlapping_turns+' turns</div>'}).join('')||'<div class="muted">none</div>');
+  $('#pv').innerHTML=h}
+function doActivate(){var pct=parseInt($('#hold').value||'0',10);
+  guard(api('POST','/v1/corrections/'+S.openCorr+'/activate',{holdout_pct:pct})).then(function(){
+    return api('GET','/v1/agents/'+S.agent).then(function(a){if(a.mode!=='active'&&confirm('Agent mode is "'+a.mode+'". Switch to active so guidance is delivered?'))return api('PATCH','/v1/agents/'+S.agent,{mode:'active'}).then(function(){$('#mode').value='active'})})
+  }).then(viewCorrections)}
+function act(a){guard(api('POST','/v1/corrections/'+S.openCorr+'/'+a)).then(viewCorrections)}
+function bar(label,g,cls){var r=g.rate==null?0:g.rate*100;return '<div>'+label+': '+(g.rate==null?'n/a':r.toFixed(0)+'%')+' <span class="muted">('+g.successes+'/'+g.conversations+')</span></div><div class="bar '+cls+'"><i style="width:'+r+'%"></i></div>'}
+function showReport(){guard(api('GET','/v1/corrections/'+S.openCorr+'/report')).then(function(r){
+  var h='<h3>Report</h3>'+bar('Treatment',r.treatment,'')+bar('Holdout',r.holdout,'h');
+  h+='<table><tr><th>group</th><th>convs</th><th>success</th><th>repeating</th></tr><tr><td>treatment</td><td>'+r.treatment.conversations+'</td><td>'+r.treatment.successes+'</td><td>'+r.still_repeating_by_group.treatment+'</td></tr><tr><td>holdout</td><td>'+r.holdout.conversations+'</td><td>'+r.holdout.successes+'</td><td>'+r.still_repeating_by_group.holdout+'</td></tr></table>';
+  h+='<div>Lift: <b>'+(r.lift==null?'n/a':(r.lift*100).toFixed(0)+' pts')+'</b> &middot; deliveries '+r.deliveries+' &middot; still repeating '+r.still_repeating+'</div>';
+  $('#rp').innerHTML=h},function(){})}
+loadAgents();
+})();
+</script>
+</body>
+</html>
